@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+
+  --background: 210 40% 98%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --muted: 210 40% 94%;
+  --muted-foreground: 215 16% 42%;
+  --primary: 243 75% 59%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 262 83% 58%;
+  --accent-foreground: 0 0% 100%;
+  --border: 214 32% 89%;
+  --input: 214 32% 89%;
+  --ring: 243 75% 59%;
+  --destructive: 0 72% 51%;
+  --success: 142 71% 42%;
+  --warning: 32 95% 44%;
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: 222 47% 7%;
+  --foreground: 210 40% 96%;
+  --card: 222 44% 11%;
+  --card-foreground: 210 40% 96%;
+  --muted: 217 33% 17%;
+  --muted-foreground: 215 20% 65%;
+  --primary: 243 75% 66%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 262 83% 67%;
+  --accent-foreground: 0 0% 100%;
+  --border: 217 33% 20%;
+  --input: 217 33% 22%;
+  --ring: 243 75% 66%;
+  --destructive: 0 63% 52%;
+  --success: 142 64% 48%;
+  --warning: 38 92% 55%;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Subtle brand gradient used on marketing + auth surfaces */
+.bg-brand-gradient {
+  background-image: radial-gradient(
+      60% 120% at 10% 0%,
+      hsl(243 75% 59% / 0.18),
+      transparent
+    ),
+    radial-gradient(50% 100% at 100% 0%, hsl(262 83% 58% / 0.18), transparent);
+}
+
+.code-scroll::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+.code-scroll::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.4);
+  border-radius: 8px;
+}

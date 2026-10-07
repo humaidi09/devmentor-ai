@@ -1,0 +1,22 @@
+name: Cron — Send Notifications
+
+# Delivers notifications whose scheduled_at is due. Idempotent: already-sent
+# rows are skipped. Runs frequently; GitHub cron timing is best-effort.
+on:
+  schedule:
+    - cron: "*/15 * * * *" # every 15 minutes
+  workflow_dispatch: {}
+
+jobs:
+  send-notifications:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call send-notifications endpoint
+        run: |
+          curl -fsS -X POST "${API_BASE_URL}/internal/cron/send-notifications" \
+            -H "x-cron-secret: ${CRON_SECRET}" \
+            -H "content-type: application/json" \
+            --max-time 120 --retry 2
+        env:
+          API_BASE_URL: ${{ secrets.API_BASE_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}

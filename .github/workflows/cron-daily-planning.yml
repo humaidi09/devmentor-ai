@@ -1,0 +1,23 @@
+name: Cron — Daily Planning
+
+# Builds each active user's tasks + Codeforces recommendations.
+# The endpoint computes "today" per user timezone and is idempotent, so
+# running it every few hours safely covers users across time zones.
+on:
+  schedule:
+    - cron: "7 */6 * * *" # every 6 hours (offset to avoid the top of the hour)
+  workflow_dispatch: {}
+
+jobs:
+  daily-planning:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call daily-planning endpoint
+        run: |
+          curl -fsS -X POST "${API_BASE_URL}/internal/cron/daily-planning" \
+            -H "x-cron-secret: ${CRON_SECRET}" \
+            -H "content-type: application/json" \
+            --max-time 120 --retry 2
+        env:
+          API_BASE_URL: ${{ secrets.API_BASE_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}

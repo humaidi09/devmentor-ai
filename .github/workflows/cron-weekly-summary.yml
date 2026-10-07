@@ -1,0 +1,23 @@
+name: Cron — Weekly Summary
+
+# Produces last week's summary per user. The endpoint upserts one summary per
+# (user, week) and only notifies on first creation, so a daily run is safe and
+# approximately lands on the weekend across time zones.
+on:
+  schedule:
+    - cron: "17 18 * * 0" # Sundays ~18:00 UTC
+  workflow_dispatch: {}
+
+jobs:
+  weekly-summary:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call weekly-summary endpoint
+        run: |
+          curl -fsS -X POST "${API_BASE_URL}/internal/cron/weekly-summary" \
+            -H "x-cron-secret: ${CRON_SECRET}" \
+            -H "content-type: application/json" \
+            --max-time 120 --retry 2
+        env:
+          API_BASE_URL: ${{ secrets.API_BASE_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
