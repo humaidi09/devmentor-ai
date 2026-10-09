@@ -81,7 +81,7 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="mx-auto flex h-[calc(100vh-8rem)] max-w-3xl flex-col">
+    <div className="mx-auto flex h-[calc(100dvh-8rem)] max-w-3xl flex-col">
       <PageHeader title="AI Chat" subtitle="Ask about CS, CP, debugging, or planning.">
         <Select value={language} onChange={(e) => setLanguage(e.target.value)} className="w-36">
           <option value="en">English</option>
