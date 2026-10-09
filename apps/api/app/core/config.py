@@ -21,6 +21,9 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     demo_mode: bool = True
     api_cors_origins: str = "http://localhost:3000"
+    # Any origin matching this regex is also allowed (covers all Vercel
+    # production + preview deployments without listing each one).
+    api_cors_origin_regex: str = r"https://.*\.vercel\.app"
     cron_secret: str = "change-me"
 
     # --- Supabase ---
