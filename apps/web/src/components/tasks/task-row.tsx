@@ -69,7 +69,7 @@ export function TaskRow({
   return (
     <div
       className={cn(
-        "rounded-md border border-border px-3 py-2.5",
+        "rounded-md border border-border px-3 py-2.5 transition-colors hover:border-primary/40 hover:bg-muted/30",
         (done || skipped) && "opacity-70",
       )}
     >

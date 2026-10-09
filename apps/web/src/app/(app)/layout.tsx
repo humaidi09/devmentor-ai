@@ -4,7 +4,7 @@ import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { AuthGuard } from "@/components/auth-guard";
-import { MobileNav, Sidebar } from "@/components/app-shell/nav";
+import { BrandMark, MobileNav, Sidebar } from "@/components/app-shell/nav";
 import { NotificationsBell } from "@/components/app-shell/notifications-bell";
 import { DemoBanner } from "@/components/demo-banner";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -27,21 +27,29 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <Sidebar />
           <div className="flex min-w-0 flex-1 flex-col">
             <DemoBanner />
-            <header className="flex h-14 items-center justify-end gap-1 border-b border-border bg-card px-4">
-              <NotificationsBell />
-              <ThemeToggle />
-              {!DEMO_MODE && (
-                <button
-                  onClick={onSignOut}
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
-                  aria-label="Sign out"
-                >
-                  <LogOut className="h-4 w-4" />
-                </button>
-              )}
+            <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-2 border-b border-border glass px-4">
+              <div className="flex items-center gap-2 lg:invisible">
+                <BrandMark className="h-8 w-8" />
+                <span className="font-display text-sm font-bold">DevMentor AI</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <NotificationsBell />
+                <ThemeToggle />
+                {!DEMO_MODE && (
+                  <button
+                    onClick={onSignOut}
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                    aria-label="Sign out"
+                  >
+                    <LogOut className="h-4 w-4" />
+                  </button>
+                )}
+              </div>
             </header>
             <MobileNav />
-            <main className="flex-1 overflow-y-auto p-5 sm:p-6">{children}</main>
+            <main className="flex-1 overflow-y-auto p-5 sm:p-6 lg:p-8">
+              <div className="animate-in">{children}</div>
+            </main>
           </div>
         </div>
       </ToastProvider>

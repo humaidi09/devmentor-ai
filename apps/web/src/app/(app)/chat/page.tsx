@@ -103,7 +103,7 @@ export default function ChatPage() {
                   <button
                     key={s}
                     onClick={() => send(s)}
-                    className="rounded-full border border-border px-3 py-1.5 text-xs hover:bg-muted"
+                    className="rounded-full border border-border px-3 py-1.5 text-xs transition-colors hover:border-primary/50 hover:bg-muted"
                   >
                     {s}
                   </button>
@@ -186,7 +186,7 @@ export default function ChatPage() {
           placeholder="Ask DevMentor… (Enter to send, Shift+Enter for newline)"
           className="min-h-[48px] flex-1"
         />
-        <Button type="submit" size="icon" className="h-12 w-12" disabled={loading}>
+        <Button type="submit" size="icon" variant="gradient" className="h-12 w-12" disabled={loading}>
           <Send className="h-4 w-4" />
         </Button>
       </form>

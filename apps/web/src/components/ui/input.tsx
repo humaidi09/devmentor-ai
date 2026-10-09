@@ -3,7 +3,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const base =
-  "flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50";
+  "flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 disabled:opacity-50";
 
 export const Input = React.forwardRef<
   HTMLInputElement,
@@ -17,7 +17,7 @@ export const Textarea = React.forwardRef<
   HTMLTextAreaElement,
   React.TextareaHTMLAttributes<HTMLTextAreaElement>
 >(({ className, ...props }, ref) => (
-  <textarea ref={ref} className={cn(base, "min-h-[80px]", className)} {...props} />
+  <textarea ref={ref} className={cn(base, "min-h-[80px] py-2.5", className)} {...props} />
 ));
 Textarea.displayName = "Textarea";
 
@@ -25,7 +25,7 @@ export const Select = React.forwardRef<
   HTMLSelectElement,
   React.SelectHTMLAttributes<HTMLSelectElement>
 >(({ className, ...props }, ref) => (
-  <select ref={ref} className={cn(base, "h-10", className)} {...props} />
+  <select ref={ref} className={cn(base, "h-10 cursor-pointer", className)} {...props} />
 ));
 Select.displayName = "Select";
 

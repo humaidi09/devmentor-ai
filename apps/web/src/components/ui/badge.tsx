@@ -2,13 +2,21 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-type Variant = "default" | "primary" | "success" | "warning" | "muted" | "outline";
+type Variant =
+  | "default"
+  | "primary"
+  | "success"
+  | "warning"
+  | "destructive"
+  | "muted"
+  | "outline";
 
 const variants: Record<Variant, string> = {
-  default: "bg-primary/10 text-primary",
+  default: "bg-primary/10 text-primary ring-1 ring-inset ring-primary/20",
   primary: "bg-primary text-primary-foreground",
-  success: "bg-[hsl(var(--success))]/15 text-[hsl(var(--success))]",
-  warning: "bg-[hsl(var(--warning))]/15 text-[hsl(var(--warning))]",
+  success: "bg-success/15 text-success ring-1 ring-inset ring-success/20",
+  warning: "bg-warning/15 text-warning ring-1 ring-inset ring-warning/25",
+  destructive: "bg-destructive/15 text-destructive ring-1 ring-inset ring-destructive/20",
   muted: "bg-muted text-muted-foreground",
   outline: "border border-border text-muted-foreground",
 };
@@ -21,7 +29,7 @@ export function Badge({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium",
+        "inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium",
         variants[variant],
         className,
       )}
@@ -38,6 +46,7 @@ export function Spinner({ className }: { className?: string }) {
         className,
       )}
       aria-label="Loading"
+      role="status"
     />
   );
 }

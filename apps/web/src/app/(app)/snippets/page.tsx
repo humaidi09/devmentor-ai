@@ -136,7 +136,7 @@ export default function SnippetsPage() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((s) => (
             <button key={s.id} className="text-left" onClick={() => setSelected(s)}>
-              <Card className="h-full transition-shadow hover:shadow-md">
+              <Card className="h-full transition-all duration-200 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lift">
                 <CardContent className="p-4">
                   <div className="mb-2 flex items-center gap-2">
                     <Badge variant="default">{s.language}</Badge>

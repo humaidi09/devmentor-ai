@@ -1,9 +1,10 @@
 "use client";
 
-import { Bot, Check, ChevronLeft, ChevronRight } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
+import { BrandMark } from "@/components/app-shell/nav";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -131,11 +132,9 @@ export default function OnboardingPage() {
   return (
     <div className="flex min-h-screen flex-col bg-brand-gradient">
       <header className="mx-auto flex w-full max-w-3xl items-center justify-between px-6 py-5">
-        <div className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Bot className="h-5 w-5" />
-          </div>
-          <span className="font-bold">DevMentor AI</span>
+        <div className="flex items-center gap-2.5">
+          <BrandMark className="h-9 w-9" />
+          <span className="font-display font-bold">DevMentor AI</span>
         </div>
         <ThemeToggle />
       </header>
