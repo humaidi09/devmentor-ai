@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from fastapi import Depends, Header, HTTPException, Query, status
 
 from ..core.config import get_settings
-from ..core.security import AuthUser, decode_token, demo_user
+from ..core.security import AuthUser, demo_user, resolve_supabase_user
 from ..core.store import Store, get_store_for_user
 
 
@@ -22,8 +22,8 @@ async def get_current_user(authorization: str | None = Header(default=None)) -> 
     if authorization and authorization.lower().startswith("bearer "):
         token = authorization[7:].strip()
 
-    if token and settings.supabase_jwt_secret:
-        return decode_token(token)
+    if token and settings.supabase_url and settings.supabase_anon_key:
+        return resolve_supabase_user(token)
     if settings.effective_demo_mode:
         return demo_user()
     raise HTTPException(

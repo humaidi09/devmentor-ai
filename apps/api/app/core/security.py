@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+import httpx
 import jwt
 from fastapi import HTTPException, status
 
@@ -53,3 +54,42 @@ def decode_token(token: str) -> AuthUser:
     if not sub:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Token is missing a subject.")
     return AuthUser(id=sub, email=payload.get("email"), access_token=token)
+
+
+def verify_supabase_token(token: str) -> AuthUser:
+    """Validate a token by asking Supabase's auth server directly.
+
+    Works regardless of how the project signs user JWTs (legacy HS256 or the
+    newer asymmetric signing keys), so it is immune to a mismatched/absent
+    SUPABASE_JWT_SECRET.
+    """
+    settings = get_settings()
+    if not (settings.supabase_url and settings.supabase_anon_key):
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Auth is not configured.")
+    try:
+        resp = httpx.get(
+            f"{settings.supabase_url}/auth/v1/user",
+            headers={"Authorization": f"Bearer {token}", "apikey": settings.supabase_anon_key},
+            timeout=10.0,
+        )
+    except Exception:  # pragma: no cover - network error
+        raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, "Auth service unreachable.")
+    if resp.status_code != 200:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid authentication token.")
+    data = resp.json()
+    uid = data.get("id")
+    if not uid:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Token is missing a user id.")
+    return AuthUser(id=uid, email=data.get("email"), access_token=token)
+
+
+def resolve_supabase_user(token: str) -> AuthUser:
+    """Fast local HS256 check first (legacy projects); if that fails, fall back
+    to asking Supabase to validate (covers asymmetric signing / wrong secret)."""
+    settings = get_settings()
+    if settings.supabase_jwt_secret:
+        try:
+            return decode_token(token)
+        except HTTPException:
+            pass
+    return verify_supabase_token(token)
