@@ -8,24 +8,24 @@
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* Light theme */
-  --background: 240 40% 99%;
-  --foreground: 224 34% 12%;
+  --background: 45 25% 97%;
+  --foreground: 160 20% 12%;
   --card: 0 0% 100%;
-  --card-foreground: 224 34% 12%;
-  --muted: 240 32% 96%;
-  --muted-foreground: 224 12% 46%;
-  --primary: 243 75% 59%;
+  --card-foreground: 160 20% 12%;
+  --muted: 45 15% 94%;
+  --muted-foreground: 150 5% 43%;
+  --primary: 162 67% 25%;
   --primary-foreground: 0 0% 100%;
-  --accent: 270 80% 60%;
+  --accent: 162 52% 36%;
   --accent-foreground: 0 0% 100%;
-  --brand-2: 292 84% 61%;
-  --border: 240 24% 90%;
-  --input: 240 24% 90%;
-  --ring: 243 75% 59%;
+  --brand-2: 145 44% 54%;
+  --border: 40 13% 88%;
+  --input: 40 13% 88%;
+  --ring: 162 67% 25%;
   --destructive: 0 72% 51%;
   --success: 152 58% 40%;
   --warning: 32 95% 46%;
-  --radius: 0.9rem;
+  --radius: 1rem;
 
   --shadow-color: 224 40% 30%;
 }
@@ -37,14 +37,14 @@
   --card-foreground: 220 30% 96%;
   --muted: 230 20% 17%;
   --muted-foreground: 220 14% 66%;
-  --primary: 243 82% 68%;
+  --primary: 154 51% 64%;
   --primary-foreground: 230 40% 10%;
-  --accent: 270 85% 72%;
+  --accent: 162 48% 62%;
   --accent-foreground: 230 40% 10%;
-  --brand-2: 292 85% 70%;
+  --brand-2: 145 44% 64%;
   --border: 230 18% 20%;
   --input: 230 18% 22%;
-  --ring: 243 82% 68%;
+  --ring: 154 51% 64%;
   --destructive: 0 70% 55%;
   --success: 152 55% 50%;
   --warning: 38 92% 56%;
@@ -157,3 +157,16 @@ h1, h2, h3, h4, .font-display {
   *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
   html { scroll-behavior: auto; }
 }
+
+/* Workspace design system */
+::selection { background: hsl(var(--primary) / .18); }
+a, button, input, textarea, select { -webkit-tap-highlight-color: transparent; }
+a:focus-visible, button:focus-visible { outline: 2px solid hsl(var(--ring)); outline-offset: 4px; }
+.workspace-sidebar { height: 100dvh; position: sticky; top: 0; }
+.eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: hsl(var(--muted-foreground)); }
+.hero-title { font-size: clamp(3rem, 6.8vw, 6.1rem); line-height: 1.03; letter-spacing: -.065em; font-weight: 600; }
+.landing-shell { background: hsl(var(--background)); }
+.preview-window { box-shadow: 0 30px 70px -35px hsl(var(--primary) / .35); transform: rotate(-2deg); }
+.feature-number { font-family: var(--font-mono); font-size: 11px; color: hsl(var(--muted-foreground)); }
+.chat-composer { box-shadow: 0 8px 28px -14px hsl(var(--shadow-color) / .25); }
+@media (max-width: 640px) { .preview-window { transform: none; } }

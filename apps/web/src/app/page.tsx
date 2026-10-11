@@ -1,216 +1,45 @@
-import {
-  ArrowRight,
-  Bot,
-  Brain,
-  CalendarClock,
-  Check,
-  Code2,
-  Github,
-  LineChart,
-  Sparkles,
-  Trophy,
-} from "lucide-react";
+import { ArrowRight, ArrowUpRight, BookOpen, Check, Code2, Command, Layers, MessageSquare, Sparkles, Target, Trophy } from "lucide-react";
 import Link from "next/link";
-
 import { BrandMark } from "@/components/app-shell/nav";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { DEMO_MODE } from "@/lib/config";
 
 const features = [
-  { icon: Brain, title: "CS Study Mentor", body: "Clear explanations for DSA, DBMS, OS, networks & system design — English or Bangla, at your level." },
-  { icon: CalendarClock, title: "AutoTask AI", body: "Turns your schedule, courses & deadlines into a realistic plan — with breaks, buffers & gentle recovery." },
-  { icon: Trophy, title: "Codeforces Coach", body: "Twice-daily problems in your rating band, streaks, contest reminders & post-contest upsolving." },
-  { icon: Code2, title: "DevSnippet AI", body: "A searchable, copy-ready snippet library plus your own collection. Stop re-Googling syntax." },
-  { icon: Bot, title: "Developer Tools", body: "Structured code review and project-roadmap generation across languages." },
-  { icon: LineChart, title: "Weekly Reflection", body: "Honest summaries, weak-topic detection & plan adjustments — never shaming." },
+  { icon: MessageSquare, name: "Your personal AI mentor", text: "Unpack difficult concepts, ask better questions, and learn at your pace. In English or বাংলা.", href: "/chat", tag: "UNDERSTAND" },
+  { icon: Target, name: "A plan you can stick to", text: "Turn your courses and deadlines into focused daily sessions. Leave room for life, too.", href: "/tasks", tag: "BUILD CONSISTENCY" },
+  { icon: Trophy, name: "Practice with purpose", text: "Find Codeforces problems in your rating band and make competitive programming a daily habit.", href: "/cp", tag: "LEVEL UP" },
+  { icon: Code2, name: "Better code, less friction", text: "Review your approach, explore reusable snippets, and build your next project with a clear roadmap.", href: "/code-review", tag: "CREATE" },
 ];
-
-const stats = [
-  { value: "60+", label: "Starter snippets" },
-  { value: "2×", label: "Daily CP sessions" },
-  { value: "EN · BN", label: "Bilingual" },
-  { value: "$0", label: "Free-tier stack" },
-];
-
 export default function LandingPage() {
-  const startHref = DEMO_MODE ? "/dashboard" : "/sign-up";
-
-  return (
-    <div className="min-h-screen">
-      {/* Nav */}
-      <header className="sticky top-0 z-40 border-b border-border/60 glass">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
-          <div className="flex items-center gap-2.5">
-            <BrandMark className="h-9 w-9" />
-            <span className="font-display text-lg font-bold">DevMentor AI</span>
-          </div>
-          <nav className="flex items-center gap-2">
-            <ThemeToggle />
-            <Link href="/sign-in">
-              <Button variant="ghost" size="sm">Sign in</Button>
-            </Link>
-            <Link href={startHref}>
-              <Button size="sm">Get started</Button>
-            </Link>
-          </nav>
+  const start = DEMO_MODE ? "/dashboard" : "/sign-up";
+  return <div className="landing-shell min-h-screen">
+    <header className="border-b border-border">
+      <div className="mx-auto flex h-24 max-w-7xl items-center justify-between gap-4 px-5 sm:px-8">
+        <Link href="/" className="flex items-center gap-3"><BrandMark className="h-10 w-10" /><span className="font-display text-xl font-semibold tracking-tight">DevMentor<span className="ml-1 text-primary">AI</span></span></Link>
+        <nav aria-label="Main navigation" className="hidden items-center gap-8 text-sm text-muted-foreground md:flex"><a href="#workspace" className="hover:text-foreground">The workspace</a><a href="#how-it-works" className="hover:text-foreground">How it works</a><Link href="/chat" className="hover:text-foreground">Meet your mentor</Link></nav>
+        <div className="flex items-center gap-3"><ThemeToggle /><Link href={start} className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm font-medium text-background">Get started <ArrowUpRight className="h-4 w-4" /></Link></div>
+      </div>
+    </header>
+    <main>
+      <section className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-16 sm:px-8 sm:py-24 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
+        <div className="animate-in">
+          <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-2 text-xs font-medium text-primary"><span className="h-1.5 w-1.5 rounded-full bg-primary" /> A calmer way to become a better developer</div>
+          <h1 className="hero-title">Big ambitions.<br />Small steps.<br /><span className="text-primary">One AI mentor.</span></h1>
+          <p className="mt-7 max-w-md text-base leading-7 text-muted-foreground sm:text-lg">From your first algorithm to your next big idea. A thoughtful workspace to learn, practice, and build—with a mentor by your side.</p>
+          <div className="mt-9 flex flex-wrap items-center gap-5"><Link href={start} className="inline-flex items-center gap-3 rounded-full bg-primary px-6 py-4 text-sm font-semibold text-primary-foreground shadow-soft transition-transform hover:-translate-y-0.5">Enter your workspace <ArrowRight className="h-4 w-4" /></Link><a href="#workspace" className="inline-flex items-center gap-2 text-sm font-medium">Take a look inside <ArrowUpRight className="h-4 w-4" /></a></div>
+          <p className="mt-5 text-xs text-muted-foreground">{DEMO_MODE ? "Explore the demo. No account or payment required." : "Your learning journey starts with a free account."}</p>
+          <div className="mt-10 flex items-center gap-3 border-t border-border pt-6"><div className="flex -space-x-2">{["CS", "CP", "DEV"].map(t => <span key={t} className="grid h-9 w-9 place-items-center rounded-full border-2 border-background bg-muted text-[9px] font-bold text-primary">{t}</span>)}</div><p className="text-xs leading-5 text-muted-foreground">Built for curious minds.<br /><span className="font-medium text-foreground">Students. Problem solvers. Builders.</span></p></div>
         </div>
-      </header>
-
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-brand-gradient">
-        <div className="pointer-events-none absolute inset-0 bg-grid opacity-60" />
-        <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 lg:grid-cols-2 lg:py-28">
-          <div className="animate-in">
-            <Badge variant="outline" className="mb-5 bg-card/60">
-              <Sparkles className="h-3.5 w-3.5 text-accent" /> Agentic · Personalized · Free-tier
-            </Badge>
-            <h1 className="font-display text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
-              Your autonomous CS &{" "}
-              <span className="text-gradient">competitive programming</span> companion
-            </h1>
-            <p className="mt-6 max-w-xl text-lg text-muted-foreground">
-              DevMentor understands your goals, builds your study plan, recommends
-              Codeforces problems, explains hard topics, and keeps you on track —
-              like a mentor that never sleeps.
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <Link href={startHref}>
-                <Button size="xl" variant="gradient" className="gap-2">
-                  Start learning <ArrowRight className="h-4 w-4" />
-                </Button>
-              </Link>
-              <Link href="https://codeforces.com" target="_blank">
-                <Button size="xl" variant="outline" className="gap-2">
-                  <Github className="h-4 w-4" /> Connect Codeforces
-                </Button>
-              </Link>
-            </div>
-            <p className="mt-4 text-xs text-muted-foreground">
-              No credit card. Runs on free tiers. Demo mode needs zero setup.
-            </p>
-          </div>
-
-          {/* Floating preview */}
-          <div className="relative hidden lg:block">
-            <PreviewCard />
-          </div>
-        </div>
+        <WorkspacePreview />
       </section>
-
-      {/* Stats */}
-      <section className="border-y border-border bg-card/40">
-        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-6 py-8 sm:grid-cols-4">
-          {stats.map((s) => (
-            <div key={s.label} className="text-center">
-              <p className="font-display text-3xl font-bold text-gradient">{s.value}</p>
-              <p className="mt-1 text-sm text-muted-foreground">{s.label}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Features */}
-      <section className="mx-auto max-w-6xl px-6 py-20">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">
-            Six specialists, one companion
-          </h2>
-          <p className="mt-4 text-muted-foreground">
-            Each module does one job well — and they share your context so advice
-            stays personal.
-          </p>
-        </div>
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((f) => (
-            <div
-              key={f.title}
-              className="group rounded-lg border border-border bg-card p-6 shadow-soft transition-all duration-200 hover:-translate-y-1 hover:shadow-lift"
-            >
-              <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
-                <f.icon className="h-5 w-5" />
-              </div>
-              <h3 className="mb-1.5 font-display font-semibold">{f.title}</h3>
-              <p className="text-sm text-muted-foreground">{f.body}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* CTA band */}
-      <section className="mx-auto max-w-6xl px-6 pb-20">
-        <div className="relative overflow-hidden rounded-xl bg-gradient-brand px-8 py-14 text-center text-white shadow-lift">
-          <div className="pointer-events-none absolute inset-0 bg-grid opacity-20" />
-          <div className="relative">
-            <h2 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">
-              Build the habit. Level up.
-            </h2>
-            <p className="mx-auto mt-3 max-w-xl text-white/80">
-              Start free in demo mode, or connect Supabase &amp; Gemini for the full
-              experience.
-            </p>
-            <Link href={startHref} className="mt-7 inline-block">
-              <Button size="xl" className="gap-2 bg-white text-primary hover:bg-white/90">
-                Start learning <ArrowRight className="h-4 w-4" />
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <footer className="border-t border-border">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-6 py-6 text-sm text-muted-foreground sm:flex-row">
-          <span>© {new Date().getFullYear()} DevMentor AI — MVP</span>
-          <span>We help you build the habit — not guarantee grades or jobs.</span>
-        </div>
-      </footer>
-    </div>
-  );
+      <section className="border-y border-border bg-card/50"><div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-5 py-7 sm:px-8 md:grid-cols-4">{[{v:"60+",l:"Ready-to-use snippets"},{v:"EN + বাংলা",l:"Learn in your language"},{v:"Your pace",l:"Personalized daily planning"},{v:"One place",l:"Learn · practice · build"}].map(s=><div key={s.l} className="border-l border-border pl-5"><p className="font-display text-xl font-semibold">{s.v}</p><p className="mt-1 text-xs text-muted-foreground">{s.l}</p></div>)}</div></section>
+      <section id="workspace" className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28"><div className="flex flex-col justify-between gap-5 md:flex-row md:items-end"><div><p className="eyebrow mb-4">LESS TAB SWITCHING. MORE MOMENTUM.</p><h2 className="text-3xl font-semibold leading-tight tracking-tight sm:text-5xl">Everything you need.<br /><span className="text-muted-foreground">Room to focus.</span></h2></div><p className="max-w-sm text-sm leading-6 text-muted-foreground">Your study plan, coding practice, and AI conversations finally belong in the same workspace.</p></div><div className="mt-12 grid gap-4 md:grid-cols-2">{features.map((f,i)=><Link href={DEMO_MODE ? f.href : "/sign-up"} key={f.name} className="group rounded-2xl border border-border bg-card p-7 transition-all hover:border-primary/40 hover:shadow-soft sm:p-9"><div className="flex items-center justify-between"><f.icon className="h-7 w-7 text-primary" /><span className="feature-number">0{i+1} / {f.tag}</span></div><h3 className="mt-8 text-xl font-semibold tracking-tight">{f.name}</h3><p className="mt-3 max-w-md text-sm leading-6 text-muted-foreground">{f.text}</p><span className="mt-6 inline-flex items-center gap-2 text-xs font-semibold text-primary">Explore tool <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></span></Link>)}</div></section>
+      <section id="how-it-works" className="border-y border-border bg-card/60"><div className="mx-auto max-w-7xl px-5 py-16 sm:px-8"><p className="eyebrow mb-4">A SIMPLE RHYTHM</p><h2 className="text-3xl font-semibold tracking-tight">Your next chapter starts here.</h2><div className="mt-10 grid gap-8 md:grid-cols-3">{[{t:"Make it yours",d:"Tell your mentor what you're learning and where you want to go."},{t:"Find your focus",d:"Shape a realistic plan. Get clarity on what to work on next."},{t:"Keep moving forward",d:"Practice, reflect, and adjust. Small wins add up over time."}].map((s,i)=><div key={s.t}><span className="font-mono text-sm text-primary">0{i+1} —</span><h3 className="mt-4 text-lg font-semibold">{s.t}</h3><p className="mt-2 max-w-xs text-sm leading-6 text-muted-foreground">{s.d}</p></div>)}</div></div></section>
+      <section className="mx-auto max-w-7xl px-5 py-16 sm:px-8"><div className="flex flex-col items-start justify-between gap-8 rounded-2xl bg-primary p-8 text-primary-foreground sm:p-12 md:flex-row md:items-center"><div><Sparkles className="mb-5 h-7 w-7" /><h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Your potential. A little direction.</h2><p className="mt-3 text-sm opacity-80">Make today the day you start building momentum.</p></div><Link href={start} className="inline-flex shrink-0 items-center gap-3 rounded-full bg-white px-6 py-4 text-sm font-semibold text-emerald-900">Let&apos;s get started <ArrowRight className="h-4 w-4" /></Link></div></section>
+    </main>
+    <footer className="mx-auto flex max-w-7xl flex-col justify-between gap-4 px-5 pb-9 text-xs text-muted-foreground sm:flex-row sm:px-8"><span>© {new Date().getFullYear()} DevMentor AI</span><span>Made for learning. Designed for progress.</span><Link href="/sign-in" className="hover:text-foreground">Sign in to your account ↗</Link></footer>
+  </div>;
 }
-
-function PreviewCard() {
-  const tasks = [
-    { c: "bg-primary", t: "DBMS: Normalization", m: "9:00 – 11:00" },
-    { c: "bg-accent", t: "Codeforces: 2 problems", m: "4:00 – 5:00" },
-    { c: "bg-success", t: "Review SQL JOINs", m: "done", done: true },
-  ];
-  return (
-    <div className="animate-float rounded-xl border border-border bg-card p-5 shadow-lift">
-      <div className="mb-4 flex items-center justify-between">
-        <div>
-          <p className="font-display text-sm font-bold">Today&apos;s plan</p>
-          <p className="text-xs text-muted-foreground">Sunday · 3 tasks</p>
-        </div>
-        <Badge variant="success">
-          <Check className="h-3 w-3" /> 1/3
-        </Badge>
-      </div>
-      <div className="space-y-2">
-        {tasks.map((t) => (
-          <div key={t.t} className="flex items-center gap-3 rounded-md border border-border px-3 py-2.5">
-            <span className={`h-2.5 w-2.5 rounded-full ${t.c}`} />
-            <div className="min-w-0 flex-1">
-              <p className={`truncate text-sm font-medium ${t.done ? "line-through opacity-60" : ""}`}>
-                {t.t}
-              </p>
-              <p className="text-[11px] text-muted-foreground">{t.m}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className="mt-4 grid grid-cols-3 gap-2">
-        {[
-          { v: "7", l: "streak" },
-          { v: "82%", l: "goal" },
-          { v: "1340", l: "rating" },
-        ].map((s) => (
-          <div key={s.l} className="rounded-md bg-muted/60 px-2 py-2 text-center">
-            <p className="font-display text-base font-bold">{s.v}</p>
-            <p className="text-[10px] text-muted-foreground">{s.l}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+function WorkspacePreview() {
+  return <div className="relative py-4"><div className="preview-window overflow-hidden rounded-2xl border border-border bg-card"><div className="flex items-center justify-between border-b border-border px-5 py-4"><div className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-border" /><span className="h-2 w-2 rounded-full bg-border" /><span className="h-2 w-2 rounded-full bg-border" /></div><span className="font-mono text-[10px] text-muted-foreground">YOUR WORKSPACE / DEMO PREVIEW</span><Command className="h-3 w-3 text-muted-foreground" /></div><div className="p-5 sm:p-7"><div className="flex items-center justify-between"><span className="eyebrow">LET&apos;S MAKE PROGRESS</span><span className="rounded-full bg-primary/10 px-2 py-1 text-[10px] font-medium text-primary">Personal workspace</span></div><h2 className="mt-3 text-2xl font-semibold tracking-tight">A little focus goes a long way.</h2><p className="mt-2 text-xs text-muted-foreground">Your next steps, all in one place.</p><div className="mt-6 grid grid-cols-3 gap-2">{[{v:"25 min",l:"Focus session"},{v:"3 tasks",l:"Daily plan"},{v:"One goal",l:"Keep learning"}].map(s=><div key={s.l} className="rounded-xl bg-muted/70 p-3"><p className="text-sm font-semibold text-primary">{s.v}</p><p className="mt-1 text-[10px] text-muted-foreground">{s.l}</p></div>)}</div><div className="mb-3 mt-7 flex justify-between text-xs"><span className="font-semibold">Your learning path</span><span className="text-muted-foreground">Today&apos;s focus</span></div>{[{i:BookOpen,t:"Understand binary search",s:"Computer science · 25 min",done:true},{i:Trophy,t:"Solve a new challenge",s:"Competitive programming · 40 min"},{i:Layers,t:"Build something small",s:"Developer practice · 30 min"}].map(t=><div key={t.t} className="flex items-center gap-3 border-b border-border py-4"><div className="grid h-9 w-9 place-items-center rounded-lg bg-muted"><t.i className="h-4 w-4 text-primary" /></div><div className="flex-1"><p className="text-xs font-medium">{t.t}</p><p className="mt-1 text-[10px] text-muted-foreground">{t.s}</p></div>{t.done?<span className="grid h-5 w-5 place-items-center rounded-full bg-primary text-white"><Check className="h-3 w-3" /></span>:<span className="h-5 w-5 rounded-full border border-border" />}</div>)}<div className="mt-5 flex gap-3 rounded-xl border border-primary/20 bg-primary/5 p-4"><Sparkles className="h-5 w-5 shrink-0 text-primary" /><div><p className="text-xs font-semibold">Your mentor is here to help.</p><p className="mt-1 text-xs leading-5 text-muted-foreground">Stuck on a concept? Let&apos;s break it down together.</p></div></div></div></div></div>;
 }

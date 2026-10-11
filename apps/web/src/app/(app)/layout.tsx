@@ -1,10 +1,11 @@
 "use client";
 
-import { LogOut } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { LogOut, Sparkles } from "lucide-react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 
 import { AuthGuard } from "@/components/auth-guard";
-import { BrandMark, Sidebar } from "@/components/app-shell/nav";
+import { BrandMark, NAV_ITEMS, Sidebar } from "@/components/app-shell/nav";
 import { MobileDrawer } from "@/components/app-shell/mobile-drawer";
 import { NotificationsBell } from "@/components/app-shell/notifications-bell";
 import { DemoBanner } from "@/components/demo-banner";
@@ -15,6 +16,8 @@ import { DEMO_MODE } from "@/lib/config";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const pathname = usePathname();
+  const currentPage = NAV_ITEMS.find((item) => item.href === pathname)?.label || "Workspace";
 
   async function onSignOut() {
     await signOut();
@@ -28,15 +31,17 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <Sidebar />
           <div className="flex min-w-0 flex-1 flex-col">
             <DemoBanner />
-            <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-2 border-b border-border glass px-3 sm:px-4">
+            <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-2 border-b border-border bg-card/90 backdrop-blur-xl px-4 sm:px-8">
               <div className="flex items-center gap-2">
                 <MobileDrawer />
+                <span className="hidden text-sm text-muted-foreground lg:block">Workspace <span className="mx-3 text-border">/</span><span className="font-medium text-foreground">{currentPage}</span></span>
                 <div className="flex items-center gap-2 lg:hidden">
                   <BrandMark className="h-8 w-8" />
                   <span className="font-display text-sm font-bold">DevMentor AI</span>
                 </div>
               </div>
               <div className="flex items-center gap-1">
+                <Link href="/chat" className="mr-3 hidden items-center gap-2 rounded-full border border-border px-3 py-1.5 text-xs font-medium hover:bg-muted sm:flex"><Sparkles className="h-3.5 w-3.5 text-primary" /> Ask your mentor</Link>
                 <NotificationsBell />
                 <ThemeToggle />
                 {!DEMO_MODE && (
@@ -51,7 +56,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               </div>
             </header>
             <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
-              <div className="animate-in">{children}</div>
+              <div className="animate-in mx-auto max-w-7xl">{children}</div>
             </main>
           </div>
         </div>

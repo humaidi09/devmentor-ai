@@ -1,7 +1,8 @@
 "use client";
 
 import {
-  CalendarClock,
+  ArrowUpRight,
+  MessageSquare,
   Flame,
   ListChecks,
   Sparkles,
@@ -86,11 +87,12 @@ export default function DashboardPage() {
       {/* Greeting header */}
       <div className="mb-7 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
-            {greeting()}{name ? `, ${name}` : ""} 👋
+          <p className="eyebrow mb-3">YOUR LEARNING, IN FOCUS</p>
+          <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+            {greeting()}{name ? `, ${name.split(" ")[0]}` : ""}.
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Here&apos;s your focus for today — one task at a time.
+            A fresh opportunity to learn something. Let&apos;s make it count.
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -104,9 +106,13 @@ export default function DashboardPage() {
         </div>
       </div>
 
+      <div className="mb-7 flex flex-col justify-between gap-5 rounded-2xl border border-primary/20 bg-primary/5 p-6 sm:flex-row sm:items-center sm:p-7">
+        <div className="flex items-start gap-4"><span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground"><Sparkles className="h-5 w-5" /></span><div><p className="text-lg font-semibold tracking-tight">Your next breakthrough starts with a question.</p><p className="mt-1 text-sm leading-6 text-muted-foreground">Explore a concept, work through a problem, or find your next step with your AI mentor.</p></div></div>
+        <Link href="/chat" className="inline-flex shrink-0 items-center gap-2 rounded-full border border-primary/20 bg-card px-4 py-2.5 text-sm font-medium text-primary">Talk to your mentor <ArrowUpRight className="h-4 w-4" /></Link>
+      </div>
       {loading ? (
         <DashboardSkeleton />
-      ) : !data ? null : (
+      ) : !data ? <EmptyState icon={MessageSquare} title="Your workspace couldn't load" description="Check that the API is running, then try again." action={<Button onClick={() => { setLoading(true); void load(); }}>Try again</Button>} /> : (
         <>
           {/* Stat tiles */}
           <div className="mb-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
@@ -199,7 +205,7 @@ export default function DashboardPage() {
                 </CardHeader>
                 <CardContent className="space-y-3">
                   {data.upcoming_deadlines.length === 0 && (
-                    <p className="text-sm text-muted-foreground">Nothing due soon. 🎉</p>
+                    <p className="text-sm text-muted-foreground">You have room to focus. No upcoming deadlines.</p>
                   )}
                   {data.upcoming_deadlines.map((d) => (
                     <div key={d.id} className="flex items-center justify-between gap-2">
@@ -217,7 +223,7 @@ export default function DashboardPage() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">Weak areas</CardTitle>
+                  <CardTitle className="text-base">Topics to revisit</CardTitle>
                 </CardHeader>
                 <CardContent>
                   {data.weak_areas.length === 0 ? (
