@@ -50,6 +50,11 @@ export const strings: Dict = {
     en: "Demo mode — sample data, no account needed.",
     bn: "ডেমো মোড — নমুনা তথ্য, কোনো অ্যাকাউন্ট লাগবে না।",
   },
+  academicStudy: { en: "Academic Study", bn: "একাডেমিক স্টাডি" },
+  developerPath: { en: "Developer Path", bn: "ডেভেলপার পাথ" },
+  cpCoach: { en: "CP Coach", bn: "CP কোচ" },
+  cp: { en: "CP", bn: "CP" },
+  visualLab: { en: "Visual Lab", bn: "ভিজ্যুয়াল ল্যাব" },
 };
 
 interface LanguageCtx {

@@ -133,20 +133,23 @@ export default function DashboardPage() {
       </section>
 
       <section>
-        <h2 className="mb-3 font-bold">{bn ? "ঐচ্ছিক মডিউল" : "Optional modules"}</h2>
+        <h2 className="mb-3 font-bold">{bn ? "মডিউল" : "Modules"}</h2>
         <div className="grid gap-3 sm:grid-cols-3">
           {[
-            { title: bn ? "একাডেমিক স্টাডি" : "Academic Study", desc: bn ? "কোর্স ও ডেডলাইন" : "Courses & deadlines" },
-            { title: bn ? "ডেভেলপার পাথ" : "Developer Path", desc: bn ? "স্কিল ও ভিজ্যুয়াল ল্যাব" : "Skills & Visual Lab" },
-            { title: bn ? "CP কোচ" : "CP Coach", desc: bn ? "প্র্যাকটিস ট্র্যাকিং" : "Practice tracking" },
+            { href: "/study", title: bn ? "একাডেমিক স্টাডি" : "Academic Study", desc: bn ? "কোর্স ও ডেডলাইন" : "Courses & deadlines" },
+            { href: "/learn", title: bn ? "ডেভেলপার পাথ" : "Developer Path", desc: bn ? "স্কিল ও ভিজ্যুয়াল ল্যাব" : "Skills & Visual Lab" },
+            { href: "/cp", title: bn ? "CP কোচ" : "CP Coach", desc: bn ? "প্র্যাকটিস ট্র্যাকিং" : "Practice tracking" },
           ].map((m) => (
-            <Card key={m.title} className="p-4 opacity-80">
-              <h3 className="text-sm font-bold">{m.title}</h3>
-              <p className="mt-0.5 text-xs text-muted-foreground">{m.desc}</p>
-              <span className="mt-2 inline-block rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
-                {bn ? "শীঘ্রই" : "Coming soon"}
-              </span>
-            </Card>
+            <Link
+              key={m.href}
+              href={m.href}
+              className="block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <Card className="h-full p-4 transition-shadow hover:shadow-lift">
+                <h3 className="text-sm font-bold">{m.title}</h3>
+                <p className="mt-0.5 text-xs text-muted-foreground">{m.desc}</p>
+              </Card>
+            </Link>
           ))}
         </div>
       </section>

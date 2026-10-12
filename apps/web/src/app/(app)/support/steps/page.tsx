@@ -1,6 +1,6 @@
 "use client";
 
-import { Plus, Trash2 } from "lucide-react";
+import { Bell, BellOff, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 import { PageHeader } from "@/components/page-header";
@@ -25,6 +25,7 @@ export default function StepsPage() {
   const bn = lang === "bn";
   const [steps, setSteps] = useState<NextStep[]>(DEMO_NEXT_STEPS);
   const [draft, setDraft] = useState("");
+  const [reminders, setReminders] = useState<Record<string, boolean>>({});
 
   function add() {
     const title = draft.trim();
@@ -108,6 +109,16 @@ export default function StepsPage() {
                       </option>
                     ))}
                   </Select>
+                  <button
+                    type="button"
+                    onClick={() => setReminders((r) => ({ ...r, [step.id]: !r[step.id] }))}
+                    aria-pressed={!!reminders[step.id]}
+                    aria-label={bn ? "ইন-অ্যাপ রিমাইন্ডার" : "In-app reminder"}
+                    title={bn ? "ইন-অ্যাপ রিমাইন্ডার (লক-স্ক্রিনে কিছু দেখায় না)" : "In-app reminder (nothing shows on your lock screen)"}
+                    className={`rounded-md p-2 transition-colors hover:bg-muted ${reminders[step.id] ? "text-primary" : "text-muted-foreground"}`}
+                  >
+                    {reminders[step.id] ? <Bell className="h-4 w-4" aria-hidden /> : <BellOff className="h-4 w-4" aria-hidden />}
+                  </button>
                   <button
                     type="button"
                     onClick={() => remove(step.id)}

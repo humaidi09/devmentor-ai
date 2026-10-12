@@ -8,7 +8,7 @@ import { useLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 import { BrandMark } from "../brand";
-import { PRIMARY_NAV, SETTINGS_NAV, SUPPORT_NAV, isNavActive, type NavItem } from "./nav";
+import { MODULES_NAV, PRIMARY_NAV, SETTINGS_NAV, SUPPORT_NAV, isNavActive, type NavItem } from "./nav";
 
 function NavLink({ item, active }: { item: NavItem; active: boolean }) {
   const { t } = useLanguage();
@@ -51,6 +51,16 @@ export function Sidebar() {
           </p>
           <div className="space-y-1">
             {SUPPORT_NAV.map((i) => (
+              <NavLink key={i.href} item={i} active={isNavActive(pathname, i.href)} />
+            ))}
+          </div>
+        </div>
+        <div>
+          <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            {t("learn")}
+          </p>
+          <div className="space-y-1">
+            {MODULES_NAV.map((i) => (
               <NavLink key={i.href} item={i} active={isNavActive(pathname, i.href)} />
             ))}
           </div>
