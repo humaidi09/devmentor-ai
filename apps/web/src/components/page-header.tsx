@@ -1,32 +1,21 @@
-import { cn } from "@/lib/utils";
+import { type ReactNode } from "react";
 
 export function PageHeader({
   title,
   subtitle,
   children,
-  className,
 }: {
   title: string;
   subtitle?: string;
-  children?: React.ReactNode;
-  className?: string;
+  children?: ReactNode;
 }) {
   return (
-    <div
-      className={cn(
-        "mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between",
-        className,
-      )}
-    >
+    <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
       <div>
-        <h1 className="font-display text-2xl font-bold tracking-tight sm:text-[1.75rem]">
-          {title}
-        </h1>
-        {subtitle && (
-          <p className="mt-1 max-w-2xl text-sm text-muted-foreground">{subtitle}</p>
-        )}
+        <h1 className="text-2xl font-bold">{title}</h1>
+        {subtitle && <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>}
       </div>
-      {children && <div className="flex items-center gap-2">{children}</div>}
+      {children}
     </div>
   );
 }

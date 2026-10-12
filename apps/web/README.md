@@ -1,43 +1,60 @@
-# DevMentor AI — Web (Next.js)
+# Close AI — Phase 1 Planning Package
 
-Next.js 14 (App Router) + TypeScript (strict) + Tailwind.
+**Tagline:** From student barriers to real support.
 
-## Run
+## Status
+Phase 1 planning is complete. A **Phase 2 MVP implementation** now lives at the repo root (a single Next.js app) covering the Student Support core in **demo mode** — it runs with no account and no secrets.
 
+## Running the app
 ```bash
-cp .env.local.example .env.local   # defaults to demo mode
 npm install
-npm run dev                         # http://localhost:3000
+npm run dev
 ```
+Then open http://localhost:3000. The app starts in **demo mode** (sample Demo University resources, a deterministic chat provider, no keys needed). To connect Supabase/AI later, copy `.env.example` to `.env.local` and fill it in.
 
-In **demo mode** (`NEXT_PUBLIC_DEMO_MODE=true`, the default) the app skips
-auth and talks to the backend's in-memory demo data — no Supabase needed.
-Start the API too (`apps/api`, port 8000) so pages have data.
+### Implemented (Phase 2, wave 1)
+Landing, Dashboard, Student Support chat (verified-source + uncertainty + human handoff), Resource Directory + Detail (verification lifecycle states), Saved, My Next Steps, Human Support (draft-only), Settings & Privacy. Bilingual EN/বাংলা, mobile bottom-nav + desktop sidebar, deep-teal design tokens, keyboard focus + reduced-motion support.
 
-## Scripts
-- `npm run dev` — dev server
-- `npm run build` / `npm start` — production
-- `npm run typecheck` — `tsc --noEmit`
-- `npm run lint` — Next ESLint
+### Still to build
+Visual Learning Lab, Academic Study / Developer Path / CP Coach, Supabase schema + Auth + RLS, maintainer workspace, real AI provider adapter.
 
-## Going live
-Set in `.env.local`:
-```
-NEXT_PUBLIC_SUPABASE_URL=...
-NEXT_PUBLIC_SUPABASE_ANON_KEY=...
-NEXT_PUBLIC_API_BASE_URL=https://your-api.onrender.com
-NEXT_PUBLIC_DEMO_MODE=false
-```
+## Repository inspection result
+No source-code repository was supplied in this chat. Therefore, no existing code was modified or overwritten. Before Phase 2 starts, the actual repository must be inspected for framework, dependencies, conventions, reusable components, environment configuration, tests, and conflicts.
 
-## Structure
-```
-src/
-  app/
-    (auth)/          sign-in, sign-up
-    (app)/           authed shell: dashboard, tasks, chat, cp, snippets,
-                     code-review, analytics, settings
-    onboarding/      wizard
-    page.tsx         landing
-  components/        UI kit, app-shell, feature components
-  lib/               api client, supabase, auth, types, config
-```
+## Recommended MVP architecture
+- **Frontend + server:** Next.js + TypeScript using the App Router and server-side Route Handlers / server actions where appropriate.
+- **Styling/components:** Tailwind CSS + accessible component primitives.
+- **Database/auth:** Supabase PostgreSQL + Supabase Auth + Row Level Security.
+- **AI:** provider abstraction behind server-side endpoints, with a complete mock/demo provider when no API key is configured.
+- **Search:** PostgreSQL full-text search for verified resources in MVP.
+- **Visual Learning Lab:** reusable step generators + renderer components rather than prerecorded videos.
+
+This architecture is intentionally simple for an MVP. A separate FastAPI service should be introduced only when a proven backend requirement justifies the extra deployment and maintenance boundary.
+
+## Product priorities
+### Must have
+Student Support chat, verified resource directory, resource details, human handoff, My Next Steps, consent/privacy controls, demo mode, responsive/accessibility basics, Bangla/English support.
+
+### Should have
+Saved resources, reminders, basic Academic Study, Developer Path, CP Coach, and a small Visual Learning Lab prototype.
+
+### Later
+Advanced personalization, external university integrations, full Codeforces personalization, push notifications, advanced analytics, large visualization library, additional CSE subjects, complex agent systems, and vector databases unless justified.
+
+## Phase 1 documents
+- `docs/PRODUCT_SCOPE.md`
+- `docs/USER_JOURNEYS.md`
+- `docs/INFORMATION_ARCHITECTURE.md`
+- `docs/PAGE_MAP.md`
+- `docs/DESIGN_SYSTEM.md`
+- `docs/VISUAL_LEARNING_LAB.md`
+- `docs/RESOURCE_LIFECYCLE.md`
+- `docs/ARCHITECTURE.md`
+- `docs/PRIVACY_AND_SAFETY.md`
+- `docs/ACCESSIBILITY.md`
+- `docs/DECISIONS.md`
+- `docs/FAILURE_AND_EDGE_CASES.md`
+- `docs/PHASE_1_REVIEW.md`
+
+## Phase 2 gate
+Do not start implementation until the real repository is inspected and the open decisions in `PHASE_1_REVIEW.md` are approved.
