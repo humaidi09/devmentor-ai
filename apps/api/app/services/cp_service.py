@@ -12,7 +12,7 @@ the feature is demonstrable. Nothing fabricates submission results.
 """
 from __future__ import annotations
 
-from datetime import date
+from ..core.timeutils import user_now
 
 from ..core.config import get_settings
 from ..core.logging import get_logger
@@ -73,7 +73,8 @@ def get_profile(store: Store, user_id: str, handle: str | None) -> dict:
 
 def generate_recommendations(store: Store, user_id: str, handle: str | None, prefs: dict) -> list[dict]:
     settings = get_settings()
-    today = date.today().isoformat()
+    profile = store.select("profiles", filters=[("id", "eq", user_id)], single=True) or {}
+    today = user_now(profile.get("timezone")).date().isoformat()
     per = int(prefs.get("problems_per_session", 2))
     sessions = ["morning", "evening"]
     needed = per * len(sessions)

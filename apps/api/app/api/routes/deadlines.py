@@ -28,7 +28,7 @@ def create_deadline(
 ):
     payload = body.model_dump()
     payload["due_at"] = body.due_at.isoformat()
-    return store.insert("deadlines", {**payload, "user_id": user.id})
+    return store.insert("deadlines", {**payload, "user_id": user.id, "status": "pending"})
 
 
 @router.patch("/{deadline_id}", response_model=DeadlineOut)

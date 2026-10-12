@@ -47,7 +47,7 @@ export function MobileDrawer() {
 
   return (
     <>
-      <button
+      <button type="button"
         ref={triggerRef}
         aria-expanded={open}
         aria-controls="mobile-navigation"
@@ -60,14 +60,14 @@ export function MobileDrawer() {
 
       {open && (
         <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true" aria-label="Workspace navigation">
-          <div className="fade-in absolute inset-0 bg-black/50" onClick={() => setOpen(false)} />
+          <button type="button" aria-label="Close navigation backdrop" tabIndex={-1} className="fade-in absolute inset-0 bg-black/50" onClick={() => setOpen(false)} />
           <div ref={panelRef} id="mobile-navigation" className="slide-in-left absolute left-0 top-0 flex h-full w-72 max-w-[82%] flex-col border-r border-border bg-card shadow-lift">
             <div className="flex h-16 items-center justify-between px-4">
               <div className="flex items-center gap-2.5">
                 <BrandMark className="h-9 w-9" />
                 <span className="font-display font-bold">DevMentor AI</span>
               </div>
-              <button
+              <button type="button"
                 onClick={() => setOpen(false)}
                 aria-label="Close menu"
                 className="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground hover:bg-muted"

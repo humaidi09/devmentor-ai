@@ -1,7 +1,7 @@
 """Application settings loaded from environment variables.
 
-Everything is optional: with no secrets set the API runs in DEMO_MODE
-with a stubbed user and an in-memory data store.
+Local development defaults to explicit demo mode. Setting DEMO_MODE=false
+requires working live configuration and never falls back to memory.
 """
 from __future__ import annotations
 
@@ -21,10 +21,9 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     demo_mode: bool = True
     api_cors_origins: str = "http://localhost:3000"
-    # Any origin matching this regex is also allowed (covers all Vercel
-    # production + preview deployments without listing each one).
-    api_cors_origin_regex: str = r"https://.*\.vercel\.app"
-    cron_secret: str = "change-me"
+    # Optional additional origins; explicit frontend origins are preferred.
+    api_cors_origin_regex: str | None = None
+    cron_secret: str = ""
 
     # --- Supabase ---
     supabase_url: str | None = None
@@ -34,7 +33,7 @@ class Settings(BaseSettings):
 
     # --- Gemini ---
     gemini_api_key: str | None = None
-    gemini_model: str = "gemini-2.0-flash"
+    gemini_model: str = "gemini-3.6-flash"
 
     # --- Email (Resend) ---
     resend_api_key: str | None = None
@@ -51,7 +50,6 @@ class Settings(BaseSettings):
             self.supabase_url
             and self.supabase_anon_key
             and self.supabase_service_role_key
-            and self.supabase_jwt_secret
         )
 
     @property
@@ -60,8 +58,8 @@ class Settings(BaseSettings):
 
     @property
     def effective_demo_mode(self) -> bool:
-        """Demo mode is on if explicitly set, or if Supabase isn't configured."""
-        return self.demo_mode or not self.supabase_configured
+        """Live configuration failures must never select shared demo storage."""
+        return self.demo_mode
 
 
 @lru_cache

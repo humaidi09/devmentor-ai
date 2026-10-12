@@ -1,7 +1,7 @@
 "use client";
 
 import { Bell } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { api } from "@/lib/api";
 import type { NotificationItem, Page } from "@/lib/types";
@@ -12,7 +12,7 @@ export function NotificationsBell() {
   const [items, setItems] = useState<NotificationItem[]>([]);
   const ref = useRef<HTMLDivElement>(null);
 
-  async function load() {
+  const load = useCallback(async () => {
     try {
       const data = await api.get<Page<NotificationItem>>(
         "/api/notifications?limit=20",
@@ -21,11 +21,11 @@ export function NotificationsBell() {
     } catch {
       /* ignore */
     }
-  }
+  }, []);
 
   useEffect(() => {
-    load();
-  }, []);
+    void load();
+  }, [load]);
 
   useEffect(() => {
     function onClick(e: MouseEvent) {
@@ -50,7 +50,7 @@ export function NotificationsBell() {
 
   return (
     <div className="relative" ref={ref}>
-      <button
+      <button type="button"
         onClick={() => {
           setOpen((o) => !o);
           if (!open) load();
@@ -78,7 +78,7 @@ export function NotificationsBell() {
               </p>
             )}
             {items.map((n) => (
-              <button
+              <button type="button"
                 key={n.id}
                 onClick={() => markRead(n.id)}
                 className={cn(

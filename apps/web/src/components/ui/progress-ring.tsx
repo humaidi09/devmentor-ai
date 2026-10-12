@@ -1,4 +1,4 @@
-import * as React from "react";
+import type * as React from "react";
 
 export function ProgressRing({
   value,
@@ -21,7 +21,7 @@ export function ProgressRing({
   const offset = circumference - (pct / 100) * circumference;
   return (
     <div className="relative inline-flex" style={{ width: size, height: size }}>
-      <svg width={size} height={size} className="-rotate-90">
+      <svg role="img" aria-label={`${Math.round(pct)}% complete`} width={size} height={size} className="-rotate-90">
         <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={trackClass} strokeWidth={stroke} />
         <circle
           cx={size / 2}

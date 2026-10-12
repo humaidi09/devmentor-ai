@@ -93,6 +93,9 @@ export default function SettingsPage() {
     }
   }
 
+  if (!loading && (!profile || !prefs)) {
+    return <div role="alert" className="space-y-4 py-12 text-center"><p>Could not load settings. Check your connection and try again.</p><Button onClick={() => window.location.reload()}>Try again</Button></div>;
+  }
   if (loading || !profile || !prefs) {
     return (
       <div className="grid place-items-center py-20 text-muted-foreground">

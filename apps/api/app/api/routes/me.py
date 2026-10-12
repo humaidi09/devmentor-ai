@@ -56,10 +56,5 @@ def delete_my_data(
     PRIVACY.md (requires an admin/service action)."""
     if not confirm:
         return Message(message="Add ?confirm=true to permanently delete all your data.")
-    for table in OWNED_TABLES:
-        try:
-            store.delete(table, [("user_id", "eq", user.id)])
-        except Exception:
-            pass
-    store.delete("profiles", [("id", "eq", user.id)])
+    store.erase_user(user.id)
     return Message(message="All your DevMentor data has been deleted.")

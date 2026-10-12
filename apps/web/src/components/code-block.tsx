@@ -32,7 +32,7 @@ export function CodeBlock({
       <pre className="code-scroll max-h-[420px] overflow-auto rounded-md bg-muted p-4 text-sm">
         <code className="font-mono text-foreground">{code}</code>
       </pre>
-      <button
+      <button type="button"
         onClick={copy}
         className="absolute right-2 top-2 inline-flex items-center gap-1 rounded-md border border-border bg-card px-2 py-1 text-xs font-medium hover:bg-muted"
       >

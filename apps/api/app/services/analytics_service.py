@@ -56,7 +56,7 @@ def _completed_dates(store: Store, user_id: str, tz: str | None) -> set[date]:
     rows = store.select("tasks", filters=[("user_id", "eq", user_id), ("status", "eq", "completed")])
     dates: set[date] = set()
     for t in rows:
-        ts = t.get("updated_at") or t.get("scheduled_start")
+        ts = t.get("completed_at") or t.get("scheduled_start")
         if not ts:
             continue
         try:
@@ -91,15 +91,8 @@ def dashboard(store: Store, user_id: str, tz: str | None) -> dict:
             upcoming.append(d)
     upcoming.sort(key=lambda d: d["due_at"])
 
-    # Study minutes (completed tasks' actual_minutes, else estimated)
-    def minutes_of(t: dict) -> int:
-        return int(t.get("actual_minutes") or t.get("estimated_minutes") or 0)
-
-    week_tasks = _tasks_in_range(
-        store, user_id, week_start_utc, day_bounds_utc(tz, today)[1]
-    )
-    study_today = sum(minutes_of(t) for t in today_tasks if t.get("status") == "completed")
-    study_week = sum(minutes_of(t) for t in week_tasks if t.get("status") == "completed")
+    study_today = sum(_study_by_day(store, user_id, tz, today_start, today_end).values())
+    study_week = sum(_study_by_day(store, user_id, tz, week_start_utc, today_end).values())
 
     cp_today = [t for t in today_tasks if t.get("task_type") == "cp"]
     cp_done = sum(1 for t in cp_today if t.get("status") == "completed")
@@ -134,15 +127,7 @@ def weekly_metrics(store: Store, user_id: str, tz: str | None, start: date) -> d
     tasks = _tasks_in_range(store, user_id, start_utc, end_utc)
     summary = summarize_tasks(tasks)
 
-    by_day: dict[str, int] = {}
-    for t in tasks:
-        if t.get("status") != "completed":
-            continue
-        try:
-            d = to_user_tz(datetime.fromisoformat(t["scheduled_start"]), tz).date().isoformat()
-        except (KeyError, ValueError):
-            continue
-        by_day[d] = by_day.get(d, 0) + int(t.get("actual_minutes") or t.get("estimated_minutes") or 0)
+    by_day = _study_by_day(store, user_id, tz, start_utc, end_utc)
 
     cp = [t for t in tasks if t.get("task_type") == "cp"]
     return {
@@ -170,3 +155,24 @@ def topic_performance(store: Store, user_id: str) -> list[dict]:
         out.append(a)
     out.sort(key=lambda x: x["accuracy"])
     return out
+
+
+def _study_by_day(store: Store, user_id: str, tz: str | None, start: datetime, end: datetime) -> dict[str, int]:
+    totals: dict[str, int] = {}
+    sessions = store.select("study_sessions", filters=[("user_id", "eq", user_id)])
+    tracked = {s.get("task_id") for s in sessions if s.get("ended_at") and s.get("task_id")}
+    entries = [(s.get("ended_at"), s.get("duration_minutes") or 0) for s in sessions if s.get("ended_at")]
+    for task in store.select("tasks", filters=[("user_id", "eq", user_id), ("status", "eq", "completed")]):
+        if task["id"] in tracked:
+            continue
+        minutes = task.get("actual_minutes")
+        if minutes is None: minutes = task.get("estimated_minutes") or 0
+        entries.append((task.get("completed_at") or task.get("scheduled_start"), minutes))
+    for timestamp, minutes in entries:
+        if not timestamp: continue
+        dt = datetime.fromisoformat(timestamp)
+        if dt.tzinfo is None: dt = dt.replace(tzinfo=timezone.utc)
+        if start <= dt < end:
+            key = to_user_tz(dt, tz).date().isoformat()
+            totals[key] = totals.get(key, 0) + int(minutes)
+    return totals

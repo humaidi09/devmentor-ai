@@ -1,7 +1,7 @@
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from ...core.security import AuthUser
 from ...core.store import Store
@@ -18,6 +18,7 @@ class FocusStart(BaseModel):
 class FocusStop(BaseModel):
     session_id: str
     notes: str | None = None
+    active_seconds: int | None = Field(None, ge=0, le=86400)
 
 
 @router.post("/start")
@@ -27,6 +28,8 @@ def start_focus(
     store: Store = Depends(get_store),
 ):
     body = body or FocusStart()
+    if body.task_id and not store.select("tasks", filters=[("id", "eq", body.task_id), ("user_id", "eq", user.id)], single=True):
+        raise HTTPException(404, "Task not found.")
     session = store.insert("study_sessions", {
         "user_id": user.id,
         "task_id": body.task_id,
@@ -50,14 +53,22 @@ def stop_focus(
                            single=True)
     if not session:
         raise HTTPException(404, "Focus session not found.")
+    if session.get("ended_at"):
+        return session
     ended = utc_now()
     try:
         started = datetime.fromisoformat(session["started_at"])
-        duration = max(0, int((ended - started).total_seconds() // 60))
+        if started.tzinfo is None:
+            started = started.replace(tzinfo=timezone.utc)
+        seconds = max(0, int((ended - started).total_seconds()))
+        if body.active_seconds is not None:
+            seconds = min(seconds, body.active_seconds)
+        ended = started + timedelta(seconds=seconds)
+        duration = seconds // 60
     except (KeyError, ValueError):
         duration = 0
     rows = store.update("study_sessions",
-                        [("id", "eq", body.session_id), ("user_id", "eq", user.id)],
+                        [("id", "eq", body.session_id), ("user_id", "eq", user.id), ("ended_at", "is", None)],
                         {"ended_at": ended.isoformat(), "duration_minutes": duration,
                          "notes": body.notes})
-    return rows[0] if rows else session
+    return rows[0] if rows else store.select("study_sessions", filters=[("id", "eq", body.session_id), ("user_id", "eq", user.id)], single=True)

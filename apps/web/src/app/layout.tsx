@@ -32,6 +32,7 @@ export default function RootLayout({
       className={`${inter.variable} ${display.variable} ${mono.variable}`}
     >
       <head>
+        {/* biome-ignore lint/security/noDangerouslySetInnerHtml: Static theme bootstrap; no user input is interpolated. */}
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body>{children}</body>

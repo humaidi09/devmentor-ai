@@ -37,7 +37,7 @@ def _build_review_prompt(code: str, language: str, want_rewrite: bool) -> str:
 
 def review_code(code: str, language: str, want_rewrite: bool = False) -> tuple[str, bool]:
     svc = get_gemini_service()
-    if not svc.settings.gemini_configured:
+    if not svc.settings.gemini_configured and svc.settings.effective_demo_mode:
         return _mock_review(language), True
     return svc.generate(_build_review_prompt(code, language, want_rewrite))
 
@@ -78,7 +78,7 @@ def _build_roadmap_prompt(idea: str, stack_preference: str | None) -> str:
 
 def generate_roadmap(idea: str, stack_preference: str | None = None) -> tuple[str, bool]:
     svc = get_gemini_service()
-    if not svc.settings.gemini_configured:
+    if not svc.settings.gemini_configured and svc.settings.effective_demo_mode:
         return _mock_roadmap(), True
     return svc.generate(_build_roadmap_prompt(idea, stack_preference))
 

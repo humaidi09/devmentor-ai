@@ -24,6 +24,7 @@ def list_notifications(
 ):
     rows = store.select("notifications", filters=[("user_id", "eq", user.id)],
                         order="created_at", desc=True)
+    rows = [r for r in rows if r.get("status") in {"sent", "read"}]
     if unread_only:
         rows = [r for r in rows if r.get("status") != "read" and r.get("read_at") is None]
     return {"items": rows[pg.offset: pg.offset + pg.limit], "limit": pg.limit,
@@ -48,7 +49,7 @@ def get_preferences(
     store: Store = Depends(get_store),
 ):
     prof = ensure_profile(store, user)
-    stored = prof.get("notification_settings") or {}
+    stored = {"quiet_hours_start": prof.get("quiet_hours_start"), "quiet_hours_end": prof.get("quiet_hours_end"), **(prof.get("notification_settings") or {})}
     return NotificationPreferences(**stored)
 
 
@@ -69,9 +70,4 @@ def subscribe(
     user: AuthUser = Depends(get_current_user),
     store: Store = Depends(get_store),
 ):
-    prof = ensure_profile(store, user)
-    tokens = list(prof.get("push_tokens") or [])
-    if body.token not in tokens:
-        tokens.append(body.token)
-    store.update("profiles", [("id", "eq", user.id)], {"push_tokens": tokens})
-    return Message(message="Subscribed to web push notifications.")
+    raise HTTPException(501, "Web push is not available yet. Use in-app notifications.")

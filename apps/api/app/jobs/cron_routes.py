@@ -9,6 +9,7 @@ run an always-on worker. All handlers are safe to run repeatedly.
 """
 from __future__ import annotations
 
+import secrets
 from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, Header, HTTPException
@@ -16,7 +17,8 @@ from fastapi import APIRouter, Header, HTTPException
 from ..core.config import get_settings
 from ..core.database import get_service_client
 from ..core.logging import get_logger
-from ..core.security import DEMO_USER_ID
+from ..core.security import DEMO_USER_ID, AuthUser
+from ..api.routes.tasks import generate_for_day
 from ..core.store import SupabaseStore, Store, get_memory_store
 from ..core.timeutils import (
     combine_local_to_utc,
@@ -34,7 +36,9 @@ router = APIRouter(prefix="/internal/cron", tags=["cron"])
 
 def _authorize(secret: str | None) -> None:
     settings = get_settings()
-    if not secret or secret != settings.cron_secret:
+    if not settings.cron_secret or settings.cron_secret in {"change-me", "change-me-to-a-long-random-string"}:
+        raise HTTPException(503, "Scheduled jobs are not configured.")
+    if not secret or not secrets.compare_digest(secret, settings.cron_secret):
         raise HTTPException(status_code=401, detail="Invalid cron secret.")
 
 
@@ -79,14 +83,9 @@ def daily_planning(x_cron_secret: str | None = Header(default=None)):
                        if _in_utc_range(t.get("scheduled_start"), start_utc, end_utc)]
         pending = [t for t in today_tasks if t.get("status") == "pending"]
 
-        if len(pending) < 2:
-            deadlines = store.select("deadlines", filters=[("user_id", "eq", uid)])
-            cp_prefs = store.select("cp_preferences", filters=[("user_id", "eq", uid)], single=True)
-            for p in planner_service.build_daily_plan(
-                profile=profile, deadlines=deadlines, cp_prefs=cp_prefs, on_date=today
-            ):
-                store.insert("tasks", {**p, "user_id": uid, "status": "pending"})
-                report["tasks_created"] += 1
+        before_ids = {t["id"] for t in today_tasks}
+        generated = generate_for_day(store, AuthUser(id=uid), profile, today)
+        report["tasks_created"] += sum(t["id"] not in before_ids for t in generated)
 
         cp_prefs = store.select("cp_preferences", filters=[("user_id", "eq", uid)], single=True)
         if cp_prefs and cp_prefs.get("notifications_enabled", True):
@@ -106,7 +105,7 @@ def daily_planning(x_cron_secret: str | None = Header(default=None)):
                         scheduled_at=combine_local_to_utc(today, hhmm, tz),
                         metadata={"session": session},
                     )
-                    report["notifications"] += 1
+                    report["notifications"] += int(notification_service.enabled(profile.get("notification_settings") or {}, f"cp_{session}"))
 
         # Contest reminders (real data only; no-op in demo mode / on API error).
         if cp_prefs and cp_prefs.get("contest_reminders_enabled", True):
@@ -124,7 +123,7 @@ def daily_planning(x_cron_secret: str | None = Header(default=None)):
                     scheduled_at=datetime.fromtimestamp(rem["start_time_seconds"] - 1800, tz=timezone.utc),
                     metadata={"contest_id": rem["contest_id"]},
                 )
-                report["notifications"] += 1
+                report["notifications"] += int(notification_service.enabled(profile.get("notification_settings") or {}, "contest_reminder"))
 
         # One daily summary per local day.
         has_summary = any(
@@ -139,7 +138,7 @@ def daily_planning(x_cron_secret: str | None = Header(default=None)):
                 title="Your plan for today is ready",
                 body=f"{len(pending)} task(s) pending today.",
             )
-            report["notifications"] += 1
+            report["notifications"] += int(notification_service.enabled(profile.get("notification_settings") or {}, "daily_summary"))
 
     return report
 

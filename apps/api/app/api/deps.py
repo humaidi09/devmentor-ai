@@ -10,22 +10,23 @@ from ..core.security import AuthUser, demo_user, resolve_supabase_user
 from ..core.store import Store, get_store_for_user
 
 
-async def get_current_user(authorization: str | None = Header(default=None)) -> AuthUser:
+def get_current_user(authorization: str | None = Header(default=None)) -> AuthUser:
     """Resolve the caller from a Supabase bearer token.
 
-    In demo mode (no Supabase configured) we return a fixed demo user so
-    the API is usable without credentials. A real, verifiable token is
-    always honoured when the JWT secret is set.
+    In explicit demo mode we return a fixed demo user so
+    the API is usable without credentials. Live mode requires a verified token and configured database.
     """
     settings = get_settings()
     token: str | None = None
     if authorization and authorization.lower().startswith("bearer "):
         token = authorization[7:].strip()
 
-    if token and settings.supabase_url and settings.supabase_anon_key:
-        return resolve_supabase_user(token)
     if settings.effective_demo_mode:
         return demo_user()
+    if not settings.supabase_configured:
+        raise HTTPException(503, "Live database configuration is incomplete.")
+    if token:
+        return resolve_supabase_user(token)
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Missing or invalid Authorization header.",

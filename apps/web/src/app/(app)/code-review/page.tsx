@@ -1,6 +1,6 @@
 "use client";
 
-import { Bot, Map, ShieldCheck } from "lucide-react";
+import { Bot, Map as MapIcon, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 
 import { MarkdownLite } from "@/components/markdown-lite";
@@ -30,7 +30,7 @@ export default function DevToolsPage() {
           <ShieldCheck className="h-4 w-4" /> Code review
         </TabButton>
         <TabButton active={tab === "roadmap"} onClick={() => setTab("roadmap")}>
-          <Map className="h-4 w-4" /> Project roadmap
+          <MapIcon className="h-4 w-4" /> Project roadmap
         </TabButton>
       </div>
 
@@ -54,7 +54,7 @@ function TabButton({
   children: React.ReactNode;
 }) {
   return (
-    <button
+    <button type="button"
       onClick={onClick}
       className={cn(
         "flex flex-1 items-center justify-center gap-1.5 rounded px-3 py-1.5 text-sm font-medium",
@@ -84,8 +84,8 @@ function ReviewPanel() {
         want_rewrite: wantRewrite,
       });
       setResult(r);
-    } catch {
-      setResult({ review: "Something went wrong. Please try again.", mocked: false });
+    } catch (error) {
+      setResult({ review: error instanceof Error ? error.message : "Could not reach the AI provider. Please try again.", mocked: false });
     } finally {
       setLoading(false);
     }
@@ -154,8 +154,8 @@ function RoadmapPanel() {
         stack_preference: stack || null,
       });
       setResult(r);
-    } catch {
-      setResult({ roadmap: "Something went wrong. Please try again.", mocked: false });
+    } catch (error) {
+      setResult({ roadmap: error instanceof Error ? error.message : "Could not reach the AI provider. Please try again.", mocked: false });
     } finally {
       setLoading(false);
     }
@@ -183,7 +183,7 @@ function RoadmapPanel() {
             />
           </div>
           <Button onClick={run} disabled={loading || idea.trim().length < 3}>
-            <Map className="h-4 w-4" />
+            <MapIcon className="h-4 w-4" />
             {loading ? "Planning…" : "Generate roadmap"}
           </Button>
         </CardContent>

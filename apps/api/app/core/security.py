@@ -74,6 +74,8 @@ def verify_supabase_token(token: str) -> AuthUser:
         )
     except Exception:  # pragma: no cover - network error
         raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, "Auth service unreachable.")
+    if resp.status_code == 429 or resp.status_code >= 500:
+        raise HTTPException(503, "Auth service is temporarily unavailable. Please try again.")
     if resp.status_code != 200:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid authentication token.")
     data = resp.json()

@@ -38,7 +38,7 @@ export interface ButtonProps
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "primary", size = "md", ...props }, ref) => (
-    <button
+    <button type="button"
       ref={ref}
       className={cn(
         "inline-flex items-center justify-center rounded-md font-medium transition-all duration-150",

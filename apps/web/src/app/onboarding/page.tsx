@@ -40,6 +40,7 @@ export default function OnboardingPage() {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const defaultTz = useMemo(() => {
     try {
@@ -86,6 +87,7 @@ export default function OnboardingPage() {
 
   async function finish() {
     setSaving(true);
+    setError(null);
     try {
       const available_schedule: Record<string, { start: string; end: string }[]> = {};
       for (const [key] of DAYS) {
@@ -106,7 +108,7 @@ export default function OnboardingPage() {
           ...(form.career_goal ? [form.career_goal] : []),
         ],
         codeforces_handle: form.cf_handle || null,
-        onboarding_completed: true,
+        onboarding_completed: false,
       });
       await api.post("/api/cp/preferences", {
         morning_time: form.morning_time,
@@ -119,9 +121,10 @@ export default function OnboardingPage() {
         notifications_enabled: form.cp_enabled,
         contest_reminders_enabled: form.cp_enabled,
       });
+      await api.patch("/api/me", { onboarding_completed: true });
       router.push("/dashboard");
-    } catch {
-      router.push("/dashboard"); // demo-friendly: never trap the user
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not save your preferences. Please retry.");
     } finally {
       setSaving(false);
     }
@@ -131,6 +134,7 @@ export default function OnboardingPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-brand-gradient">
+      {error && <p role="alert" className="mx-auto mt-4 max-w-xl px-6 text-sm text-destructive">{error}</p>}
       <header className="mx-auto flex w-full max-w-3xl items-center justify-between px-6 py-5">
         <div className="flex items-center gap-2.5">
           <BrandMark className="h-9 w-9" />

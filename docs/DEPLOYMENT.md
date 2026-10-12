@@ -9,6 +9,7 @@ All services have free tiers. Target: **$0/month**.
    - `supabase/migrations/0002_rls_policies.sql`
    - `supabase/migrations/0003_snippet_search.sql`
    - `supabase/migrations/0004_notification_settings.sql`
+   - `supabase/migrations/0005_data_integrity.sql`
    - `supabase/seed.sql` (built-in public snippets)
 3. Project Settings → API: copy **Project URL**, **anon key**, **service_role
    key**, and **JWT Secret**.
@@ -16,7 +17,7 @@ All services have free tiers. Target: **$0/month**.
 
 ## 1. Backend → Render (free web service)
 1. New → Web Service → connect the repo, root `apps/api`.
-2. Build: `pip install -r requirements.txt`
+2. Build: `pip install -r requirements.lock`
 3. Start: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
 4. Environment:
    ```
@@ -26,7 +27,7 @@ All services have free tiers. Target: **$0/month**.
    SUPABASE_SERVICE_ROLE_KEY=...
    SUPABASE_JWT_SECRET=...
    GEMINI_API_KEY=...            # optional
-   GEMINI_MODEL=gemini-2.0-flash
+   GEMINI_MODEL=gemini-3.6-flash
    CRON_SECRET=<long-random>
    API_CORS_ORIGINS=https://<your-vercel-app>.vercel.app
    ```
@@ -73,3 +74,5 @@ curl https://devmentor-api.onrender.com/health
 # {"status":"ok","demo_mode":false,"supabase_configured":true,...}
 ```
 Then sign up on the Vercel app, complete onboarding, and open the dashboard.
+
+For the API reliability update, follow [Fixes and rollout](FIXES_AND_ROLLOUT.md) in order; apply the new SQL migration before deploying the API.

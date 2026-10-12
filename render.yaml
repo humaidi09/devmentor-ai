@@ -8,7 +8,7 @@ services:
     runtime: python
     plan: free
     rootDir: apps/api
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install -r requirements.lock
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
     envVars:
@@ -17,7 +17,7 @@ services:
       - key: DEMO_MODE
         value: "false"
       - key: GEMINI_MODEL
-        value: gemini-2.0-flash
+        value: gemini-3.6-flash
       - key: SUPABASE_URL
         sync: false
       - key: SUPABASE_ANON_KEY

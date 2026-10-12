@@ -109,7 +109,7 @@ export default function TasksPage() {
 
       <div className="mb-4 flex gap-1 rounded-md bg-muted p-1">
         {FILTERS.map((f) => (
-          <button
+          <button type="button"
             key={f}
             onClick={() => setFilter(f)}
             className={cn(

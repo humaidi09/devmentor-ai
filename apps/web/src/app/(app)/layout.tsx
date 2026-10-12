@@ -4,6 +4,7 @@ import { LogOut, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
+import { ApiStatus } from "@/components/api-status";
 import { AuthGuard } from "@/components/auth-guard";
 import { BrandMark, NAV_ITEMS, Sidebar } from "@/components/app-shell/nav";
 import { MobileDrawer } from "@/components/app-shell/mobile-drawer";
@@ -31,6 +32,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <Sidebar />
           <div className="flex min-w-0 flex-1 flex-col">
             <DemoBanner />
+            <ApiStatus />
             <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-2 border-b border-border bg-card/90 backdrop-blur-xl px-4 sm:px-8">
               <div className="flex items-center gap-2">
                 <MobileDrawer />
@@ -45,7 +47,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 <NotificationsBell />
                 <ThemeToggle />
                 {!DEMO_MODE && (
-                  <button
+                  <button type="button"
                     onClick={onSignOut}
                     className="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                     aria-label="Sign out"

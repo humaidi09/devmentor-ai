@@ -1,10 +1,11 @@
 """Gemini wrapper with a safe, clearly-labelled mock fallback.
 
-If GEMINI_API_KEY is not set (or a call fails), we return a deterministic
-mock response so the app is fully usable offline. Mock output is always
-flagged (`mocked=True`) and never presented as a real model answer.
+Only explicit demo mode without a key returns mock output. Live missing
+configuration and provider failures return actionable errors.
 """
 from __future__ import annotations
+
+from fastapi import HTTPException
 
 from ..core.config import get_settings
 from ..core.logging import get_logger
@@ -46,22 +47,35 @@ class GeminiService:
                     self.settings.gemini_model, system_instruction=SYSTEM_PROMPT
                 )
             except Exception as exc:  # pragma: no cover
-                logger.warning("Could not initialise Gemini: %s", exc)
-                self._model = None
+                logger.warning("Could not initialise Gemini (%s)", type(exc).__name__)
+                raise HTTPException(503, "AI provider could not initialize. Please contact the administrator.") from None
         return self._model
 
     def generate(self, prompt: str, *, language: str = "en") -> tuple[str, bool]:
         """Returns (text, mocked)."""
         model = self._ensure_model()
         if model is None:
+            if not self.settings.effective_demo_mode:
+                raise HTTPException(503, "AI is not configured on the server.")
             return self._mock(prompt, language), True
         try:
-            resp = model.generate_content(prompt)
+            resp = model.generate_content(prompt, request_options={"timeout": 45, "retry": None})
             text = (getattr(resp, "text", None) or "").strip()
-            return (text or self._mock(prompt, language)), (not text)
+            if not text:
+                raise HTTPException(502, "AI returned an empty response. Try rephrasing your question.")
+            return text, False
+        except HTTPException:
+            raise
         except Exception as exc:
-            logger.warning("Gemini generation failed, using mock: %s", exc)
-            return self._mock(prompt, language), True
+            name = type(exc).__name__
+            logger.warning("Gemini generation failed (%s)", name)
+            if name in {"ResourceExhausted", "TooManyRequests"}:
+                raise HTTPException(503, "AI quota is exhausted. Please try later or ask the administrator to check billing.") from None
+            if name in {"DeadlineExceeded", "TimeoutError"}:
+                raise HTTPException(504, "AI response timed out. Please try again.") from None
+            if name in {"PermissionDenied", "Unauthenticated", "InvalidArgument", "NotFound"}:
+                raise HTTPException(503, "AI key or model is unavailable. The administrator must check the provider configuration.") from None
+            raise HTTPException(502, "AI provider is temporarily unavailable. Please try again.") from None
 
     @staticmethod
     def _mock(prompt: str, language: str) -> str:

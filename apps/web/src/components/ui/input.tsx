@@ -31,12 +31,15 @@ Select.displayName = "Select";
 
 export function Label({
   className,
+  htmlFor,
+  children,
   ...props
 }: React.LabelHTMLAttributes<HTMLLabelElement>) {
   return (
     <label
+      htmlFor={htmlFor}
       className={cn("text-sm font-medium text-foreground", className)}
       {...props}
-    />
+    >{children}</label>
   );
 }

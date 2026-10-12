@@ -34,6 +34,10 @@ def _now_iso() -> str:
 # Store interface
 # =====================================================================
 class Store(Protocol):
+    def erase_user(self, user_id: str) -> None: ...
+    def save_plan(self, user_id: str, day: str, start: str, end: str, plans: list[dict], replace: bool) -> list[dict]: ...
+    def save_chat_turn(self, user_id: str, conversation_id: str | None, message: str, answer: str, intent: str, metadata: dict) -> str: ...
+
     def select(
         self,
         table: str,
@@ -73,6 +77,17 @@ class SupabaseStore:
     def __init__(self, client: Any):
         self.client = client
 
+    def save_plan(self, user_id, day, start, end, plans, replace):
+        return self.client.rpc("save_generated_plan", {"p_user": user_id, "p_day": day,
+            "p_start": start, "p_end": end, "p_plans": plans, "p_replace": replace}).execute().data or []
+
+    def save_chat_turn(self, user_id, conversation_id, message, answer, intent, metadata):
+        return self.client.rpc("save_chat_turn", {"p_conversation": conversation_id, "p_message": message,
+                              "p_answer": answer, "p_intent": intent, "p_metadata": metadata}).execute().data
+
+    def erase_user(self, user_id: str) -> None:
+        self.client.rpc("delete_my_data").execute()
+
     @staticmethod
     def _apply(query: Any, filters: list[Filter] | None) -> Any:
         for col, op, val in filters or []:
@@ -104,8 +119,16 @@ class SupabaseStore:
         return data
 
     def insert(self, table, row):
-        data = self.client.table(table).insert(row).execute().data or []
-        return data[0] if data else row
+        try:
+            data = self.client.table(table).insert(row).execute().data or []
+            return data[0] if data else row
+        except Exception as exc:
+            key = (row.get("metadata") or {}).get("generation_key") if table == "tasks" else None
+            if key and getattr(exc, "code", None) == "23505":
+                rows = self.select("tasks", filters=[("user_id", "eq", row["user_id"])])
+                match = next((t for t in rows if (t.get("metadata") or {}).get("generation_key") == key), None)
+                if match: return match
+            raise
 
     def update(self, table, filters, patch):
         query = self._apply(self.client.table(table).update(patch), filters)
@@ -141,7 +164,51 @@ class SupabaseStore:
 class MemoryStore:
     def __init__(self, data: dict[str, list[Row]]):
         self._data = data
+        for task in data.get("tasks", []):
+            if task.get("status") == "completed":
+                task.setdefault("completed_at", task.get("updated_at") or task.get("scheduled_start"))
         self._lock = threading.RLock()
+
+    def save_plan(self, user_id, day, start, end, plans, replace):
+        with self._lock:
+            snapshot = copy.deepcopy(self._data)
+            try:
+                lower, upper = datetime.fromisoformat(start), datetime.fromisoformat(end)
+                generated = []
+                for row in self._data.get("tasks", []):
+                    meta = row.get("metadata") or {}
+                    timestamp = datetime.fromisoformat(row["scheduled_start"]) if row.get("scheduled_start") else None
+                    same_day = meta.get("generated_date") == day or (timestamp and lower <= timestamp < upper)
+                    if row.get("user_id") == user_id and meta.get("generated") and same_day:
+                        generated.append(row)
+                if generated and not replace:
+                    return copy.deepcopy(generated)
+                for row in generated:
+                    if replace and row.get("status") in {"pending", "rescheduled"}:
+                        self.delete("tasks", [("id", "eq", row["id"]), ("user_id", "eq", user_id)])
+                return [self.insert("tasks", {**row, "user_id": user_id, "status": "pending"}) for row in plans]
+            except Exception:
+                self._data = snapshot
+                raise
+
+    def save_chat_turn(self, user_id, conversation_id, message, answer, intent, metadata):
+        from fastapi import HTTPException
+        with self._lock:
+            if conversation_id and not self.select("conversations", filters=[("id", "eq", conversation_id), ("user_id", "eq", user_id)], single=True):
+                raise HTTPException(404, "Conversation not found.")
+            if not conversation_id:
+                conversation_id = self.insert("conversations", {"user_id": user_id, "title": message[:60]})["id"]
+            for role, content, meta in [("user", message, {}), ("assistant", answer, metadata)]:
+                self.insert("chat_messages", {"conversation_id": conversation_id, "user_id": user_id,
+                    "role": role, "content": content, "intent": intent, "metadata": meta})
+            self.update("conversations", [("id", "eq", conversation_id)], {"updated_at": _now_iso()})
+            return conversation_id
+
+    def erase_user(self, user_id: str) -> None:
+        with self._lock:
+            for table, rows in self._data.items():
+                key = "id" if table == "profiles" else "owner_id" if table == "snippets" else "user_id"
+                self._data[table] = [row for row in rows if row.get(key) != user_id]
 
     @staticmethod
     def _match(row: Row, filters: list[Filter] | None) -> bool:
@@ -188,6 +255,11 @@ class MemoryStore:
                          "weekly_summaries", "agent_audit_log", "chat_messages"}:
             row.setdefault("updated_at", now)
         with self._lock:
+            key = (row.get("metadata") or {}).get("generation_key") if table == "tasks" else None
+            if key:
+                for previous in self._data.get(table, []):
+                    if previous.get("user_id") == row.get("user_id") and (previous.get("metadata") or {}).get("generation_key") == key:
+                        return copy.deepcopy(previous)
             self._data.setdefault(table, []).append(row)
         return copy.deepcopy(row)
 
@@ -196,6 +268,8 @@ class MemoryStore:
         with self._lock:
             for row in self._data.get(table, []):
                 if self._match(row, filters):
+                    if table == "tasks" and patch.get("status") == "completed" and not row.get("completed_at"):
+                        row["completed_at"] = _now_iso()
                     row.update(patch)
                     if "updated_at" in row:
                         row["updated_at"] = _now_iso()
@@ -527,6 +601,7 @@ def get_store_for_user(user: AuthUser) -> Store:
     if settings.effective_demo_mode:
         return get_memory_store()
     client = get_user_client(user.access_token)
-    if client is None:  # pragma: no cover - safety net
-        return get_memory_store()
+    if client is None:
+        from fastapi import HTTPException
+        raise HTTPException(503, "Live database is unavailable.")
     return SupabaseStore(client)

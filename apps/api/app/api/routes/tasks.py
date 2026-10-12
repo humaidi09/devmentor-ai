@@ -169,65 +169,53 @@ def recover_task(
     return store.update("tasks", [("id", "eq", task_id), ("user_id", "eq", user.id)], patch)[0]
 
 
-def _persist_plan(store: Store, user: AuthUser, plans: list[dict]) -> list[dict]:
+def generate_for_day(store: Store, user: AuthUser, profile: dict, on_date, replace: bool = False) -> list[dict]:
+    start, end = day_bounds_utc(profile.get("timezone"), on_date)
+    existing = store.select("tasks", filters=[("user_id", "eq", user.id)])
+    generated = [t for t in existing if (t.get("metadata") or {}).get("generated") and (
+        (t.get("metadata") or {}).get("generated_date") == on_date.isoformat()
+        or _in_utc_range(t.get("scheduled_start"), start, end))]
+    if generated and not replace:
+        return generated
+    if replace:
+        for task in generated:
+            if task.get("status") in {"pending", "rescheduled"}:
+                existing = [t for t in existing if t["id"] != task["id"]]
+    plans = planner_service.build_daily_plan(
+        profile=profile, deadlines=store.select("deadlines", filters=[("user_id", "eq", user.id)]),
+        cp_prefs=store.select("cp_preferences", filters=[("user_id", "eq", user.id)], single=True),
+        on_date=on_date, existing_tasks=existing)
+    weak = iter(quiz_service.topics_below(analytics_service.topic_performance(store, user.id)))
     created = []
-    for p in plans:
-        created.append(store.insert("tasks", {**p, "user_id": user.id, "status": "pending"}))
-    return created
+    for plan in plans:
+        if plan["task_type"] == "study":
+            topic = next(weak, None)
+            if topic:
+                plan.update(title=f"Revise: {topic}", topic=topic, task_type="revision")
+        plan["metadata"].update(generated_date=on_date.isoformat(),
+                                generation_key=f"{on_date}:{plan['scheduled_start']}:{plan['task_type']}")
+        created.append(plan)
+    return store.save_plan(user.id, on_date.isoformat(), start.isoformat(), end.isoformat(), created, replace)
 
 
 @router.post("/generate-daily", response_model=Page[TaskOut])
-def generate_daily(
-    body: GeneratePlanRequest | None = None,
-    user: AuthUser = Depends(get_current_user),
-    store: Store = Depends(get_store),
-):
+def generate_daily(body: GeneratePlanRequest | None = None,
+                   user: AuthUser = Depends(get_current_user), store: Store = Depends(get_store)):
     body = body or GeneratePlanRequest()
     profile = ensure_profile(store, user)
-    tz = profile.get("timezone")
-    on_date = to_user_tz(body.date, tz).date() if body.date else user_now(tz).date()
-
-    if body.replace_existing:
-        start_utc, end_utc = day_bounds_utc(tz, on_date)
-        for t in store.select("tasks", filters=[("user_id", "eq", user.id)]):
-            if (t.get("metadata") or {}).get("generated") and _in_utc_range(
-                t.get("scheduled_start"), start_utc, end_utc
-            ):
-                store.delete("tasks", [("id", "eq", t["id"]), ("user_id", "eq", user.id)])
-
-    deadlines = store.select("deadlines", filters=[("user_id", "eq", user.id)])
-    cp_prefs = store.select("cp_preferences", filters=[("user_id", "eq", user.id)], single=True)
-    plans = planner_service.build_daily_plan(
-        profile=profile, deadlines=deadlines, cp_prefs=cp_prefs, on_date=on_date
-    )
-    # Add a little extra practice for weak topics (from quiz history).
-    perf = analytics_service.topic_performance(store, user.id)
-    weak = quiz_service.topics_below(perf)
-    plans.extend(planner_service.revision_tasks_for_weak_topics(weak))
-    created = _persist_plan(store, user, plans)
-    return {"items": created, "limit": len(created), "offset": 0, "count": len(created)}
+    day = to_user_tz(body.date, profile.get("timezone")).date() if body.date else user_now(profile.get("timezone")).date()
+    rows = generate_for_day(store, user, profile, day, body.replace_existing)
+    return {"items": rows, "limit": len(rows), "offset": 0, "count": len(rows)}
 
 
 @router.post("/generate-weekly-plan", response_model=Page[TaskOut])
-def generate_weekly_plan(
-    body: GeneratePlanRequest | None = None,
-    user: AuthUser = Depends(get_current_user),
-    store: Store = Depends(get_store),
-):
+def generate_weekly_plan(body: GeneratePlanRequest | None = None,
+                         user: AuthUser = Depends(get_current_user), store: Store = Depends(get_store)):
+    from datetime import timedelta
     body = body or GeneratePlanRequest()
     profile = ensure_profile(store, user)
-    tz = profile.get("timezone")
-    start = to_user_tz(body.date, tz).date() if body.date else user_now(tz).date()
-    deadlines = store.select("deadlines", filters=[("user_id", "eq", user.id)])
-    cp_prefs = store.select("cp_preferences", filters=[("user_id", "eq", user.id)], single=True)
-
-    from datetime import timedelta
-
-    all_created: list[dict] = []
+    start = to_user_tz(body.date, profile.get("timezone")).date() if body.date else user_now(profile.get("timezone")).date()
+    rows = []
     for i in range(7):
-        on_date = start + timedelta(days=i)
-        plans = planner_service.build_daily_plan(
-            profile=profile, deadlines=deadlines, cp_prefs=cp_prefs, on_date=on_date
-        )
-        all_created.extend(_persist_plan(store, user, plans))
-    return {"items": all_created, "limit": len(all_created), "offset": 0, "count": len(all_created)}
+        rows.extend(generate_for_day(store, user, profile, start + timedelta(days=i), body.replace_existing))
+    return {"items": rows, "limit": len(rows), "offset": 0, "count": len(rows)}

@@ -101,7 +101,7 @@ and `apps/web/.env.local.example`. Nothing is required for demo mode.
 
 ### Gemini setup
 Create a free key at aistudio.google.com → set `GEMINI_API_KEY`. Model name is
-configurable via `GEMINI_MODEL` (default `gemini-2.0-flash`).
+configurable via `GEMINI_MODEL` (default `gemini-3.6-flash`).
 
 ### Firebase (optional web push)
 Add your FCM config later; until then in-app notifications + optional email are

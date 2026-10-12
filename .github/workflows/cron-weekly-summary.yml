@@ -14,10 +14,13 @@ jobs:
     steps:
       - name: Call weekly-summary endpoint
         run: |
+          : "${API_BASE_URL:?Set the API_BASE_URL repository variable or secret}"
+          : "${CRON_SECRET:?Set the CRON_SECRET repository secret to match Render}"
+          case "$API_BASE_URL" in https://*) ;; *) echo "API_BASE_URL must use HTTPS"; exit 1;; esac
           curl -fsS -X POST "${API_BASE_URL}/internal/cron/weekly-summary" \
             -H "x-cron-secret: ${CRON_SECRET}" \
             -H "content-type: application/json" \
             --max-time 120 --retry 2
         env:
-          API_BASE_URL: ${{ secrets.API_BASE_URL }}
+          API_BASE_URL: ${{ vars.API_BASE_URL || secrets.API_BASE_URL }}
           CRON_SECRET: ${{ secrets.CRON_SECRET }}

@@ -6,6 +6,7 @@
 """
 from __future__ import annotations
 
+from fastapi import HTTPException
 from functools import lru_cache
 from typing import Any
 
@@ -24,8 +25,10 @@ except Exception:  # pragma: no cover - only hit when dependency missing
 @lru_cache
 def get_service_client() -> "Client | None":
     settings = get_settings()
-    if not settings.supabase_configured or create_client is None:
+    if settings.effective_demo_mode:
         return None
+    if not settings.supabase_configured or create_client is None:
+        raise HTTPException(503, "Live database configuration is incomplete.")
     return create_client(settings.supabase_url, settings.supabase_service_role_key)  # type: ignore[arg-type]
 
 
@@ -34,11 +37,9 @@ def get_user_client(access_token: str | None) -> "Client | None":
     so Row Level Security is enforced by the database."""
     settings = get_settings()
     if not (settings.supabase_url and settings.supabase_anon_key) or create_client is None:
-        return None
+        raise HTTPException(503, "Live database configuration is incomplete.")
     client = create_client(settings.supabase_url, settings.supabase_anon_key)  # type: ignore[arg-type]
-    if access_token:
-        try:
-            client.postgrest.auth(access_token)
-        except Exception:  # pragma: no cover
-            logger.warning("Could not attach user token to Supabase client")
+    if not access_token:
+        raise HTTPException(401, "Sign in to access your data.")
+    client.postgrest.auth(access_token)
     return client

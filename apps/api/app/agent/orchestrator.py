@@ -15,6 +15,8 @@ require explicit user confirmation at the route/UI layer.
 """
 from __future__ import annotations
 
+from fastapi import HTTPException
+
 from ..core.logging import get_logger
 from ..core.security import AuthUser
 from ..core.store import Store
@@ -59,6 +61,8 @@ def handle_chat(
     conversation_id: str | None,
     language: str | None,
 ) -> dict:
+    if conversation_id and not store.select("conversations", filters=[("id", "eq", conversation_id), ("user_id", "eq", user.id)], single=True):
+        raise HTTPException(404, "Conversation not found.")
     intent = intent_router.classify(message)
     context, profile = _context_block(store, user)
     lang = language or profile.get("preferred_language", "en")
@@ -70,7 +74,7 @@ def handle_chat(
     if intent == "snippet_lookup":
         hits = store.search_snippets(user_id=user.id, q=_keywords(message), limit=3)
         for h in hits:
-            links.append({"label": f"Snippet: {h['title']}", "url": f"/snippets/{h['id']}"})
+            links.append({"label": f"Snippet: {h['title']}", "url": f"/snippets?snippet={h['id']}"})
         if hits:
             actions_taken.append(f"Found {len(hits)} matching snippet(s) in your library.")
 
@@ -78,7 +82,14 @@ def handle_chat(
     answer, mocked = get_gemini_service().generate(prompt, language=lang)
 
     # Persist conversation + messages (best-effort).
-    conv_id = _persist(store, user, conversation_id, message, answer, intent)
+    try:
+        conv_id = store.save_chat_turn(user.id, conversation_id, message, answer, intent,
+                                      {"mocked": mocked, "links": links, "actions_taken": actions_taken,
+                                       "suggested_actions": _suggested_actions(intent)})
+    except HTTPException:
+        raise
+    except Exception:
+        raise HTTPException(503, "Your reply could not be saved. Please retry; contact the administrator if this continues.") from None
 
     # Audit (best-effort; RLS allows users to append their own rows).
     try:
@@ -164,25 +175,3 @@ def _build_prompt(intent: str, context: str, message: str, lang: str, history: s
         f"{lang_line}\n\n"
         f"User message:\n{message}"
     )
-
-
-def _persist(store: Store, user: AuthUser, conversation_id: str | None,
-             message: str, answer: str, intent: str) -> str | None:
-    try:
-        if not conversation_id:
-            conv = store.insert("conversations", {
-                "user_id": user.id, "title": message[:60],
-            })
-            conversation_id = conv["id"]
-        store.insert("chat_messages", {
-            "conversation_id": conversation_id, "user_id": user.id,
-            "role": "user", "content": message, "intent": intent,
-        })
-        store.insert("chat_messages", {
-            "conversation_id": conversation_id, "user_id": user.id,
-            "role": "assistant", "content": answer, "intent": intent,
-        })
-        return conversation_id
-    except Exception as exc:  # pragma: no cover
-        logger.debug("Chat persistence skipped: %s", exc)
-        return conversation_id

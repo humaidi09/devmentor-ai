@@ -29,9 +29,9 @@ export default function SignUpPage() {
     setLoading(true);
     setError(null);
     try {
-      await signUpWithPassword(email, password);
+      const result = await signUpWithPassword(email, password);
       setDone(true);
-      router.push("/onboarding");
+      if (result.hasSession) router.push("/onboarding");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Sign up failed.");
     } finally {

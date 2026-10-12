@@ -15,8 +15,9 @@ export async function signInWithPassword(email: string, password: string) {
 
 export async function signUpWithPassword(email: string, password: string) {
   if (!supabase) throw new Error("Auth is not configured.");
-  const { error } = await supabase.auth.signUp({ email, password });
+  const { data, error } = await supabase.auth.signUp({ email, password });
   if (error) throw error;
+  return { hasSession: Boolean(data.session) };
 }
 
 export async function signOut() {
@@ -24,7 +25,8 @@ export async function signOut() {
 }
 
 export async function isAuthenticated(): Promise<boolean> {
-  if (DEMO_MODE || !supabase) return true; // demo: always "in"
+  if (DEMO_MODE) return true;
+  if (!supabase) return false;
   const { data } = await supabase.auth.getSession();
   return Boolean(data.session);
 }

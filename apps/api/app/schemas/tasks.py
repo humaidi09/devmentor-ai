@@ -2,10 +2,31 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
+
+class ValidatedFields(BaseModel):
+    @model_validator(mode="before")
+    @classmethod
+    def validate_required_and_times(cls, data):
+        if isinstance(data, dict):
+            required = {"title", "active", "type", "due_at", "priority", "status", "task_type", "metadata"}
+            if any(k in data and data[k] is None for k in required):
+                raise ValueError("Required fields cannot be null.")
+        return data
+
+    @model_validator(mode="after")
+    def chronological(self):
+        start, end = getattr(self, "scheduled_start", None), getattr(self, "scheduled_end", None)
+        for value in (start, end, getattr(self, "due_at", None)):
+            if value is not None and value.tzinfo is None:
+                raise ValueError("Include a timezone offset with date/time values.")
+        if start and end and end <= start:
+            raise ValueError("End must be after start.")
+        return self
+
 
 # ---------------- Courses ----------------
-class CourseIn(BaseModel):
+class CourseIn(ValidatedFields):
     model_config = ConfigDict(extra="forbid")
     title: str = Field(min_length=1, max_length=160)
     code: str | None = Field(None, max_length=40)
@@ -14,7 +35,7 @@ class CourseIn(BaseModel):
     active: bool = True
 
 
-class CourseUpdate(BaseModel):
+class CourseUpdate(ValidatedFields):
     model_config = ConfigDict(extra="forbid")
     title: str | None = Field(None, min_length=1, max_length=160)
     code: str | None = None
@@ -39,7 +60,7 @@ class CourseOut(BaseModel):
 DEADLINE_TYPE = r"^(exam|assignment|quiz|project|interview)$"
 
 
-class DeadlineIn(BaseModel):
+class DeadlineIn(ValidatedFields):
     model_config = ConfigDict(extra="forbid")
     course_id: str | None = None
     title: str = Field(min_length=1, max_length=200)
@@ -49,7 +70,7 @@ class DeadlineIn(BaseModel):
     notes: str | None = None
 
 
-class DeadlineUpdate(BaseModel):
+class DeadlineUpdate(ValidatedFields):
     model_config = ConfigDict(extra="forbid")
     course_id: str | None = None
     title: str | None = None
@@ -79,7 +100,7 @@ TASK_TYPE = r"^(study|cp|revision|quiz|project|focus|rest)$"
 TASK_STATUS = r"^(pending|in_progress|completed|skipped|rescheduled)$"
 
 
-class TaskIn(BaseModel):
+class TaskIn(ValidatedFields):
     model_config = ConfigDict(extra="forbid")
     course_id: str | None = None
     deadline_id: str | None = None
@@ -94,7 +115,7 @@ class TaskIn(BaseModel):
     metadata: dict = Field(default_factory=dict)
 
 
-class TaskUpdate(BaseModel):
+class TaskUpdate(ValidatedFields):
     model_config = ConfigDict(extra="forbid")
     course_id: str | None = None
     deadline_id: str | None = None
@@ -142,7 +163,7 @@ class TaskSkip(BaseModel):
     skip_reason: str | None = None
 
 
-class TaskReschedule(BaseModel):
+class TaskReschedule(ValidatedFields):
     scheduled_start: datetime
     scheduled_end: datetime | None = None
 

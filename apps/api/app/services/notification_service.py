@@ -34,22 +34,26 @@ def create_notification(
     scheduled_at: datetime | None = None,
     metadata: dict | None = None,
 ) -> dict:
-    status = "scheduled" if scheduled_at else "sent"
-    sent_at = None if scheduled_at else utc_now().isoformat()
-    return store.insert(
-        "notifications",
-        {
-            "user_id": user_id,
-            "type": type,
-            "title": title,
-            "body": body,
-            "channel": channel,
-            "scheduled_at": scheduled_at.isoformat() if scheduled_at else None,
-            "sent_at": sent_at,
-            "status": status,
-            "metadata": metadata or {},
-        },
-    )
+    profile = store.select("profiles", filters=[("id", "eq", user_id)], single=True) or {}
+    prefs = profile.get("notification_settings") or {}
+    row = store.insert("notifications", {
+        "user_id": user_id, "type": type, "title": title, "body": body, "channel": channel,
+        "scheduled_at": scheduled_at.isoformat() if scheduled_at else None,
+        "sent_at": None, "status": "scheduled" if scheduled_at else "pending",
+        "metadata": metadata or {},
+    })
+    if not enabled(prefs, type, channel):
+        return store.update("notifications", [("id", "eq", row["id"])], {"status": "cancelled"})[0]
+    if scheduled_at:
+        return row
+    return deliver(store, row, tz_name=profile.get("timezone"), max_per_day=prefs.get("max_per_day", 6))
+
+
+def enabled(prefs: dict, ntype: str, channel: str = "in_app") -> bool:
+    if not prefs.get(f"{channel}_enabled", channel == "in_app"):
+        return False
+    flag = "cp_reminders" if ntype.startswith("cp_") or ntype == "contest_reminder" else ntype
+    return bool(prefs.get(flag, True))
 
 
 def _count_sent_today(store: Store, user_id: str, tz_name: str | None) -> int:
@@ -73,12 +77,19 @@ def deliver(store: Store, notification: dict, *, tz_name: str | None, max_per_da
     if notification.get("status") in {"sent", "read", "cancelled"}:
         return notification
 
+    profile = store.select("profiles", filters=[("id", "eq", notification["user_id"])], single=True) or {}
+    prefs = profile.get("notification_settings") or {}
+    if not enabled(prefs, notification.get("type", ""), notification.get("channel", "in_app")):
+        return store.update("notifications", [("id", "eq", nid)], {"status": "cancelled"})[0]
+    scheduled = notification.get("scheduled_at")
+    if scheduled and to_user_tz(datetime.fromisoformat(scheduled), "UTC") > utc_now():
+        return notification
     now_local = to_user_tz(utc_now(), tz_name)
     ntype = notification.get("type", "")
 
     if ntype not in BYPASS_TYPES:
         prof = store.select("profiles", filters=[("id", "eq", notification["user_id"])], single=True) or {}
-        if in_quiet_hours(now_local, prof.get("quiet_hours_start"), prof.get("quiet_hours_end")):
+        if in_quiet_hours(now_local, prefs.get("quiet_hours_start", prof.get("quiet_hours_start")), prefs.get("quiet_hours_end", prof.get("quiet_hours_end"))):
             return notification  # try again after quiet hours
         if _count_sent_today(store, notification["user_id"], tz_name) >= max_per_day:
             logger.info("Daily notification cap reached for user %s", notification["user_id"])

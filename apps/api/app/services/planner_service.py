@@ -86,104 +86,74 @@ def _slot_minutes(slot: dict) -> int:
     return max(0, mins)
 
 
-def build_daily_plan(
-    *,
-    profile: dict,
-    deadlines: list[dict],
-    cp_prefs: dict | None,
-    on_date: date,
-    now: datetime | None = None,
-) -> list[dict]:
-    """Return a list of task payloads for `on_date` (local). Does not persist.
-
-    Guarantees:
-    - total study minutes never exceed the day's available minutes
-    - CP sessions are added at the user's preferred times when enabled
-    - a short rest is added on heavy days
-    """
+def build_daily_plan(*, profile: dict, deadlines: list[dict], cp_prefs: dict | None,
+                     on_date: date, now: datetime | None = None,
+                     existing_tasks: list[dict] | None = None) -> list[dict]:
+    """Place non-overlapping CP/study blocks inside the user's available slots."""
     now = now or datetime.now(timezone.utc)
     tz = profile.get("timezone", "UTC")
-    weekday = WEEKDAY_KEYS[on_date.weekday()]
-    slots = (profile.get("available_schedule") or {}).get(weekday, [])
+    slots = (profile.get("available_schedule") or {}).get(WEEKDAY_KEYS[on_date.weekday()], [])
+    free = sorted((combine_local_to_utc(on_date, s["start"], tz),
+                   combine_local_to_utc(on_date, s["end"], tz)) for s in slots)
     plans: list[dict] = []
 
-    # ---- CP sessions (time-anchored, short) ----
+    def reserve(start, end):
+        nonlocal free
+        remaining = []
+        for lo, hi in free:
+            if end <= lo or start >= hi:
+                remaining.append((lo, hi))
+            else:
+                if lo < start: remaining.append((lo, start))
+                if end < hi: remaining.append((end, hi))
+        free = remaining
+
+    for task in existing_tasks or []:
+        if task.get("scheduled_start") and task.get("status") != "skipped":
+            start = datetime.fromisoformat(task["scheduled_start"])
+            end = datetime.fromisoformat(task["scheduled_end"]) if task.get("scheduled_end") else start + timedelta(minutes=task.get("estimated_minutes") or 30)
+            if start.tzinfo is None: start = start.replace(tzinfo=timezone.utc)
+            if end.tzinfo is None: end = end.replace(tzinfo=timezone.utc)
+            reserve(start, end)
+
     if cp_prefs and cp_prefs.get("notifications_enabled", True):
         per = int(cp_prefs.get("problems_per_session", 2))
-        est = per * 20
+        duration = timedelta(minutes=per * 20)
         for session, hhmm in (("morning", cp_prefs.get("morning_time", "10:00")),
                               ("evening", cp_prefs.get("evening_time", "20:00"))):
-            start = combine_local_to_utc(on_date, hhmm, tz)
-            plans.append({
-                "title": f"Codeforces: {per} problems ({session})",
-                "description": f"Rating {cp_prefs.get('min_rating', 800)}–{cp_prefs.get('max_rating', 1200)}",
-                "task_type": "cp",
-                "topic": (cp_prefs.get("preferred_tags") or ["mixed"])[0],
-                "scheduled_start": start.isoformat(),
-                "scheduled_end": (start + timedelta(minutes=est)).isoformat(),
-                "estimated_minutes": est,
-                "priority": 3,
-                "metadata": {"generated": True, "session": session},
-            })
+            preferred = combine_local_to_utc(on_date, hhmm, tz)
+            candidates = [max(lo, preferred) for lo, hi in free if max(lo, preferred) + duration <= hi]
+            if not candidates:
+                candidates = [lo for lo, hi in free if lo + duration <= hi]
+            if not candidates:
+                continue
+            start = candidates[0]
+            end = start + duration
+            plans.append({"title": f"Codeforces: {per} problems ({session})", "task_type": "cp",
+                          "topic": (cp_prefs.get("preferred_tags") or ["mixed"])[0],
+                          "scheduled_start": start.isoformat(), "scheduled_end": end.isoformat(),
+                          "estimated_minutes": per * 20, "priority": 3,
+                          "metadata": {"generated": True, "session": session}})
+            reserve(start, end + timedelta(minutes=10))
 
-    # ---- Study items from nearest deadlines, then active courses ----
-    upcoming = sorted(
-        [d for d in deadlines if d.get("status") == "pending"],
-        key=lambda d: deadline_urgency(datetime.fromisoformat(d["due_at"]), now),
-        reverse=True,
-    )
-
-    available_minutes = sum(_slot_minutes(s) for s in slots)
-    used = 0
-    item_idx = 0
-
-    for slot in slots:
-        slot_start = combine_local_to_utc(on_date, slot.get("start", "09:00"), tz)
-        remaining = _slot_minutes(slot)
-        cursor = slot_start
-        while remaining >= 30 and used < available_minutes:
-            block = min(90, remaining)
-            if upcoming and item_idx < len(upcoming):
-                d = upcoming[item_idx % len(upcoming)]
-                title = f"Prepare: {d['title']}"
-                topic = d.get("title")
-                deadline_id = d.get("id")
-                priority = max(3, int(d.get("priority", 3)))
-            else:
-                title = "Focused study block"
-                topic = "review"
-                deadline_id = None
-                priority = 3
-            plans.append({
-                "title": title,
-                "description": "Auto-generated study block",
-                "task_type": "study",
-                "topic": topic,
-                "deadline_id": deadline_id,
-                "scheduled_start": cursor.isoformat(),
-                "scheduled_end": (cursor + timedelta(minutes=block)).isoformat(),
-                "estimated_minutes": block,
-                "priority": priority,
-                "metadata": {"generated": True},
-            })
-            used += block
-            cursor += timedelta(minutes=block + 10)  # 10-min break
-            remaining -= block + 10
-            item_idx += 1
-
-    # ---- Rest suggestion on heavy days ----
-    if used >= 180:
-        plans.append({
-            "title": "Rest / short walk",
-            "description": "You've scheduled a lot today — take a real break.",
-            "task_type": "rest",
-            "topic": "wellbeing",
-            "estimated_minutes": 20,
-            "priority": 1,
-            "metadata": {"generated": True},
-        })
-
-    return plans
+    upcoming = sorted([d for d in deadlines if d.get("status") == "pending"],
+                      key=lambda d: deadline_urgency(datetime.fromisoformat(d["due_at"]), now), reverse=True)
+    index = 0
+    for lo, hi in free:
+        cursor = lo
+        while (hi - cursor).total_seconds() >= 1800:
+            minutes = min(90, int((hi - cursor).total_seconds() // 60))
+            deadline = upcoming[index] if index < len(upcoming) else None
+            end = cursor + timedelta(minutes=minutes)
+            plans.append({"title": f"Prepare: {deadline['title']}" if deadline else "Focused study block",
+                          "task_type": "study", "topic": deadline["title"] if deadline else "review",
+                          "deadline_id": deadline.get("id") if deadline else None,
+                          "scheduled_start": cursor.isoformat(), "scheduled_end": end.isoformat(),
+                          "estimated_minutes": minutes, "priority": max(3, int(deadline.get("priority", 3))) if deadline else 3,
+                          "metadata": {"generated": True}})
+            cursor = end + timedelta(minutes=10)
+            index += 1
+    return sorted(plans, key=lambda task: task["scheduled_start"])
 
 
 def apply_recovery(task: dict, action: str, now: datetime | None = None) -> dict:
@@ -201,7 +171,7 @@ def apply_recovery(task: dict, action: str, now: datetime | None = None) -> dict
         delta = timedelta(days=1)
         return _shift(task, start_dt, delta, status="rescheduled")
     if action == "move_weekend":
-        days = (5 - start_dt.weekday()) % 7 or 1  # next Saturday
+        days = (5 - start_dt.weekday()) % 7 or 7  # next Saturday
         return _shift(task, start_dt, timedelta(days=days), status="rescheduled")
     if action == "reduce_scope":
         est = task.get("estimated_minutes") or 60

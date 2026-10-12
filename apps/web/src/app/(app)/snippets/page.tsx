@@ -41,6 +41,11 @@ export default function SnippetsPage() {
   const [selected, setSelected] = useState<Snippet | null>(null);
   const [newOpen, setNewOpen] = useState(false);
 
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get("snippet");
+    if (id) api.get<Snippet>(`/api/snippets/${encodeURIComponent(id)}`).then(setSelected).catch(error => toast(error.message, "error"));
+  }, [toast]);
+
   const load = useCallback(async () => {
     setLoading(true);
     const params = new URLSearchParams({ limit: "60" });
@@ -135,7 +140,7 @@ export default function SnippetsPage() {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((s) => (
-            <button key={s.id} className="text-left" onClick={() => setSelected(s)}>
+            <button type="button" key={s.id} className="text-left" onClick={() => setSelected(s)}>
               <Card className="h-full transition-all duration-200 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lift">
                 <CardContent className="p-4">
                   <div className="mb-2 flex items-center gap-2">
