@@ -171,8 +171,8 @@ export default function SettingsPage() {
         <Card className="space-y-3 p-4">
           <p className="text-sm text-muted-foreground">
             {bn
-              ? "ডেমো মোডে ডেটা শুধু এই ব্রাউজারে থাকে।"
-              : "In demo mode, data stays only in this browser."}
+              ? "পছন্দ ও সংরক্ষিত রিসোর্স এই ব্রাউজারে থাকে। অনলাইন চ্যাট উত্তর তৈরির জন্য প্রক্রিয়া করা হয়, সংরক্ষণ করা হয় না।"
+              : "Preferences and saved resources stay in this browser. Online chat is processed for a reply, not saved."}
           </p>
           <Button variant="destructive" onClick={clearLocal}>
             <Trash2 className="h-4 w-4" aria-hidden />

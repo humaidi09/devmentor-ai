@@ -16,14 +16,14 @@ assert.ok(['localhost','127.0.0.1'].includes(new URL(base).hostname), 'Use an is
     await page.getByRole('checkbox',{name:'Academic Study',exact:true}).uncheck();
     await page.getByRole('button',{name:'Continue',exact:true}).click();
     await page.waitForURL('**/dashboard');
-    assert.equal(await page.getByRole('link',{name:'Academic Study',exact:true}).count(),0);
+    await page.getByRole('link',{name:'Academic Study',exact:true}).waitFor({state:'hidden'});
     await page.reload({waitUntil:'networkidle'});
-    assert.equal(await page.getByRole('link',{name:'Academic Study',exact:true}).count(),0);
+    await page.getByRole('link',{name:'Academic Study',exact:true}).waitFor({state:'hidden'});
     await go('/settings');
     await page.getByRole('switch',{name:'Academic Study',exact:true}).click();
     await page.getByRole('switch',{name:'Reminders',exact:true}).click();
     await page.reload({waitUntil:'networkidle'});
-    assert.equal(await page.getByRole('switch',{name:'Reminders',exact:true}).getAttribute('aria-checked'),'true');
+    await page.getByRole('switch',{name:'Reminders',exact:true,checked:true}).waitFor();
     console.log('PASS onboarding, campus fallback and saved preferences');
 
     await go('/support/resources/r-house-office');
@@ -50,7 +50,7 @@ assert.ok(['localhost','127.0.0.1'].includes(new URL(base).hostname), 'Use an is
     await page.getByRole('button',{name:'Previous step',exact:true}).click();
     await page.getByLabel('Numbers (comma-separated)',{exact:true}).fill('oops');
     await page.getByRole('button',{name:'Apply example',exact:true}).click();
-    await page.getByRole('alert').waitFor();
+    await page.locator('#viz-error').waitFor();
     await page.getByRole('button',{name:'Show steps as text',exact:true}).click();
     assert.equal(await page.locator('#text-steps li').count(),9);
     // Keyboard navigation and visible focus, with reduced-motion preference.
@@ -63,10 +63,11 @@ assert.ok(['localhost','127.0.0.1'].includes(new URL(base).hostname), 'Use an is
     console.log('PASS visual logic controls, invalid input, keyboard skip/focus');
 
     const routes=['/','/onboarding','/dashboard','/support','/support/resources','/support/resources/r-fin-tuition','/support/saved','/support/steps','/support/human','/study','/learn','/cp','/settings','/learn/visual-lab',...['bfs','dfs','bubble-sort','binary-search','sql-inner-join','normalization'].map(x=>'/learn/visual-lab/'+x)];
+    const accessibilityFailures=[];
     for (const route of routes) {
       await go(route);
       const results=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21a','wcag21aa','wcag22aa']).analyze();
-      assert.deepEqual(results.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})),[],route+' accessibility');
+      if (results.violations.length) accessibilityFailures.push({route,violations:results.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)}))});
       await page.setViewportSize({width:360,height:800});
       assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,route+' English overflow');
       await page.getByRole('button',{name:'বাংলা',exact:true}).first().click();
@@ -75,8 +76,9 @@ assert.ok(['localhost','127.0.0.1'].includes(new URL(base).hostname), 'Use an is
       if(route==='/learn/visual-lab/normalization') await page.getByText('UNF: courses ঘরে',{exact:false}).waitFor();
       await page.getByRole('button',{name:'EN',exact:true}).first().click();
       await page.setViewportSize({width:1440,height:1000});
-      console.log('PASS route + accessibility + bilingual mobile:',route);
+      console.log('CHECKED route, accessibility and bilingual mobile:',route);
     }
+    assert.deepEqual(accessibilityFailures,[],'Accessibility regressions');
     // Wait for complete public pre-cache, then reload and navigate without network.
     await page.evaluate(async()=>{await navigator.serviceWorker.ready; if(!navigator.serviceWorker.controller) await new Promise(resolve=>navigator.serviceWorker.addEventListener('controllerchange',resolve,{once:true}));});
     await context.setOffline(true);
@@ -88,6 +90,8 @@ assert.ok(['localhost','127.0.0.1'].includes(new URL(base).hostname), 'Use an is
     await page.getByLabel('Message',{exact:true}).fill('tuition fees');
     await page.getByRole('button',{name:'Send',exact:true}).click();
     await page.getByText('Here are some verified resources',{exact:false}).waitFor();
+    await page.getByRole('link',{name:'Open: Need-Based Tuition Assistance',exact:true}).click();
+    await page.getByRole('heading',{name:'Need-Based Tuition Assistance',exact:true}).waitFor();
     const cacheKeys=await page.evaluate(async()=>{const entries=[];for(const k of await caches.keys())for(const r of await (await caches.open(k)).keys())entries.push(new URL(r.url).pathname);return entries;});
     assert.ok(!cacheKeys.some(p=>p.startsWith('/api/')));
     await context.setOffline(false);

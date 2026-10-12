@@ -3,10 +3,10 @@
 **Tagline:** From student barriers to real support.
 
 ## Status
-Phase 1 planning is complete at a documentation level. No frontend, backend, production database migration, external API integration, production authentication, or full animation implementation has been created.
+Phase 1 planning documentation is complete. This directory preserves the planning package; the actual Next.js implementation now lives in `apps/web` and has been inspected. See [Phase 2 report](docs/PHASE_2_REPORT.md) for current implementation and validation.
 
-## Repository inspection result
-No source-code repository was supplied in this chat. Therefore, no existing code was modified or overwritten. Before Phase 2 starts, the actual repository must be inspected for framework, dependencies, conventions, reusable components, environment configuration, tests, and conflicts.
+## Implementation choices
+The frontend keeps the existing deep-teal direction, full Bangla/English UI, and a six-topic Visual Learning prototype. Demo University is fictional; no real pilot campus has been selected or verified. Production login and real-campus rollout decisions remain open. These are implementation defaults, not a record of formal institutional approval.
 
 ## Recommended MVP architecture
 - **Frontend + server:** Next.js + TypeScript using the App Router and server-side Route Handlers / server actions where appropriate.
@@ -44,4 +44,4 @@ Advanced personalization, external university integrations, full Codeforces pers
 - `docs/PHASE_1_REVIEW.md`
 
 ## Phase 2 gate
-Do not start implementation until the real repository is inspected and the open decisions in `PHASE_1_REVIEW.md` are approved.
+The original implementation gate is retained in the historical review. Repository inspection has now occurred and Phase 2 demo implementation and local validation are complete; real-campus scope and production login remain decisions for the next phase.
