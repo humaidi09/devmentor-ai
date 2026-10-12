@@ -15,6 +15,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   }
 
+  if (!body || typeof body !== "object" || Array.isArray(body)) return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   const payload = body as { message?: unknown; lang?: unknown };
   const message = typeof payload.message === "string" ? payload.message.slice(0, 2000) : "";
   const lang = payload.lang === "bn" ? "bn" : "en";

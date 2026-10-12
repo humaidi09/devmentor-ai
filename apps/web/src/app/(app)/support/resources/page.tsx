@@ -7,6 +7,7 @@ import { PageHeader } from "@/components/page-header";
 import { ResourceCard } from "@/components/resource-card";
 import { Card } from "@/components/ui/card";
 import { Input, Select } from "@/components/ui/input";
+import { localize } from "@/lib/content-bn";
 import { DEMO_CATEGORIES, DEMO_RESOURCES } from "@/lib/demo-data";
 import { useLanguage } from "@/lib/i18n";
 
@@ -22,7 +23,7 @@ export default function ResourcesPage() {
     return DEMO_RESOURCES.filter((r) => {
       if (cat !== "all" && r.category !== cat) return false;
       if (status !== "all" && r.verification !== status) return false;
-      if (query && !`${r.name} ${r.description}`.toLowerCase().includes(query)) return false;
+      if (query && !`${r.name} ${r.description} ${localize(r.name, "bn")} ${localize(r.description, "bn")}`.toLowerCase().includes(query)) return false;
       return true;
     });
   }, [q, cat, status]);
@@ -35,33 +36,33 @@ export default function ResourcesPage() {
       />
 
       <div className="mb-5 grid gap-3 sm:grid-cols-[1fr_auto_auto]">
-        <div className="relative">
+        <div><label htmlFor="resource-search" className="mb-1 block text-sm font-medium">{t("search")}</label><div className="relative">
           <Search
             className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
             aria-hidden
           />
-          <Input
+          <Input id="resource-search"
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder={t("search")}
             aria-label={t("search")}
             className="pl-9"
           />
-        </div>
-        <Select value={cat} onChange={(e) => setCat(e.target.value)} aria-label={bn ? "বিভাগ" : "Category"}>
+        </div></div>
+        <div><label htmlFor="resource-category" className="mb-1 block text-sm font-medium">{bn ? "বিভাগ" : "Category"}</label><Select id="resource-category" value={cat} onChange={(e) => setCat(e.target.value)} aria-label={bn ? "বিভাগ" : "Category"}>
           <option value="all">{bn ? "সব বিভাগ" : "All categories"}</option>
           {DEMO_CATEGORIES.map((c) => (
             <option key={c.id} value={c.id}>
               {bn ? c.labelBn : c.label}
             </option>
           ))}
-        </Select>
-        <Select value={status} onChange={(e) => setStatus(e.target.value)} aria-label={bn ? "অবস্থা" : "Status"}>
+        </Select></div>
+        <div><label htmlFor="resource-status" className="mb-1 block text-sm font-medium">{bn ? "অবস্থা" : "Status"}</label><Select id="resource-status" value={status} onChange={(e) => setStatus(e.target.value)} aria-label={bn ? "অবস্থা" : "Status"}>
           <option value="all">{bn ? "সব অবস্থা" : "All statuses"}</option>
           <option value="verified">{t("verified")}</option>
           <option value="needs_review">{t("needsReview")}</option>
           <option value="expired">{t("expired")}</option>
-        </Select>
+        </Select></div>
       </div>
 
       {filtered.length === 0 ? (

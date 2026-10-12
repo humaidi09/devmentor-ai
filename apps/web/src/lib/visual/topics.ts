@@ -1,4 +1,4 @@
-import { bfs, binarySearch, bubbleSort, dfs, innerJoin } from "./generators";
+import { bfs, binarySearch, bubbleSort, dfs, innerJoin, normalization } from "./generators";
 import type { VizTopic } from "./types";
 
 const GRAPH: Record<string, string[]> = {
@@ -11,6 +11,7 @@ const GRAPH: Record<string, string[]> = {
 };
 
 export const TOPICS: VizTopic[] = [
+  { id: "normalization", title: "Normalization", category: "DBMS", kind: "join", summary: "Turn repeated data into 1NF, 2NF and 3NF relations.", steps: normalization() },
   {
     id: "bubble-sort",
     title: "Bubble Sort",

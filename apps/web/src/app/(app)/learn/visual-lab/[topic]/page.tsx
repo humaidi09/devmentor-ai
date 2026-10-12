@@ -8,6 +8,7 @@ import { PageHeader } from "@/components/page-header";
 import { StepPlayer } from "@/components/visual/step-player";
 import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { localize } from "@/lib/content-bn";
 import { useLanguage } from "@/lib/i18n";
 import { getTopic } from "@/lib/visual/topics";
 
@@ -34,8 +35,8 @@ export default function TopicPage() {
         <ArrowLeft className="h-4 w-4" aria-hidden />
         {bn ? "ভিজ্যুয়াল ল্যাব" : "Visual Lab"}
       </Link>
-      <PageHeader title={topic.title} subtitle={topic.summary} />
-      <StepPlayer topic={topic} />
+      <PageHeader title={localize(topic.title, lang)} subtitle={localize(topic.summary, lang)} />
+      <StepPlayer key={topic.id} topic={topic} />
     </div>
   );
 }

@@ -3,10 +3,13 @@
 import Link from "next/link";
 import { ArrowRight, Bookmark, ListChecks, MessagesSquare } from "lucide-react";
 
+import { moduleVisible, usePreferences } from "@/lib/preferences";
+import { useSavedResources } from "@/lib/saved-store";
 import { ResourceCard } from "@/components/resource-card";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { DEMO_NEXT_STEPS, DEMO_SAVED_IDS, getDemoResource } from "@/lib/demo-data";
+import { localize } from "@/lib/content-bn";
 import { useLanguage } from "@/lib/i18n";
 import type { SupportResource } from "@/lib/types";
 
@@ -26,10 +29,12 @@ const STARTERS = {
 };
 
 export default function DashboardPage() {
+  const { preferences } = usePreferences();
+  const { ids } = useSavedResources();
   const { t, lang } = useLanguage();
   const bn = lang === "bn";
   const starters = STARTERS[lang];
-  const saved = DEMO_SAVED_IDS.map(getDemoResource).filter(Boolean) as SupportResource[];
+  const saved = ids.map(getDemoResource).filter(Boolean) as SupportResource[];
   const activeSteps = DEMO_NEXT_STEPS.filter(
     (s) => s.status !== "completed" && s.status !== "not_relevant",
   );
@@ -97,9 +102,9 @@ export default function DashboardPage() {
                 <Card key={step.id} className="flex items-start gap-3 p-4">
                   <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-primary" aria-hidden />
                   <div className="min-w-0">
-                    <p className="text-sm font-medium">{step.title}</p>
+                    <p className="text-sm font-medium">{localize(step.title, lang)}</p>
                     {step.detail && (
-                      <p className="mt-0.5 text-xs text-muted-foreground">{step.detail}</p>
+                      <p className="mt-0.5 text-xs text-muted-foreground">{localize(step.detail, lang)}</p>
                     )}
                   </div>
                 </Card>
@@ -139,7 +144,7 @@ export default function DashboardPage() {
             { href: "/study", title: bn ? "একাডেমিক স্টাডি" : "Academic Study", desc: bn ? "কোর্স ও ডেডলাইন" : "Courses & deadlines" },
             { href: "/learn", title: bn ? "ডেভেলপার পাথ" : "Developer Path", desc: bn ? "স্কিল ও ভিজ্যুয়াল ল্যাব" : "Skills & Visual Lab" },
             { href: "/cp", title: bn ? "CP কোচ" : "CP Coach", desc: bn ? "প্র্যাকটিস ট্র্যাকিং" : "Practice tracking" },
-          ].map((m) => (
+          ].filter(m => moduleVisible(m.href, preferences)).map((m) => (
             <Link
               key={m.href}
               href={m.href}

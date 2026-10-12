@@ -3,6 +3,8 @@
 import { ChevronLeft, ChevronRight, Pause, Play, RotateCcw } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
+import { bubbleSort, binarySearch } from "@/lib/visual/generators";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Select } from "@/components/ui/input";
@@ -16,7 +18,10 @@ import { JoinRenderer } from "./join-renderer";
 export function StepPlayer({ topic }: { topic: VizTopic }) {
   const { lang } = useLanguage();
   const bn = lang === "bn";
-  const steps = topic.steps;
+  const [steps, setSteps] = useState(topic.steps);
+  const [values, setValues] = useState((topic.steps[0].array ?? []).join(", "));
+  const [target, setTarget] = useState("7");
+  const [error, setError] = useState("");
   const last = steps.length - 1;
   const [i, setI] = useState(0);
   const [playing, setPlaying] = useState(false);
@@ -57,30 +62,45 @@ export function StepPlayer({ topic }: { topic: VizTopic }) {
 
   return (
     <div className="space-y-4">
+      {topic.kind === "array" && <form className="space-y-2" onSubmit={e => {
+        e.preventDefault();
+        const parts = values.split(",").map(s => s.trim());
+        const input = parts.map(Number);
+        if (!parts.length || parts.length > 12 || parts.some(s => !s) || input.some(n => !Number.isFinite(n)) || topic.id === "binary-search" && (!target.trim() || !Number.isFinite(Number(target)))) {
+          setError(bn ? "কমা দিয়ে আলাদা করা ১–১২টি সসীম সংখ্যা দিন। লক্ষ্যও একটি বৈধ সংখ্যা হতে হবে।" : "Enter 1–12 finite numbers separated by commas and a valid target."); return;
+        }
+        setSteps(topic.id === "binary-search" ? binarySearch(input, Number(target)) : bubbleSort(input)); setI(0); setPlaying(false); setError("");
+      }}>
+        <label htmlFor="viz-input" className="block text-sm font-medium">{bn ? "সংখ্যা (কমা দিয়ে আলাদা করুন)" : "Numbers (comma-separated)"}</label>
+        <Input id="viz-input" value={values} onChange={e => setValues(e.target.value)} aria-invalid={!!error} aria-describedby={error ? "viz-error" : undefined} />
+        {topic.id === "binary-search" && <div><label htmlFor="viz-target">{bn ? "লক্ষ্য" : "Target"}</label><Input id="viz-target" value={target} onChange={e => setTarget(e.target.value)} /></div>}
+        <Button type="submit" variant="secondary">{bn ? "উদাহরণ বদলান" : "Apply example"}</Button>
+        {error && <p id="viz-error" role="alert" className="text-sm text-destructive">{error}</p>}
+      </form>}
       <Card className="p-4 sm:p-6">{renderStep(step)}</Card>
 
       <Card className="p-4">
         <div className="mb-3 flex flex-wrap items-center gap-2">
-          <Button size="sm" variant="secondary" onClick={() => setI((x) => Math.max(0, x - 1))} disabled={i === 0} aria-label={bn ? "আগের ধাপ" : "Previous step"}>
+          <Button size="sm" variant="secondary" onClick={() => { setPlaying(false); setI((x) => Math.max(0, x - 1)); }} disabled={i === 0} aria-label={bn ? "আগের ধাপ" : "Previous step"}>
             <ChevronLeft className="h-4 w-4" aria-hidden />
           </Button>
           <Button size="sm" onClick={togglePlay} aria-label={playing ? (bn ? "থামান" : "Pause") : bn ? "চালান" : "Play"}>
             {playing ? <Pause className="h-4 w-4" aria-hidden /> : <Play className="h-4 w-4" aria-hidden />}
             {playing ? (bn ? "থামান" : "Pause") : bn ? "চালান" : "Play"}
           </Button>
-          <Button size="sm" variant="secondary" onClick={() => setI((x) => Math.min(last, x + 1))} disabled={i >= last} aria-label={bn ? "পরের ধাপ" : "Next step"}>
+          <Button size="sm" variant="secondary" onClick={() => { setPlaying(false); setI((x) => Math.min(last, x + 1)); }} disabled={i >= last} aria-label={bn ? "পরের ধাপ" : "Next step"}>
             <ChevronRight className="h-4 w-4" aria-hidden />
           </Button>
           <Button size="sm" variant="ghost" onClick={() => { setI(0); setPlaying(false); }} aria-label={bn ? "রিসেট" : "Reset"}>
             <RotateCcw className="h-4 w-4" aria-hidden />
             {bn ? "রিসেট" : "Reset"}
           </Button>
-          <Select value={String(speed)} onChange={(e) => setSpeed(Number(e.target.value))} aria-label={bn ? "গতি" : "Speed"} className="h-9 w-auto text-xs">
+          <label htmlFor="viz-speed" className="text-xs">{bn ? "গতি" : "Speed"}</label><Select id="viz-speed" value={String(speed)} onChange={(e) => setSpeed(Number(e.target.value))} aria-label={bn ? "গতি" : "Speed"} className="h-9 w-auto text-xs">
             <option value="0.5">0.5×</option>
             <option value="1">1×</option>
             <option value="2">2×</option>
           </Select>
-          <button type="button" onClick={() => setShowText((s) => !s)} className="ml-auto text-xs font-medium text-primary hover:underline">
+          <button type="button" aria-expanded={showText} aria-controls="text-steps" onClick={() => setShowText((s) => !s)} className="ml-auto text-xs font-medium text-primary hover:underline">
             {showText ? (bn ? "ভিজ্যুয়াল" : "Hide text steps") : bn ? "টেক্সট ধাপ দেখুন" : "Show steps as text"}
           </button>
         </div>
@@ -93,17 +113,18 @@ export function StepPlayer({ topic }: { topic: VizTopic }) {
             <div className="h-full bg-primary transition-all" style={{ width: `${((i + 1) / steps.length) * 100}%` }} />
           </div>
         </div>
+        {step.array && <p className="mt-2 text-xs">{bn ? "তুলনার ইনডেক্স:" : "Comparing indices:"} {(step.highlight ?? []).join(", ") || "—"}. {bn ? "সম্পন্ন/পাওয়া ইনডেক্স:" : "Completed/found indices:"} {(step.sorted ?? []).join(", ") || "—"}</p>}
         <p className="mt-3 text-sm" aria-live="polite">
-          {step.explanation}
+          {bn ? step.explanationBn : step.explanation}
         </p>
       </Card>
 
       {showText && (
         <Card className="p-4">
-          <ol className="space-y-1 text-xs">
+          <ol id="text-steps" className="space-y-1 text-xs">
             {steps.map((s, idx) => (
               <li key={idx} className={idx === i ? "font-semibold text-primary" : "text-muted-foreground"}>
-                {idx + 1}. {s.explanation}
+                {idx + 1}. {bn ? s.explanationBn : s.explanation}
               </li>
             ))}
           </ol>

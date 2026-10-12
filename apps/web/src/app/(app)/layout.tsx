@@ -19,7 +19,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <div className="hidden lg:block" />
           <LanguageToggle />
         </header>
-        <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-24 pt-5 sm:px-6 lg:px-8 lg:pb-10">
+        <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-5xl flex-1 px-4 pb-24 pt-5 sm:px-6 lg:px-8 lg:pb-10">
           <div className="animate-fade-in">{children}</div>
         </main>
       </div>

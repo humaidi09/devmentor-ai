@@ -1,18 +1,20 @@
 "use client";
 
+import { useLanguage } from "@/lib/i18n";
 import type { TableData, VizStep } from "@/lib/visual/types";
 import { cn } from "@/lib/utils";
 
 function Table({ data, highlight }: { data?: TableData; highlight?: Set<number> }) {
+  const { lang } = useLanguage();
   if (!data) return null;
   return (
-    <div className="overflow-hidden rounded-md border border-border">
-      <div className="bg-muted px-3 py-1.5 font-mono text-xs font-semibold">{data.name}</div>
-      <table className="w-full text-xs">
+    <div className="overflow-x-auto rounded-md border border-border">
+
+      <table className="w-full text-xs"><caption className="bg-muted px-3 py-1.5 text-left font-mono font-semibold">{data.name}</caption>
         <thead>
           <tr className="border-b border-border">
             {data.columns.map((c) => (
-              <th key={c} className="px-3 py-1.5 text-left font-medium text-muted-foreground">
+              <th scope="col" key={c} className="px-3 py-1.5 text-left font-medium text-muted-foreground">
                 {c}
               </th>
             ))}
@@ -31,7 +33,7 @@ function Table({ data, highlight }: { data?: TableData; highlight?: Set<number> 
           {data.rows.length === 0 && (
             <tr>
               <td colSpan={data.columns.length} className="px-3 py-3 text-center text-muted-foreground">
-                (empty)
+                {lang === "bn" ? "(খালি)" : "(empty)"}
               </td>
             </tr>
           )}
@@ -42,6 +44,7 @@ function Table({ data, highlight }: { data?: TableData; highlight?: Set<number> 
 }
 
 export function JoinRenderer({ step }: { step: VizStep }) {
+  if (step.tables) return <div className="space-y-3">{step.tables.map(data => <Table key={data.name} data={data} />)}</div>;
   const aHi = new Set((step.matchRows ?? []).map((m) => m.a));
   const bHi = new Set((step.matchRows ?? []).map((m) => m.b));
   return (

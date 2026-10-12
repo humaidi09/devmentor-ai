@@ -9,6 +9,7 @@ import { PageHeader } from "@/components/page-header";
 import { ResourceCard } from "@/components/resource-card";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/input";
+import { buildDemoReply } from "@/lib/support-engine";
 import { useLanguage, type Lang } from "@/lib/i18n";
 import type { ChatMessage, SuggestedAction } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -51,12 +52,19 @@ function ChatInner() {
     setInput("");
     setLoading(true);
     try {
+      if (!navigator.onLine) {
+        setMessages(m => [...m, buildDemoReply(msg, activeLang)]);
+        return;
+      }
       const resp = await fetch("/api/chat", {
         method: "POST",
+        signal: AbortSignal.timeout(15000),
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: msg, lang: activeLang }),
       });
+      if (!resp.ok) throw new Error("Chat unavailable");
       const data = (await resp.json()) as ChatMessage;
+      if (data.role !== "assistant" || typeof data.content !== "string") throw new Error("Invalid chat response");
       setMessages((m) => [...m, data]);
     } catch {
       setMessages((m) => [
@@ -106,6 +114,8 @@ function ChatInner() {
 
       <div
         className="flex-1 space-y-4 overflow-y-auto rounded-lg border border-border bg-card p-4"
+        role="log"
+        aria-label={bn ? "কথোপকথন" : "Conversation"}
         aria-live="polite"
       >
         {messages.length === 0 && (
@@ -187,6 +197,7 @@ function ChatInner() {
         <div ref={endRef} />
       </div>
 
+      <label htmlFor="support-message" className="mt-3 text-sm font-medium">{bn ? "বার্তা" : "Message"}</label>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -195,6 +206,8 @@ function ChatInner() {
         className="mt-3 flex items-end gap-2"
       >
         <Textarea
+          id="support-message"
+          maxLength={2000}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => {
