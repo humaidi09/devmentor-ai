@@ -5,6 +5,7 @@ whole API is usable locally with no credentials.
 """
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass
 
 import httpx
@@ -12,6 +13,8 @@ import jwt
 from fastapi import HTTPException, status
 
 from .config import get_settings
+
+logger = logging.getLogger("devmentor.auth")
 
 # Stable UUID used for the stubbed demo user across the app.
 DEMO_USER_ID = "00000000-0000-0000-0000-000000000001"
@@ -64,15 +67,18 @@ def verify_supabase_token(token: str) -> AuthUser:
     SUPABASE_JWT_SECRET.
     """
     settings = get_settings()
-    if not (settings.supabase_url and settings.supabase_anon_key):
+    base = (settings.supabase_url or "").strip().rstrip("/")
+    anon = (settings.supabase_anon_key or "").strip()
+    if not (base and anon):
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Auth is not configured.")
     try:
         resp = httpx.get(
-            f"{settings.supabase_url}/auth/v1/user",
-            headers={"Authorization": f"Bearer {token}", "apikey": settings.supabase_anon_key},
+            f"{base}/auth/v1/user",
+            headers={"Authorization": f"Bearer {token}", "apikey": anon},
             timeout=10.0,
         )
-    except Exception:  # pragma: no cover - network error
+    except Exception as exc:  # pragma: no cover - network error
+        logger.warning("Supabase auth check could not reach %s: %r", base, exc)
         raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, "Auth service unreachable.")
     if resp.status_code != 200:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid authentication token.")
