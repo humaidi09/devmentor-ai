@@ -9,3 +9,12 @@
 7. Persist reminder intent and manual learning progress only. External AI, Codeforces synchronization, email/push delivery, analytics and agent systems remain later work.
 8. Provide export and confirmed app-data reset. Full Auth-account deletion stays clearly operator-assisted until safe reauthentication/admin deletion is implemented.
 9. Use a disposable local PostgreSQL + actual GoTrue + PostgREST stack for reproducible auth and RLS tests; do not declare hosted deployment verified without valid hosted credentials.
+
+## Phase 4 decisions
+
+- Prefer controlled/extractive resource facts over unrestricted model prose: validation can prove IDs and actions are grounded, while a model still selects relevance and checklist ordering. This intentionally limits open-ended chat.
+- PostgreSQL category/campus/date filtering plus full-text rank suffices for MVP; no vector store or microservice.
+- Keep chats transient and legacy chat client grants revoked. Private learning/profile fields never enter prompts.
+- Mock account chat retrieves real DB resources; Demo remains explicitly fictional, including offline. Account offline shows retry/manual routes rather than substituting fictional data.
+- Gemini is isolated behind `AiProvider`; server-only configuration and HTTP adapter preserve managed proxy/CA trust. Students opt in per message. Model availability can change independently of model-list success.
+- Draft saves are explicit, consent guarded, transactional and idempotent. Budget counters are operational metadata only; no unrestricted model tools.

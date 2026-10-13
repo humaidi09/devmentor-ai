@@ -13,3 +13,9 @@ Settings expose stored profile/preferences, consent history, JSON export and app
 Account responses use private/no-store. The demo worker never caches API/export responses. Account mode unregisters the worker and clears only Close AI's own caches. Privileged credentials are neither required nor imported into client code. Authentication providers may have their own operational/Auth logs; the application does not log sensitive support messages.
 
 A production operator must configure the canonical site URL, Supabase Auth allowed redirects and valid public project credentials before account deployment. Supabase URL/anon key are public identifiers, not authorization bypasses; RLS remains the data boundary.
+
+## Phase 4 model boundary
+
+Account students choose external AI per message. Explain that the message and up to three resource summaries go to Google; users can keep mock/manual mode. Close AI does not persist chat, send whole profiles, mix support with CP/learning history, log prompts, contact third parties or make eligibility/medical/legal/investment decisions. Clear conversation removes the on-page transcript. Provider retention is governed by the configured provider's terms, separately from Close AI's memory-only chat.
+
+Facts and official names remain database-authored; missing cost, eligibility and contacts are explicitly unknown. Model output is restricted to already retrieved IDs and four checklist keys, and extra fields fail closed. Untrusted descriptions cannot grant permissions. High-risk language immediately offers people/local emergency services without fabricated phone numbers. Detection is a limited English/Bangla keyword aid, not diagnosis or a complete crisis service. Checklist approval and storage consent are both required; reminders require a later independent opt-in.

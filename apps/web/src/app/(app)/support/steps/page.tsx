@@ -1,7 +1,7 @@
 "use client";
 
 import { Bell, BellOff, Plus, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useAccount } from "@/lib/account";
 import { usePreferences } from "@/lib/preferences";
@@ -35,6 +35,19 @@ export default function StepsPage() {
   const { t, lang } = useLanguage();
   const bn = lang === "bn";
   const [demoSteps, setSteps] = useState<NextStep[]>(DEMO_NEXT_STEPS);
+  useEffect(() => {
+    if (demo) {
+      try {
+        const approved = JSON.parse(
+          sessionStorage.getItem("close-ai-demo-approved-steps") || "[]",
+        );
+        if (Array.isArray(approved))
+          setSteps([...DEMO_NEXT_STEPS, ...approved]);
+      } catch {
+        /* session-only demo */
+      }
+    }
+  }, [demo]);
   const [draft, setDraft] = useState("");
   const [demoReminders, setReminders] = useState<Record<string, boolean>>({});
 
