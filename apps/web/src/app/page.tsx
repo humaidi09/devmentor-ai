@@ -4,8 +4,12 @@ import Link from "next/link";
 import {
   ArrowRight,
   BadgeCheck,
+  BookOpen,
+  Code2,
+  GraduationCap,
   Languages,
   ShieldCheck,
+  Trophy,
   Users,
 } from "lucide-react";
 
@@ -41,6 +45,49 @@ export default function LandingPage() {
       icon: Languages,
       title: bn ? "বাংলা ও English" : "Bangla & English",
       desc: bn ? "দুই ভাষাতেই সহায়তা পান।" : "Get support in both languages.",
+    },
+  ];
+
+  const paths = [
+    {
+      href: "/support",
+      icon: Users,
+      title: bn ? "শিক্ষার্থী সহায়তা" : "Student support",
+      desc: bn
+        ? "সহায়তা খুঁজুন, পরবর্তী ধাপ ঠিক করুন এবং মানুষের সঙ্গে যোগাযোগের পথ দেখুন।"
+        : "Find support, plan your next step, and see how to reach a person.",
+    },
+    {
+      href: "/study",
+      icon: GraduationCap,
+      title: bn ? "একাডেমিক স্টাডি" : "Academic study",
+      desc: bn
+        ? "পড়াশোনা ও সময়সীমার কাজ নিজের মতো সাজান।"
+        : "Organize coursework and deadlines around your own priorities.",
+    },
+    {
+      href: "/learn",
+      icon: Code2,
+      title: bn ? "ডেভেলপার পাথ" : "Developer path",
+      desc: bn
+        ? "দক্ষতা শেখার ধাপ ও ছোট প্রজেক্ট দিয়ে এগোন।"
+        : "Follow clear milestones and practice with small projects.",
+    },
+    {
+      href: "/cp",
+      icon: Trophy,
+      title: bn ? "সিপি কোচ" : "CP coach",
+      desc: bn
+        ? "সমস্যা সমাধানের অনুশীলন ও নিজের অগ্রগতি দেখুন।"
+        : "Practice problem solving and track your progress.",
+    },
+    {
+      href: "/learn/visual-lab",
+      icon: BookOpen,
+      title: bn ? "ভিজ্যুয়াল ল্যাব" : "Visual lab",
+      desc: bn
+        ? "অ্যালগরিদম ও ডেটাবেসের ধারণা ধাপে ধাপে দেখুন।"
+        : "Explore algorithms and database concepts step by step.",
     },
   ];
 
@@ -92,6 +139,51 @@ export default function LandingPage() {
             >
               {t("talkToHuman")}
             </Link>
+          </div>
+        </section>
+
+        <section aria-labelledby="explore-heading" className="mb-14">
+          <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <p className="text-sm font-semibold text-primary">
+                {bn ? "আপনার পথ বেছে নিন" : "Explore Close AI"}
+              </p>
+              <h2
+                id="explore-heading"
+                className="mt-1 text-2xl font-bold sm:text-3xl"
+              >
+                {bn ? "যেখান থেকে শুরু করতে চান" : "Start where you need help"}
+              </h2>
+            </div>
+            {demo && (
+              <span className="rounded-full border border-border bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
+                {bn ? "কাল্পনিক ডেমো তথ্য" : "Fictional demo content"}
+              </span>
+            )}
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {paths.map((path) => {
+              const Icon = path.icon;
+              return (
+                <Link
+                  key={path.href}
+                  href={path.href}
+                  className="group rounded-xl border border-border bg-card p-5 shadow-sm transition-colors hover:border-primary focus-visible:border-primary"
+                >
+                  <Icon className="mb-4 h-6 w-6 text-primary" aria-hidden />
+                  <span className="flex items-center justify-between gap-3 font-bold">
+                    {path.title}
+                    <ArrowRight
+                      className="h-4 w-4 text-primary transition-transform group-hover:translate-x-1"
+                      aria-hidden
+                    />
+                  </span>
+                  <span className="mt-2 block text-sm text-muted-foreground">
+                    {path.desc}
+                  </span>
+                </Link>
+              );
+            })}
           </div>
         </section>
 
