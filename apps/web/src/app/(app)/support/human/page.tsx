@@ -57,9 +57,11 @@ export default function HumanPage() {
       <div className="space-y-3">
         {contacts.map((c) => (
           <Card key={c.id} className="p-4">
-            <p className="mb-2 text-xs text-muted-foreground">
-              {bn ? "নমুনা — বাস্তব যোগাযোগ নয়" : "DEMO — fictional contact"}
-            </p>
+            {c.isDemo && (
+              <p className="mb-2 text-xs text-muted-foreground">
+                {bn ? "নমুনা — বাস্তব যোগাযোগ নয়" : "DEMO — fictional contact"}
+              </p>
+            )}
             <div className="flex items-start justify-between gap-2">
               <h2 className="font-bold">{localize(c.name, lang)}</h2>
               <VerificationBadge state={c.verification} />

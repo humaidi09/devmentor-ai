@@ -4,8 +4,6 @@ import { buildDemoReply, matchResources } from '../src/lib/support-engine';
 import { DEMO_RESOURCES, DEMO_NEXT_STEPS } from '../src/lib/demo-data';
 import { DEMO_COURSES, DEMO_DEADLINES, DEMO_STUDY_TASKS, DEMO_PATHWAYS, DEMO_SNIPPETS, DEMO_CP_PROBLEMS } from '../src/lib/modules-data';
 import { contentBn } from '../src/lib/content-bn';
-import { POST } from '../src/app/api/chat/route';
-import type { NextRequest } from 'next/server';
 
 test('resource matching excludes expired and unreviewed samples', () => {
   const results = matchResources('tuition fees');
@@ -33,18 +31,4 @@ test('all authored sample descriptions and learning hints have Bangla copy', () 
     ...DEMO_PATHWAYS.flatMap(p => [p.summary, ...p.milestones]), ...DEMO_SNIPPETS.map(s => s.title), ...DEMO_CP_PROBLEMS.map(p => p.hint),
   ].filter(Boolean) as string[];
   for (const text of values) assert.ok(contentBn[text], `Missing Bangla: ${text}`);
-});
-test('chat rejects malformed body shapes and empty input', async () => {
-  for (const body of [null, [], 'text', {}, {message: ''}, {message: 1}]) {
-    const request = new Request('http://localhost/api/chat', {method:'POST', body:JSON.stringify(body)}) as NextRequest;
-    assert.equal((await POST(request)).status, 400);
-  }
-});
-test('chat returns a localized, clearly scoped deterministic reply', async () => {
-  const request = new Request('http://localhost/api/chat', {method:'POST', body:JSON.stringify({message:'পরীক্ষা নিয়ে সাহায্য চাই',lang:'bn'})}) as NextRequest;
-  const reply = await POST(request);
-  assert.equal(reply.status, 200);
-  const data = await reply.json();
-  assert.equal(data.role, 'assistant');
-  assert.ok(data.sources.every((r: {isDemo: boolean}) => r.isDemo));
 });

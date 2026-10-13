@@ -1,5 +1,10 @@
 export type VerificationState =
-  "verified" | "needs_review" | "unverified" | "expired" | "archived" | "draft";
+  | "verified"
+  | "needs_review"
+  | "unverified"
+  | "expired"
+  | "archived"
+  | "draft";
 
 export interface ResourceSource {
   label: string;
@@ -25,7 +30,11 @@ export interface SupportResource {
 }
 
 export type StepStatus =
-  "not_started" | "in_progress" | "waiting" | "completed" | "not_relevant";
+  | "not_started"
+  | "in_progress"
+  | "waiting"
+  | "completed"
+  | "not_relevant";
 
 export type StepSource = "verified" | "ai_suggestion" | "manual";
 
@@ -39,7 +48,11 @@ export interface NextStep {
 }
 
 export type ActionKind =
-  "save" | "checklist" | "human" | "continue" | "open_resource";
+  | "save"
+  | "checklist"
+  | "human"
+  | "continue"
+  | "open_resource";
 
 export interface SuggestedAction {
   label: string;
@@ -54,6 +67,11 @@ export interface ChatMessage {
   sources?: SupportResource[];
   uncertain?: boolean;
   suggestedActions?: SuggestedAction[];
+  provider?: "mock" | "gemini";
+  state?: "success" | "clarification" | "no_resource" | "error" | "offline";
+  humanSupportAvailable?: boolean;
+  modulePath?: string;
+  draft?: { resourceId: string; title: string; steps: string[] };
 }
 
 export interface SupportCategory {

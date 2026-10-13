@@ -5,6 +5,8 @@ import { useSearchParams } from "next/navigation";
 import { Bot, Send, User, Users } from "lucide-react";
 import { Suspense, useEffect, useRef, useState } from "react";
 
+import { ChecklistDraft } from "@/components/checklist-draft";
+import { safeSource } from "@/lib/resources/grounding";
 import { useAccount } from "@/lib/account";
 import { PageHeader } from "@/components/page-header";
 import { ResourceCard } from "@/components/resource-card";
@@ -52,11 +54,21 @@ function ChatInner() {
   const params = useSearchParams();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
+  const [useAi, setUseAi] = useState(false);
+  const [provider, setProvider] = useState("mock");
+  const [failedMessage, setFailedMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
   const sentInitial = useRef(false);
   const langRef = useRef<Lang>(lang);
   langRef.current = lang;
+
+  useEffect(() => {
+    fetch("/api/chat")
+      .then((r) => r.json())
+      .then((d) => setProvider(d.provider))
+      .catch(() => setProvider("mock"));
+  }, []);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -72,23 +84,39 @@ function ChatInner() {
     ]);
     setInput("");
     setLoading(true);
+    setFailedMessage("");
     try {
       if (!navigator.onLine) {
-        setMessages((m) => [...m, buildDemoReply(msg, activeLang)]);
+        if (!demo) throw new Error("offline");
+        setMessages((m) => [
+          ...m,
+          {
+            ...buildDemoReply(msg, activeLang),
+            provider: "mock",
+            state: "offline",
+          },
+        ]);
         return;
       }
       const resp = await fetch("/api/chat", {
         method: "POST",
         signal: AbortSignal.timeout(15000),
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: msg, lang: activeLang }),
+        body: JSON.stringify({
+          message: msg,
+          lang: activeLang,
+          useAi,
+          clarified: messages.some((m) => m.state === "clarification"),
+        }),
       });
       if (!resp.ok) throw new Error("Chat unavailable");
       const data = (await resp.json()) as ChatMessage;
       if (data.role !== "assistant" || typeof data.content !== "string")
         throw new Error("Invalid chat response");
       setMessages((m) => [...m, data]);
+      if (data.state === "error") setFailedMessage(msg);
     } catch {
+      setFailedMessage(msg);
       setMessages((m) => [
         ...m,
         {
@@ -128,12 +156,22 @@ function ChatInner() {
 
   return (
     <div className="flex h-[calc(100dvh-10rem)] min-h-[440px] flex-col">
-      {!demo && (
-        <p className="mb-3 text-sm text-muted-foreground">
+      <p className="mb-2 text-xs text-muted-foreground">
+        {bn
+          ? "কথোপকথন সংরক্ষিত হয় না। Demo ও mock-এ বাইরের AI ব্যবহার হয় না।"
+          : "Conversations are not saved. Demo and mock mode use no external AI."}
+      </p>
+      {!demo && provider === "gemini" && (
+        <label className="mb-2 flex items-center gap-2 text-sm">
+          <input
+            type="checkbox"
+            checked={useAi}
+            onChange={(e) => setUseAi(e.target.checked)}
+          />
           {bn
-            ? "Mock chat — শুধু কাল্পনিক DEMO রিসোর্স, কোনো live AI নয়। কথোপকথন সংরক্ষণ করা হয় না।"
-            : "Mock chat — fictional DEMO resources only. No live AI; conversations are not saved."}
-        </p>
+            ? "এই বার্তা ও কয়েকটি রিসোর্স Gemini-তে পাঠিয়ে AI ব্যবহার করুন"
+            : "Use AI: send this message and a few resources to Gemini"}
+        </label>
       )}
       <PageHeader
         title={t("support")}
@@ -233,9 +271,51 @@ function ChatInner() {
                     {bn ? "উৎস" : "Sources"}
                   </p>
                   {m.sources.map((r) => (
-                    <ResourceCard key={r.id} resource={r} />
+                    <div key={r.id}>
+                      <ResourceCard resource={r} />
+                      <p className="mt-1 text-xs">
+                        {bn
+                          ? "মিলের কারণ: ক্যাম্পাস ও সহায়তার বিভাগ"
+                          : "Match: your campus and support category"}
+                      </p>
+                      <p className="text-xs">
+                        {bn ? "যোগ্যতা" : "Eligibility"}:{" "}
+                        {r.eligibility || (bn ? "অজানা" : "Unknown")} ·{" "}
+                        {bn ? "খরচ" : "Cost"}:{" "}
+                        {r.cost || (bn ? "অজানা" : "Unknown")}
+                      </p>
+                      {safeSource(r.source.url) && (
+                        <a
+                          href={safeSource(r.source.url)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs text-primary underline"
+                        >
+                          {bn ? "অফিসিয়াল উৎস দেখুন" : "View official source"}
+                        </a>
+                      )}
+                    </div>
                   ))}
                 </div>
+              )}
+              {m.provider && (
+                <p className="text-xs text-muted-foreground">
+                  {m.provider === "mock"
+                    ? bn
+                      ? "Mock উত্তর"
+                      : "Mock response"
+                    : "Gemini · validated selection"}
+                  {m.state === "offline" ? " · Offline" : ""}
+                </p>
+              )}
+              {m.draft && <ChecklistDraft draft={m.draft} />}
+              {m.modulePath && (
+                <Link
+                  href={m.modulePath}
+                  className="text-sm text-primary underline"
+                >
+                  {bn ? "শেখার মডিউল খুলুন" : "Open learning module"}
+                </Link>
               )}
               {m.suggestedActions && m.suggestedActions.length > 0 && (
                 <div className="flex flex-wrap gap-2">
@@ -261,6 +341,58 @@ function ChatInner() {
         <div ref={endRef} />
       </div>
 
+      <div className="mt-2 flex flex-wrap gap-2">
+        {failedMessage && (
+          <Button
+            size="sm"
+            variant="secondary"
+            disabled={loading}
+            onClick={() => send(failedMessage)}
+          >
+            {bn ? "আবার চেষ্টা" : "Retry"}
+          </Button>
+        )}
+        <Button
+          size="sm"
+          variant="ghost"
+          disabled={loading}
+          onClick={() => {
+            setMessages((m) => [
+              ...m,
+              {
+                id: `skip_${Date.now()}`,
+                role: "assistant",
+                content: bn
+                  ? "কোনো তথ্য দিতে হবে না। রিসোর্স নিজে দেখুন বা মানুষের সহায়তা নিন।"
+                  : "You do not need to share more. Browse resources or talk to a human.",
+                suggestedActions: [
+                  {
+                    kind: "human",
+                    label: bn ? "মানুষের সহায়তা" : "Talk to a human",
+                  },
+                  {
+                    kind: "continue",
+                    label: bn ? "সব রিসোর্স" : "Browse resources",
+                  },
+                ],
+              },
+            ]);
+          }}
+        >
+          {bn ? "বলতে চাই না" : "Prefer not to say"}
+        </Button>
+        <Button
+          size="sm"
+          variant="ghost"
+          disabled={loading}
+          onClick={() => {
+            setMessages([]);
+            setFailedMessage("");
+          }}
+        >
+          {bn ? "কথোপকথন মুছুন" : "Clear conversation"}
+        </Button>
+      </div>
       <label htmlFor="support-message" className="mt-3 text-sm font-medium">
         {bn ? "বার্তা" : "Message"}
       </label>

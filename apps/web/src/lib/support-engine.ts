@@ -1,3 +1,4 @@
+import { currentResource } from "./resources/grounding";
 import { localize } from "./content-bn";
 import { DEMO_RESOURCES } from "./demo-data";
 import type { Lang } from "./i18n";
@@ -37,7 +38,7 @@ export function matchResources(
   for (const [category, words] of Object.entries(KEYWORDS)) {
     if (words.some((w) => text.includes(w.toLowerCase()))) categories.add(category);
   }
-  const verified = resources.filter((r) => r.verification === "verified");
+  const verified = resources.filter((r) => currentResource(r, r.campusId));
   const matched = verified.filter((r) => categories.has(r.category));
   return matched.slice(0, 3);
 }

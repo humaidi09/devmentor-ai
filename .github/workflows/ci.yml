@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main, codex/close-ai-phase2]
+    branches: [main, "codex/**"]
 
 jobs:
   api:
@@ -45,6 +45,7 @@ jobs:
       - run: npm run lint
       - run: npm run test:logic
       - run: npm run build
+      - run: node tests/client-boundary.cjs
       - run: npx playwright install --with-deps chromium
       - name: Responsive, keyboard, accessibility and offline checks
         run: |
@@ -81,7 +82,10 @@ jobs:
             sleep 1
           done
           npm run test:backend
+          node tests/ai-backend.cjs
       - run: npm run build:account-test
+        working-directory: apps/web
+      - run: node tests/client-boundary.cjs
         working-directory: apps/web
       - run: npx playwright install --with-deps chromium
         working-directory: apps/web
@@ -94,6 +98,7 @@ jobs:
             sleep 1
           done
           npm run test:account-browser
+          node tests/ai-browser.cjs
           TEST_BASE_URL=http://127.0.0.1:3002 npm run test:browser
       - name: Preserve integration diagnostics
         if: failure()

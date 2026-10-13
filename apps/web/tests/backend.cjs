@@ -403,6 +403,8 @@ async function denied(result) {
         .insert({ resource_id: resource.id, new_state: "verified" }),
     );
     await denied(a.db.from("conversations").select());
+    await denied(m.db.from("conversations").select());
+    await denied(r.db.from("chat_messages").select());
     console.log(
       "PASS student/staff separation, campus roles, checked verification, audit notes, immutable DEMO and edit downgrade",
     );

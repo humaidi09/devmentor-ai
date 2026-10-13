@@ -13,3 +13,9 @@ Resource changes use guard/audit triggers. Reviewers need checked evidence to ve
 Sensitive mock conversations are not stored. Visual algorithms and explanations remain deterministic local definitions. Service-worker cache is limited to demonstrably public fictional pages/assets; account mode removes it and private responses use no-store.
 
 Migrations 0001–0004 are preserved; 0005–0006 adapt the actual existing schema. Legacy client grants on unused private tables are revoked. This compatibility boundary matters before applying migrations to an old shared deployment.
+
+## Phase 4 support flow
+
+`POST /api/chat` -> same-origin account session -> selected campus -> lightweight EN/Bangla intent/safety routing -> invoker-security PostgreSQL search -> current/verified filtering and transparent category/campus/relevance ranking -> mock or server-only Gemini provider -> strict ID/step validation -> controlled response renderer. Maximum three sources; no embeddings. Retrieved text is untrusted JSON data, separated from system instructions. Only the current message, language and small public summaries enter the provider. Unknown category/campus asks one optional clarification, then allows directory/human fallback.
+
+Model output cannot supply prose facts, URLs, SQL, tools or mutations. `/api/plans/draft` is a separate authenticated student action with explicit confirmation, storage consent, a retry token and a transactional invoker RPC. Chat stays transient; existing private conversation tables remain inaccessible to students/maintainers. `integration_usage` stores only per-user service/hour counters with own-row SELECT and a narrow consume RPC (20 AI requests/hour). No provider payload logging.
