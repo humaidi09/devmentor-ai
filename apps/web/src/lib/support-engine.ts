@@ -1,3 +1,4 @@
+import { localize } from "./content-bn";
 import { DEMO_RESOURCES } from "./demo-data";
 import type { Lang } from "./i18n";
 import type { ChatMessage, SuggestedAction, SupportResource } from "./types";
@@ -61,7 +62,7 @@ export function buildDemoReply(message: string, lang: Lang): ChatMessage {
         : "Here are some verified resources that may match. Each shows its official source and last-checked date. The final decision is yours.";
     for (const r of sources) {
       actions.push({
-        label: (lang === "bn" ? "খুলুন: " : "Open: ") + r.name,
+        label: (lang === "bn" ? "খুলুন: " : "Open: ") + localize(r.name, lang),
         kind: "open_resource",
         resourceId: r.id,
       });

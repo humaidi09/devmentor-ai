@@ -3,20 +3,22 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { moduleVisible, usePreferences } from "@/lib/preferences";
 import { useLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 import { MOBILE_NAV, isNavActive } from "./nav";
 
 export function BottomNav() {
+  const { preferences } = usePreferences();
   const pathname = usePathname();
   const { t } = useLanguage();
   return (
     <nav
-      className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-5 border-t border-border bg-card/95 backdrop-blur lg:hidden"
-      aria-label="Primary"
+      className="fixed inset-x-0 bottom-0 z-40 flex border-t border-border bg-card/95 backdrop-blur lg:hidden"
+      aria-label={t("primaryNav")}
     >
-      {MOBILE_NAV.map((item) => {
+      {MOBILE_NAV.filter(i => moduleVisible(i.href, preferences)).map((item) => {
         const Icon = item.icon;
         const active = isNavActive(pathname, item.href);
         return (
@@ -25,7 +27,7 @@ export function BottomNav() {
             href={item.href}
             aria-current={active ? "page" : undefined}
             className={cn(
-              "flex flex-col items-center justify-center gap-0.5 py-2 text-[11px] font-medium transition-colors",
+              "flex flex-1 flex-col items-center justify-center gap-0.5 py-2 text-[11px] font-medium transition-colors",
               active ? "text-primary" : "text-muted-foreground",
             )}
           >

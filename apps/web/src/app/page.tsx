@@ -45,13 +45,13 @@ export default function LandingPage() {
         </div>
         <div className="flex items-center gap-3">
           <LanguageToggle />
-          <Link href="/dashboard" className={buttonVariants({ size: "sm" })}>
+          <Link href="/onboarding" className={buttonVariants({ size: "sm" })}>
             {t("getSupport")}
           </Link>
         </div>
       </header>
 
-      <main className="mx-auto max-w-5xl px-4 sm:px-6">
+      <main id="main-content" tabIndex={-1} className="mx-auto max-w-5xl px-4 sm:px-6">
         <section className="py-14 text-center sm:py-20">
           <p className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
             <ShieldCheck className="h-3.5 w-3.5 text-primary" aria-hidden />
@@ -66,7 +66,7 @@ export default function LandingPage() {
               : "Tell us what's in your way. Close AI helps you find verified campus support, understand realistic next steps, and reach a human when you need one — with no labeling or surveillance."}
           </p>
           <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Link href="/dashboard" className={buttonVariants({ size: "lg" })}>
+            <Link href="/onboarding" className={buttonVariants({ size: "lg" })}>
               {t("getSupport")}
               <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>

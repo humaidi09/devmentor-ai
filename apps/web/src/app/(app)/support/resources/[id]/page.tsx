@@ -15,6 +15,7 @@ import { VerificationBadge } from "@/components/verification-badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { getDemoResource } from "@/lib/demo-data";
+import { localize } from "@/lib/content-bn";
 import { useLanguage } from "@/lib/i18n";
 import { useSavedResources } from "@/lib/saved-store";
 import { formatDate } from "@/lib/utils";
@@ -78,22 +79,23 @@ export default function ResourceDetailPage() {
         </div>
       )}
 
+      {resource.isDemo && <p className="mb-2 text-sm text-muted-foreground">{bn ? "নমুনা — বাস্তব সেবা নয়" : "DEMO — fictional service"}</p>}
       <div className="mb-2 flex items-start justify-between gap-3">
-        <h1 className="text-2xl font-bold">{resource.name}</h1>
+        <h1 className="text-2xl font-bold">{localize(resource.name, lang)}</h1>
         <VerificationBadge state={resource.verification} />
       </div>
-      <p className="text-muted-foreground">{resource.description}</p>
+      <p className="text-muted-foreground">{localize(resource.description, lang)}</p>
 
       <Card className="mt-5 divide-y divide-border">
-        <Row label={bn ? "যোগ্যতা" : "Eligibility"} value={resource.eligibility} />
-        <Row label={bn ? "খরচ" : "Cost"} value={resource.cost ?? (bn ? "উল্লেখ নেই" : "Not stated")} />
-        <Row label={bn ? "অবস্থান" : "Location"} value={resource.location} />
+        <Row label={bn ? "যোগ্যতা" : "Eligibility"} value={localize(resource.eligibility, lang)} />
+        <Row label={bn ? "খরচ" : "Cost"} value={resource.cost ? localize(resource.cost, lang) : (bn ? "উল্লেখ নেই" : "Not stated")} />
+        <Row label={bn ? "অবস্থান" : "Location"} value={localize(resource.location, lang)} />
         {resource.officialContact && (
           <Row label={bn ? "যোগাযোগ" : "Contact"} value={resource.officialContact} />
         )}
-        <Row label={t("lastChecked")} value={formatDate(resource.lastCheckedAt)} />
+        <Row label={t("lastChecked")} value={formatDate(resource.lastCheckedAt, lang)} />
         {resource.timeSensitiveDate && (
-          <Row label={bn ? "গুরুত্বপূর্ণ তারিখ" : "Key date"} value={formatDate(resource.timeSensitiveDate)} />
+          <Row label={bn ? "গুরুত্বপূর্ণ তারিখ" : "Key date"} value={formatDate(resource.timeSensitiveDate, lang)} />
         )}
       </Card>
 
@@ -104,7 +106,7 @@ export default function ResourceDetailPage() {
         className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
       >
         <ExternalLink className="h-4 w-4" aria-hidden />
-        {t("officialSource")}: {resource.source.label}
+        {t("officialSource")}: {localize(resource.source.label, lang)}
       </a>
 
       <p className="mt-4 rounded-md bg-muted/50 p-3 text-xs text-muted-foreground">

@@ -1,60 +1,48 @@
-# Close AI — Phase 1 Planning Package
+# Close AI web application
 
-**Tagline:** From student barriers to real support.
+The Phase 2 prototype is a Next.js 15 / React 19 application in this directory. Node.js 22 is used by CI. No API keys or backend services are required; old Supabase environment variables do not turn this prototype into a live authenticated product.
 
-## Status
-Phase 1 planning is complete. A **Phase 2 MVP implementation** now lives at the repo root (a single Next.js app) covering the Student Support core in **demo mode** — it runs with no account and no secrets.
+## Development
 
-## Running the app
 ```bash
-npm install
+npm ci
 npm run dev
 ```
-Then open http://localhost:3000. The app starts in **demo mode** (sample Demo University resources, a deterministic chat provider, no keys needed). To connect Supabase/AI later, copy `.env.example` to `.env.local` and fill it in.
 
-### Implemented (Phase 2, wave 1)
-Landing, Dashboard, Student Support chat (verified-source + uncertainty + human handoff), Resource Directory + Detail (verification lifecycle states), Saved, My Next Steps, Human Support (draft-only), Settings & Privacy. Bilingual EN/বাংলা, mobile bottom-nav + desktop sidebar, deep-teal design tokens, keyboard focus + reduced-motion support.
+## Phase 2 checks
 
-### Still to build
-Visual Learning Lab, Academic Study / Developer Path / CP Coach, Supabase schema + Auth + RLS, maintainer workspace, real AI provider adapter.
+```bash
+npm run typecheck
+npm run lint
+npm run test:logic
+npm run build
+npm start -- --hostname 127.0.0.1 --port 3001
+```
 
-## Repository inspection result
-No source-code repository was supplied in this chat. Therefore, no existing code was modified or overwritten. Before Phase 2 starts, the actual repository must be inspected for framework, dependencies, conventions, reusable components, environment configuration, tests, and conflicts.
+In a second terminal:
 
-## Recommended MVP architecture
-- **Frontend + server:** Next.js + TypeScript using the App Router and server-side Route Handlers / server actions where appropriate.
-- **Styling/components:** Tailwind CSS + accessible component primitives.
-- **Database/auth:** Supabase PostgreSQL + Supabase Auth + Row Level Security.
-- **AI:** provider abstraction behind server-side endpoints, with a complete mock/demo provider when no API key is configured.
-- **Search:** PostgreSQL full-text search for verified resources in MVP.
-- **Visual Learning Lab:** reusable step generators + renderer components rather than prerecorded videos.
+```bash
+npx playwright install chromium
+npm run test:browser
+```
 
-This architecture is intentionally simple for an MVP. A separate FastAPI service should be introduced only when a proven backend requirement justifies the extra deployment and maintenance boundary.
+`PLAYWRIGHT_EXECUTABLE_PATH` can select an already installed Chromium. The browser checks require the local production build on port 3001. They cover actual user interactions, both languages on mobile, axe accessibility rules, keyboard focus, offline reload/chat, and scoped data clearing. These tests never target the live website.
 
-## Product priorities
-### Must have
-Student Support chat, verified resource directory, resource details, human handoff, My Next Steps, consent/privacy controls, demo mode, responsive/accessibility basics, Bangla/English support.
+## Demo behavior and data
 
-### Should have
-Saved resources, reminders, basic Academic Study, Developer Path, CP Coach, and a small Visual Learning Lab prototype.
+- Onboarding is optional. Campus-not-listed keeps the fictional demo boundary visible.
+- Preferences (language, module visibility, reminder opt-in, quiet-hour choices) and saved resource IDs remain in this browser. A storage-disabled browser can still use session state.
+- Chat, study tasks and support steps are transient UI data, not stored in a production database. Chat is deterministic; offline chat runs the same local demo engine.
+- Reminder buttons flag a step while its page is open. They do not schedule notifications. Quiet-hour choices are stored for a future scheduler.
+- Six Visual Learning topics: BFS, DFS, Bubble Sort, Binary Search, SQL INNER JOIN and Normalization (UNF → 1NF → 2NF → 3NF). Array inputs are editable and validated. Graph/table examples are fixed, auditable examples.
+- Demo data clearing removes only keys owned by Close AI, not other applications' local storage. Production account deletion/export is not implemented or advertised as working.
 
-### Later
-Advanced personalization, external university integrations, full Codeforces personalization, push notifications, advanced analytics, large visualization library, additional CSE subjects, complex agent systems, and vector databases unless justified.
+## Offline support
 
-## Phase 1 documents
-- `docs/PRODUCT_SCOPE.md`
-- `docs/USER_JOURNEYS.md`
-- `docs/INFORMATION_ARCHITECTURE.md`
-- `docs/PAGE_MAP.md`
-- `docs/DESIGN_SYSTEM.md`
-- `docs/VISUAL_LEARNING_LAB.md`
-- `docs/RESOURCE_LIFECYCLE.md`
-- `docs/ARCHITECTURE.md`
-- `docs/PRIVACY_AND_SAFETY.md`
-- `docs/ACCESSIBILITY.md`
-- `docs/DECISIONS.md`
-- `docs/FAILURE_AND_EDGE_CASES.md`
-- `docs/PHASE_1_REVIEW.md`
+`prebuild` generates `public/sw.js` with a unique cache version. The worker precaches an explicit public-demo route/asset allowlist; it does not cache API responses or user-entered query responses. Activation removes only older Close AI caches. Offline navigation uses full-document loads so it can reuse saved HTML without caching React Server Component responses.
 
-## Phase 2 gate
-Do not start implementation until the real repository is inspected and the open decisions in `PHASE_1_REVIEW.md` are approved.
+A successful initial online visit is needed. If storage/service workers are unavailable, the UI reports the limitation; uncached pages show a bilingual offline fallback. External links still require a connection. The worker is production-only. Reassess the public allowlist before adding authentication or personalized server-rendered pages.
+
+## Documentation
+
+The original Phase 1 package is in [`../../close-ai-phase1`](../../close-ai-phase1). The [updated Phase 2 report](../../close-ai-phase1/docs/PHASE_2_REPORT.md) records implementation, validation and intentionally deferred work. The uploaded report described a different source layout; the paths and checks here refer to this actual repository.

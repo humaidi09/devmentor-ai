@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { localize } from "@/lib/content-bn";
 import { useLanguage } from "@/lib/i18n";
 import { DEMO_COURSES, DEMO_DEADLINES, DEMO_STUDY_TASKS, type StudyTask } from "@/lib/modules-data";
 import { cn, daysUntil, formatDate } from "@/lib/utils";
@@ -44,7 +45,7 @@ export default function StudyPage() {
             {DEMO_COURSES.map((c) => (
               <Card key={c.id} className="flex items-center gap-3 p-3">
                 <span className="rounded-md bg-primary/10 px-2 py-1 font-mono text-xs font-semibold text-primary">{c.code}</span>
-                <span className="text-sm">{c.name}</span>
+                <span className="text-sm">{localize(c.name, lang)}</span>
               </Card>
             ))}
           </div>
@@ -57,9 +58,9 @@ export default function StudyPage() {
               return (
                 <Card key={d.id} className="flex items-center justify-between gap-3 p-3">
                   <div className="min-w-0">
-                    <p className="text-sm font-medium">{d.title}</p>
+                    <p className="text-sm font-medium">{localize(d.title, lang)}</p>
                     <p className="text-xs text-muted-foreground">
-                      {courseCode(d.courseId)} · {formatDate(d.due)}
+                      {courseCode(d.courseId)} · {formatDate(d.due, lang)}
                     </p>
                   </div>
                   <Badge variant={left <= 3 ? "destructive" : left <= 7 ? "warning" : "muted"}>
@@ -75,8 +76,9 @@ export default function StudyPage() {
 
       <section>
         <h2 className="mb-3 font-bold">{bn ? "পড়ার কাজ" : "Study tasks"}</h2>
+        <label htmlFor="new-task" className="mb-2 block text-sm font-medium">{bn ? "নতুন কাজ" : "New task"}</label>
         <Card className="mb-3 flex items-end gap-2 p-3">
-          <Input
+          <Input id="new-task"
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
             onKeyDown={(e) => {
@@ -99,7 +101,7 @@ export default function StudyPage() {
                   onClick={() => toggle(t.id)}
                   role="checkbox"
                   aria-checked={t.done}
-                  aria-label={t.title}
+                  aria-label={localize(t.title, lang)}
                   className={cn(
                     "grid h-5 w-5 shrink-0 place-items-center rounded border",
                     t.done ? "border-primary bg-primary text-primary-foreground" : "border-border",
@@ -107,7 +109,7 @@ export default function StudyPage() {
                 >
                   {t.done && <Check className="h-3.5 w-3.5" aria-hidden />}
                 </button>
-                <span className={cn("flex-1 text-sm", t.done && "text-muted-foreground line-through")}>{t.title}</span>
+                <span className={cn("flex-1 text-sm", t.done && "text-muted-foreground line-through")}>{localize(t.title, lang)}</span>
                 {t.aiSuggested && <Badge variant="muted">{bn ? "AI পরামর্শ" : "AI suggestion"}</Badge>}
               </Card>
             </li>

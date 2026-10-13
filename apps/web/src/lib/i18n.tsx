@@ -16,6 +16,8 @@ type Dict = Record<string, { en: string; bn: string }>;
  *  itself rather than breaking the build. */
 export const strings: Dict = {
   getSupport: { en: "Get Support", bn: "সহায়তা নিন" },
+  mainNav: { en: "Main navigation", bn: "মূল নেভিগেশন" },
+  primaryNav: { en: "Primary navigation", bn: "প্রধান নেভিগেশন" },
   home: { en: "Home", bn: "হোম" },
   support: { en: "Support", bn: "সহায়তা" },
   learn: { en: "Learn", bn: "শেখা" },
@@ -69,10 +71,11 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>("en");
 
   useEffect(() => {
-    const saved =
+    let saved: Lang | null = null;
+    try { saved =
       typeof window !== "undefined"
         ? (window.localStorage.getItem("close-ai-lang") as Lang | null)
-        : null;
+        : null; } catch { /* storage can be disabled */ }
     if (saved === "en" || saved === "bn") {
       setLangState(saved);
       document.documentElement.lang = saved;
@@ -82,7 +85,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   function setLang(l: Lang) {
     setLangState(l);
     if (typeof window !== "undefined") {
-      window.localStorage.setItem("close-ai-lang", l);
+      try { window.localStorage.setItem("close-ai-lang", l); } catch { /* session-only language */ }
       document.documentElement.lang = l;
     }
   }

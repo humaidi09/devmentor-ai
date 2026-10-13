@@ -1,7 +1,8 @@
 "use client";
 
 import { Globe, ShieldCheck, Trash2 } from "lucide-react";
-import { useState } from "react";
+import Link from "next/link";
+import { usePreferences } from "@/lib/preferences";
 
 import { LanguageToggle } from "@/components/language-toggle";
 import { PageHeader } from "@/components/page-header";
@@ -64,8 +65,9 @@ function SettingRow({
 export default function SettingsPage() {
   const { t, lang } = useLanguage();
   const bn = lang === "bn";
-  const [modules, setModules] = useState({ academic: false, developer: false, cp: false });
-  const [consent, setConsent] = useState({ optionalData: false, reminders: false });
+  const { preferences, save, storageUnavailable } = usePreferences();
+  const modules = preferences.modules;
+  const setModules = (update: (m: typeof modules) => typeof modules) => save({ ...preferences, modules: update(modules) });
 
   function clearLocal() {
     if (typeof window === "undefined") return;
@@ -75,13 +77,15 @@ export default function SettingsPage() {
         : "This clears the demo data stored in this browser. Continue?",
     );
     if (!ok) return;
-    window.localStorage.clear();
+    for (const key of Object.keys(window.localStorage)) if (key.startsWith("close-ai-")) window.localStorage.removeItem(key);
     window.location.reload();
   }
 
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <PageHeader title={t("settings")} />
+      <Link href="/onboarding" className="block text-primary underline">{bn ? "ক্যাম্পাস ও নীরব সময়ের পছন্দ" : "Campus and quiet-hour preferences"}</Link>
+      {storageUnavailable && <p role="status">{bn ? "সংরক্ষণ বন্ধ। পছন্দ শুধু এই সেশনে থাকবে।" : "Storage unavailable. Preferences last only for this session."}</p>}
 
       <section>
         <h2 className="mb-2 flex items-center gap-2 text-sm font-semibold text-muted-foreground">
@@ -101,32 +105,32 @@ export default function SettingsPage() {
         <Card className="divide-y divide-border">
           <SettingRow
             title={bn ? "একাডেমিক স্টাডি" : "Academic Study"}
-            desc={bn ? "কোর্স ও ডেডলাইন (শীঘ্রই)" : "Courses & deadlines (coming soon)"}
+            desc={bn ? "কোর্স ও ডেডলাইন" : "Courses & deadlines"}
           >
             <Toggle
               checked={modules.academic}
               onChange={(v) => setModules((m) => ({ ...m, academic: v }))}
-              label="Academic Study"
+              label={bn ? "একাডেমিক স্টাডি" : "Academic Study"}
             />
           </SettingRow>
           <SettingRow
             title={bn ? "ডেভেলপার পাথ" : "Developer Path"}
-            desc={bn ? "স্কিল ও ভিজ্যুয়াল ল্যাব (শীঘ্রই)" : "Skills & Visual Lab (coming soon)"}
+            desc={bn ? "স্কিল ও ভিজ্যুয়াল ল্যাব" : "Skills & Visual Lab"}
           >
             <Toggle
               checked={modules.developer}
               onChange={(v) => setModules((m) => ({ ...m, developer: v }))}
-              label="Developer Path"
+              label={bn ? "ডেভেলপার পাথ" : "Developer Path"}
             />
           </SettingRow>
           <SettingRow
             title={bn ? "CP কোচ" : "CP Coach"}
-            desc={bn ? "প্র্যাকটিস ট্র্যাকিং (শীঘ্রই)" : "Practice tracking (coming soon)"}
+            desc={bn ? "প্র্যাকটিস ট্র্যাকিং" : "Practice tracking"}
           >
             <Toggle
               checked={modules.cp}
               onChange={(v) => setModules((m) => ({ ...m, cp: v }))}
-              label="CP Coach"
+              label={bn ? "CP কোচ" : "CP Coach"}
             />
           </SettingRow>
         </Card>
@@ -139,16 +143,6 @@ export default function SettingsPage() {
         </h2>
         <Card className="divide-y divide-border">
           <SettingRow
-            title={bn ? "ঐচ্ছিক ব্যক্তিগত তথ্য সংরক্ষণ" : "Store optional personal data"}
-            desc={bn ? "বন্ধ থাকলে শুধু অপরিহার্য তথ্য রাখা হয়।" : "When off, only essential data is kept."}
-          >
-            <Toggle
-              checked={consent.optionalData}
-              onChange={(v) => setConsent((c) => ({ ...c, optionalData: v }))}
-              label="Optional data"
-            />
-          </SettingRow>
-          <SettingRow
             title={bn ? "রিমাইন্ডার" : "Reminders"}
             desc={
               bn
@@ -157,9 +151,9 @@ export default function SettingsPage() {
             }
           >
             <Toggle
-              checked={consent.reminders}
-              onChange={(v) => setConsent((c) => ({ ...c, reminders: v }))}
-              label="Reminders"
+              checked={preferences.reminders}
+              onChange={(v) => save({ ...preferences, reminders: v })}
+              label={bn ? "রিমাইন্ডার" : "Reminders"}
             />
           </SettingRow>
         </Card>
@@ -177,8 +171,8 @@ export default function SettingsPage() {
         <Card className="space-y-3 p-4">
           <p className="text-sm text-muted-foreground">
             {bn
-              ? "ডেমো মোডে ডেটা শুধু এই ব্রাউজারে থাকে।"
-              : "In demo mode, data stays only in this browser."}
+              ? "পছন্দ ও সংরক্ষিত রিসোর্স এই ব্রাউজারে থাকে। অনলাইন চ্যাট উত্তর তৈরির জন্য প্রক্রিয়া করা হয়, সংরক্ষণ করা হয় না।"
+              : "Preferences and saved resources stay in this browser. Online chat is processed for a reply, not saved."}
           </p>
           <Button variant="destructive" onClick={clearLocal}>
             <Trash2 className="h-4 w-4" aria-hidden />

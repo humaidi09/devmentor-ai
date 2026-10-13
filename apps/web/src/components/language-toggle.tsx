@@ -12,7 +12,7 @@ export function LanguageToggle({ className }: { className?: string }) {
         className,
       )}
       role="group"
-      aria-label="Language"
+      aria-label={lang === "bn" ? "ভাষা" : "Language"}
     >
       <button
         type="button"

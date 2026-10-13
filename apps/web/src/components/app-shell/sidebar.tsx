@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { moduleVisible, usePreferences } from "@/lib/preferences";
 import { APP_NAME } from "@/lib/config";
 import { useLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -32,6 +33,7 @@ function NavLink({ item, active }: { item: NavItem; active: boolean }) {
 
 export function Sidebar() {
   const pathname = usePathname();
+  const { preferences } = usePreferences();
   const { t } = useLanguage();
   return (
     <aside className="hidden w-64 shrink-0 flex-col border-r border-border bg-card lg:flex">
@@ -39,7 +41,7 @@ export function Sidebar() {
         <BrandMark className="h-8 w-8 text-base" />
         <span className="font-bold">{APP_NAME}</span>
       </div>
-      <nav className="flex-1 space-y-6 overflow-y-auto p-3" aria-label="Main">
+      <nav className="flex-1 space-y-6 overflow-y-auto p-3" aria-label={t("mainNav")}>
         <div className="space-y-1">
           {PRIMARY_NAV.map((i) => (
             <NavLink key={i.href} item={i} active={isNavActive(pathname, i.href)} />
@@ -60,7 +62,7 @@ export function Sidebar() {
             {t("learn")}
           </p>
           <div className="space-y-1">
-            {MODULES_NAV.map((i) => (
+            {MODULES_NAV.filter(i => moduleVisible(i.href, preferences)).map((i) => (
               <NavLink key={i.href} item={i} active={isNavActive(pathname, i.href)} />
             ))}
           </div>

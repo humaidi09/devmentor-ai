@@ -8,6 +8,8 @@ export interface TableData {
  *  same shape drives array, graph, and table renderers. */
 export interface VizStep {
   explanation: string;
+  explanationBn: string;
+  tables?: TableData[];
 
   // array topics (sort / search)
   array?: number[];

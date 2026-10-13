@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/input";
 import { DEMO_CAMPUS, DEMO_RESOURCES } from "@/lib/demo-data";
+import { localize } from "@/lib/content-bn";
 import { useLanguage } from "@/lib/i18n";
 import { formatDate } from "@/lib/utils";
 
@@ -18,10 +19,10 @@ export default function HumanPage() {
   const contacts = DEMO_RESOURCES.filter(
     (r) => r.verification === "verified" && r.officialContact,
   );
-  const [draft, setDraft] = useState(
-    bn
-      ? `প্রিয় সহায়তা দল,\n\nআমি ${DEMO_CAMPUS.name}-এর একজন শিক্ষার্থী। আমি [বিষয়] নিয়ে জানতে চাই। সুবিধামতো পরবর্তী ধাপ জানালে কৃতজ্ঞ থাকব।\n\nধন্যবাদ,\n[আপনার নাম]`
-      : `Dear support team,\n\nI'm a student at ${DEMO_CAMPUS.name}. I'd like to ask about [topic]. I'd be grateful if you could let me know the next steps when convenient.\n\nThank you,\n[Your name]`,
+  const [editedDraft, setDraft] = useState<string | null>(null);
+  const draft = editedDraft ?? (bn
+      ? `প্রিয় সহায়তা দল,\n\nআমি ${localize(DEMO_CAMPUS.name, lang)}-এর একজন শিক্ষার্থী। আমি [বিষয়] নিয়ে জানতে চাই। সুবিধামতো পরবর্তী ধাপ জানালে কৃতজ্ঞ থাকব।\n\nধন্যবাদ,\n[আপনার নাম]`
+      : `Dear support team,\n\nI'm a student at ${localize(DEMO_CAMPUS.name, lang)}. I'd like to ask about [topic]. I'd be grateful if you could let me know the next steps when convenient.\n\nThank you,\n[Your name]`
   );
   const [copied, setCopied] = useState(false);
 
@@ -48,14 +49,14 @@ export default function HumanPage() {
 
       <div className="space-y-3">
         {contacts.map((c) => (
-          <Card key={c.id} className="p-4">
+          <Card key={c.id} className="p-4"><p className="mb-2 text-xs text-muted-foreground">{bn ? "নমুনা — বাস্তব যোগাযোগ নয়" : "DEMO — fictional contact"}</p>
             <div className="flex items-start justify-between gap-2">
-              <h2 className="font-bold">{c.name}</h2>
+              <h2 className="font-bold">{localize(c.name, lang)}</h2>
               <VerificationBadge state={c.verification} />
             </div>
             <p className="mt-1 flex items-center gap-1 text-sm text-muted-foreground">
               <MapPin className="h-3.5 w-3.5 shrink-0" aria-hidden />
-              {c.location}
+              {localize(c.location, lang)}
             </p>
             {c.officialContact && (
               <p className="mt-1 flex items-center gap-1 text-sm">
@@ -65,7 +66,7 @@ export default function HumanPage() {
             )}
             <div className="mt-2 flex items-center justify-between">
               <span className="text-xs text-muted-foreground">
-                {t("lastChecked")}: {formatDate(c.lastCheckedAt)}
+                {t("lastChecked")}: {formatDate(c.lastCheckedAt, lang)}
               </span>
               <a
                 href={c.source.url}
@@ -88,7 +89,8 @@ export default function HumanPage() {
             ? "Close AI শুধু খসড়া করে দেয়। পাঠানো বা না-পাঠানো সম্পূর্ণ আপনার সিদ্ধান্ত।"
             : "Close AI only drafts. Whether and how to send it is entirely your choice."}
         </p>
-        <Textarea
+        <label htmlFor="human-draft" className="mt-3 block text-sm font-medium">{bn ? "খসড়া বার্তা" : "Draft message"}</label>
+        <Textarea id="human-draft"
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           className="mt-3 min-h-[160px] font-mono text-xs"

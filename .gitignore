@@ -43,3 +43,6 @@ logs/
 # ---- Supabase local ----
 supabase/.branches/
 supabase/.temp/
+
+# Generated per-build offline worker
+/apps/web/public/sw.js

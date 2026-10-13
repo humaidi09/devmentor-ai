@@ -1,5 +1,7 @@
 # Phase 1 Review
 
+> Historical planning review. The repository has since been inspected and Phase 2 demo code added under `apps/web`. See [Phase 2 report](PHASE_2_REPORT.md). The original assumptions and open decisions below describe the planning handoff, not the current code inventory.
+
 ## A. Product summary
 Close AI is a student-support workspace that helps a student state a barrier, locate verified campus support, understand next steps, and reach a human when appropriate. Optional learning modules remain separate from this primary support experience.
 

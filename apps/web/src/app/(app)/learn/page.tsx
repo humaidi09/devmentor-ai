@@ -8,10 +8,12 @@ import { PageHeader } from "@/components/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { DEMO_PATHWAYS, DEMO_SNIPPETS } from "@/lib/modules-data";
+import { localize } from "@/lib/content-bn";
 import { useLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 function SnippetCard({ title, language, code }: { title: string; language: string; code: string }) {
+  const { lang } = useLanguage();
   const [copied, setCopied] = useState(false);
   async function copy() {
     try {
@@ -31,7 +33,7 @@ function SnippetCard({ title, language, code }: { title: string; language: strin
         </div>
         <button type="button" onClick={copy} className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs text-muted-foreground hover:bg-muted hover:text-foreground">
           <Copy className="h-3 w-3" aria-hidden />
-          {copied ? "Copied" : "Copy"}
+          {copied ? (lang === "bn" ? "কপি হয়েছে" : "Copied") : (lang === "bn" ? "কপি করুন" : "Copy")}
         </button>
       </div>
       <pre className="overflow-x-auto p-4 text-xs">
@@ -73,7 +75,7 @@ export default function LearnPage() {
 
       <Card className="p-5">
         <h2 className="font-bold">{bn ? pathway.nameBn : pathway.name}</h2>
-        <p className="mb-4 text-sm text-muted-foreground">{pathway.summary}</p>
+        <p className="mb-4 text-sm text-muted-foreground">{localize(pathway.summary, lang)}</p>
         <ol className="space-y-1">
           {pathway.milestones.map((m, idx) => {
             const key = `${pathway.id}:${idx}`;
@@ -94,7 +96,7 @@ export default function LearnPage() {
                   >
                     {d ? <Check className="h-3.5 w-3.5" aria-hidden /> : idx + 1}
                   </span>
-                  <span className={cn("text-sm", d && "text-muted-foreground line-through")}>{m}</span>
+                  <span className={cn("text-sm", d && "text-muted-foreground line-through")}>{localize(m, lang)}</span>
                 </button>
               </li>
             );
@@ -106,7 +108,7 @@ export default function LearnPage() {
         <h2 className="mb-3 font-bold">{bn ? "স্নিপেট" : "Snippets"}</h2>
         <div className="space-y-3">
           {DEMO_SNIPPETS.map((s) => (
-            <SnippetCard key={s.id} title={s.title} language={s.language} code={s.code} />
+            <SnippetCard key={s.id} title={localize(s.title, lang)} language={s.language} code={s.code} />
           ))}
         </div>
       </section>

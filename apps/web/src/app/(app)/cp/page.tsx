@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { DEMO_CP_PROBLEMS, type CPStatus } from "@/lib/modules-data";
+import { localize } from "@/lib/content-bn";
 import { useLanguage } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
@@ -55,8 +56,8 @@ export default function CPPage() {
                   <div className="mt-1 flex flex-wrap items-center gap-1.5">
                     <Badge variant="info">{p.rating}</Badge>
                     {p.tags.map((t) => (
-                      <Badge key={t} variant="muted">
-                        {t}
+                      <Badge key={localize(t, lang)} variant="muted">
+                        {localize(t, lang)}
                       </Badge>
                     ))}
                   </div>
@@ -86,7 +87,7 @@ export default function CPPage() {
                   {hint[p.id] ? (bn ? "হিন্ট লুকান" : "Hide hint") : bn ? "হিন্ট দরকার" : "Need a hint"}
                 </button>
               </div>
-              {hint[p.id] && <p className="mt-2 rounded-md bg-warning/10 p-2 text-xs text-warning">{p.hint}</p>}
+              {hint[p.id] && <p className="mt-2 rounded-md bg-warning/10 p-2 text-xs text-warning">{localize(p.hint, lang)}</p>}
               {st === "attempted" && (
                 <p className="mt-2 text-xs text-muted-foreground">{bn ? "পরে upsolve করার জন্য চিহ্নিত।" : "Marked to upsolve later."}</p>
               )}

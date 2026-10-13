@@ -1,8 +1,11 @@
 "use client";
 
+import { useLanguage } from "@/lib/i18n";
+import { localize } from "@/lib/content-bn";
 import type { VizStep } from "@/lib/visual/types";
 
 export function GraphRenderer({ step }: { step: VizStep }) {
+  const { lang } = useLanguage();
   const nodes = step.nodes ?? [];
   const edges = step.edges ?? [];
   const visited = new Set(step.visited ?? []);
@@ -19,7 +22,7 @@ export function GraphRenderer({ step }: { step: VizStep }) {
 
   return (
     <div className="flex flex-col items-center gap-3">
-      <svg viewBox="0 0 240 240" className="h-56 w-56 max-w-full" role="img" aria-label="Graph visualization">
+      <svg viewBox="0 0 240 240" className="h-56 w-56 max-w-full" role="img" aria-label={lang === "bn" ? "গ্রাফ চিত্র" : "Graph visualization"}>
         {edges.map(([u, v], k) => (
           <line key={k} x1={pos[u]?.x} y1={pos[u]?.y} x2={pos[v]?.x} y2={pos[v]?.y} stroke="hsl(var(--border))" strokeWidth={2} />
         ))}
@@ -46,12 +49,12 @@ export function GraphRenderer({ step }: { step: VizStep }) {
           );
         })}
       </svg>
-      <div className="w-full space-y-1 text-xs">
+      <div className="w-full space-y-1 text-xs"><p>{lang === "bn" ? "বর্তমান নোড:" : "Current node:"} {current ?? "—"}</p>
         <p>
-          <span className="font-semibold">{step.frontierLabel ?? "Frontier"}:</span> [{(step.frontier ?? []).join(", ")}]
+          <span className="font-semibold">{localize(step.frontierLabel ?? "Frontier", lang)}:</span> [{(step.frontier ?? []).join(", ")}]
         </p>
         <p>
-          <span className="font-semibold">Visited order:</span> {(step.order ?? []).join(" → ") || "—"}
+          <span className="font-semibold">{lang === "bn" ? "পরিদর্শনের ক্রম:" : "Visited order:"}</span> {(step.order ?? []).join(" → ") || "—"}
         </p>
       </div>
     </div>
