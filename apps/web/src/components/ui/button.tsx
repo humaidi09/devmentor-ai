@@ -23,7 +23,7 @@ export function buttonVariants(
   { variant = "primary", size = "md" }: { variant?: Variant; size?: Size } = {},
 ) {
   return cn(
-    "inline-flex items-center justify-center gap-2 rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50",
+    "inline-flex items-center justify-center gap-2 rounded-md font-medium transition-[transform,background-color,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-lift active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 disabled:hover:translate-y-0",
     variants[variant],
     sizes[size],
   );

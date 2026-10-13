@@ -38,6 +38,245 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+.landing-shell {
+  background:
+    radial-gradient(circle at 85% 11%, rgba(74, 205, 191, 0.2), transparent 25rem),
+    radial-gradient(circle at 7% 28%, rgba(114, 167, 241, 0.12), transparent 31rem),
+    hsl(var(--background));
+}
+
+.landing-header {
+  border-bottom: 1px solid hsl(var(--border) / 0.55);
+  background: hsl(var(--background) / 0.72);
+  backdrop-filter: blur(16px);
+}
+
+.hero-eyebrow {
+  border: 1px solid rgba(15, 118, 110, 0.18);
+  color: hsl(var(--primary));
+  background: rgba(234, 250, 247, 0.85);
+}
+
+.hero-status-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #0d9488;
+  box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.12);
+}
+
+.hero-highlight {
+  color: hsl(var(--primary));
+  background: linear-gradient(100deg, #0b766f 5%, #148f9f 55%, #365fb4 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-visual {
+  isolation: isolate;
+}
+
+.hero-visual-card {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(233, 249, 247, 0.96));
+  box-shadow: 0 32px 80px -38px rgba(13, 83, 90, 0.43), 0 14px 32px -22px rgba(15, 23, 42, 0.2);
+}
+
+.hero-visual-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(15, 118, 110, 0.11) 0.8px, transparent 0.8px);
+  background-size: 17px 17px;
+  mask-image: linear-gradient(110deg, transparent 45%, black);
+}
+
+.hero-orb {
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  filter: blur(2px);
+}
+
+.hero-orb-one {
+  width: 12rem;
+  height: 12rem;
+  top: -2.5rem;
+  right: -2rem;
+  background: rgba(72, 188, 177, 0.27);
+}
+
+.hero-orb-two {
+  width: 9rem;
+  height: 9rem;
+  bottom: -2rem;
+  left: -2rem;
+  background: rgba(120, 153, 229, 0.21);
+}
+
+.hero-visual-spark {
+  color: #0d9488;
+}
+
+.journey-list::before {
+  content: "";
+  position: absolute;
+  top: 2rem;
+  bottom: 2rem;
+  left: 2.1rem;
+  width: 2px;
+  background: linear-gradient(#2db7ac, #86a9df);
+}
+
+.journey-icon {
+  color: hsl(var(--primary));
+  background: #e0f5f0;
+}
+
+.journey-step:nth-child(2) .journey-icon {
+  color: #365eb0;
+  background: #e9effd;
+}
+
+.journey-step:nth-child(3) .journey-icon {
+  color: #8a4da8;
+  background: #f4ebfb;
+}
+
+.section-kicker {
+  color: hsl(var(--primary));
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.path-card {
+  overflow: hidden;
+  transition: transform 260ms ease, box-shadow 260ms ease, border-color 260ms ease;
+}
+
+.path-card::before {
+  content: "";
+  position: absolute;
+  right: -3rem;
+  top: -3rem;
+  width: 10rem;
+  height: 10rem;
+  border-radius: 50%;
+  background: var(--path-wash);
+  opacity: 0.6;
+  transition: transform 350ms ease, opacity 350ms ease;
+}
+
+.path-card:hover,
+.path-card:focus-visible {
+  transform: translateY(-5px);
+  border-color: var(--path-color);
+  box-shadow: 0 18px 34px -20px rgba(15, 23, 42, 0.32);
+}
+
+.path-card:hover::before,
+.path-card:focus-visible::before {
+  transform: scale(1.28);
+  opacity: 1;
+}
+
+.path-icon {
+  color: var(--path-color);
+  background: var(--path-wash);
+}
+
+.path-arrow {
+  color: var(--path-color);
+  transition: transform 260ms ease;
+}
+
+.path-card:hover .path-arrow,
+.path-card:focus-visible .path-arrow {
+  transform: translateX(4px);
+}
+
+.path-card-teal { --path-color: #0d766e; --path-wash: #e0f5f0; }
+.path-card-blue { --path-color: #305eaf; --path-wash: #e8efff; }
+.path-card-violet { --path-color: #7550a9; --path-wash: #f1eafb; }
+.path-card-amber { --path-color: #a75c12; --path-wash: #fff1da; }
+.path-card-rose { --path-color: #af5268; --path-wash: #fce9ef; }
+
+.feature-band {
+  background: linear-gradient(125deg, rgba(230, 248, 245, 0.9), rgba(235, 241, 254, 0.8));
+}
+
+.app-shell {
+  background:
+    radial-gradient(circle at 88% 4%, rgba(78, 190, 181, 0.09), transparent 28rem),
+    hsl(var(--background));
+}
+
+.app-sidebar {
+  background: linear-gradient(180deg, #fff, #f7fbfa);
+}
+
+.app-nav-link {
+  transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.app-nav-link:hover {
+  transform: translateX(3px);
+}
+
+.app-nav-link[aria-current="page"] {
+  box-shadow: inset 3px 0 hsl(var(--primary));
+}
+
+.dashboard-hero {
+  background: linear-gradient(115deg, #e4f6f1 0%, #edf5fd 65%, #f7f3fd 100%);
+  border: 1px solid rgba(93, 171, 172, 0.28);
+}
+
+.dashboard-starter {
+  transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
+}
+
+.dashboard-starter:hover {
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes soft-rise {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes float-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+
+  @keyframes dot-breathe {
+    0%, 100% { box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.12); }
+    50% { box-shadow: 0 0 0 8px rgba(13, 148, 136, 0.04); }
+  }
+
+  .hero-copy { animation: soft-rise 650ms both; }
+  .hero-visual { animation: soft-rise 700ms 140ms both; }
+  .journey-step { animation: soft-rise 550ms both; }
+  .journey-step:nth-child(1) { animation-delay: 280ms; }
+  .journey-step:nth-child(2) { animation-delay: 390ms; }
+  .journey-step:nth-child(3) { animation-delay: 500ms; }
+  .hero-orb-one { animation: float-slow 7s ease-in-out infinite; }
+  .hero-orb-two { animation: float-slow 9s 1s ease-in-out infinite reverse; }
+  .hero-float-label { animation: float-slow 6s 1.5s ease-in-out infinite; }
+  .hero-status-dot { animation: dot-breathe 3s ease-in-out infinite; }
+  .path-card { animation: soft-rise 550ms both; }
+  .path-card:nth-child(2) { animation-delay: 70ms; }
+  .path-card:nth-child(3) { animation-delay: 140ms; }
+  .path-card:nth-child(4) { animation-delay: 210ms; }
+  .path-card:nth-child(5) { animation-delay: 280ms; }
+}
+
 @layer base {
   h1,
   h2,

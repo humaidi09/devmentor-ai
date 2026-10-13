@@ -19,7 +19,7 @@ function NavLink({ item, active }: { item: NavItem; active: boolean }) {
       href={item.href}
       aria-current={active ? "page" : undefined}
       className={cn(
-        "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+        "app-nav-link flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium",
         active
           ? "bg-primary/10 text-primary"
           : "text-muted-foreground hover:bg-muted hover:text-foreground",
@@ -36,7 +36,7 @@ export function Sidebar() {
   const { preferences } = usePreferences();
   const { t } = useLanguage();
   return (
-    <aside className="hidden w-64 shrink-0 flex-col border-r border-border bg-card lg:flex">
+    <aside className="app-sidebar hidden w-64 shrink-0 flex-col border-r border-border lg:flex">
       <div className="flex h-16 items-center gap-2 border-b border-border px-5">
         <BrandMark className="h-8 w-8 text-base" />
         <span className="font-bold">{APP_NAME}</span>
