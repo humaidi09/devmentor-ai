@@ -1,8 +1,9 @@
 "use client";
 
 import { ExternalLink, Lightbulb } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+import { useAccount } from "@/lib/account";
 import { PageHeader } from "@/components/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -19,26 +20,53 @@ const STATUS_OPTIONS: { key: CPStatus; en: string; bn: string }[] = [
 ];
 
 export default function CPPage() {
+  const { demo, data, mutate, busy } = useAccount();
   const { lang } = useLanguage();
   const bn = lang === "bn";
   const [handle, setHandle] = useState("");
-  const [status, setStatus] = useState<Record<string, CPStatus>>({});
+  useEffect(() => {
+    if (!demo && data) setHandle(data.cpHandle);
+  }, [demo, data]);
+  const [localStatus, setStatus] = useState<Record<string, CPStatus>>({});
   const [hint, setHint] = useState<Record<string, boolean>>({});
 
+  const status = demo ? localStatus : (data?.cpStatus ?? {});
   return (
     <div className="space-y-6">
       <PageHeader
         title={bn ? "CP কোচ" : "CP Coach"}
-        subtitle={bn ? "প্র্যাকটিস ট্র্যাক করুন। হিন্ট আগে, উত্তর নয়। এখন লোকাল/ডেমো ট্র্যাকিং।" : "Track practice. Hints first, not answers. Local/demo tracking for now."}
+        subtitle={
+          bn
+            ? "প্র্যাকটিস ট্র্যাক করুন। হিন্ট আগে, উত্তর নয়। এখন লোকাল/ডেমো ট্র্যাকিং।"
+            : "Track practice. Hints first, not answers. Local/demo tracking for now."
+        }
       />
 
       <Card className="p-4">
         <label htmlFor="cf" className="mb-1.5 block text-sm font-medium">
-          {bn ? "Codeforces হ্যান্ডেল (ঐচ্ছিক)" : "Codeforces handle (optional)"}
+          {bn
+            ? "Codeforces হ্যান্ডেল (ঐচ্ছিক)"
+            : "Codeforces handle (optional)"}
         </label>
-        <Input id="cf" value={handle} onChange={(e) => setHandle(e.target.value)} placeholder="tourist" className="max-w-xs" />
+        <Input
+          id="cf"
+          maxLength={24}
+          onBlur={() => {
+            if (!demo) void mutate("cp-handle", { handle });
+          }}
+          value={handle}
+          onChange={(e) => setHandle(e.target.value)}
+          placeholder="tourist"
+          className="max-w-xs"
+        />
         <p className="mt-2 text-xs text-muted-foreground">
-          {bn ? "ডেমোতে হ্যান্ডেল শুধু লোকালি রাখা হয়। আসল Codeforces সংযোগ পরে আসবে।" : "In demo, the handle is kept locally only. Real Codeforces sync comes later."}
+          {!demo
+            ? bn
+              ? "হ্যান্ডেল শুধু পছন্দ হিসেবে সংরক্ষিত; Codeforces দিয়ে যাচাই করা হয়নি।"
+              : "Stored as a preference only; not verified through Codeforces."
+            : bn
+              ? "ডেমোতে হ্যান্ডেল শুধু লোকালি রাখা হয়। আসল Codeforces সংযোগ পরে আসবে।"
+              : "In demo, the handle is kept locally only. Real Codeforces sync comes later."}
         </p>
       </Card>
 
@@ -49,7 +77,12 @@ export default function CPPage() {
             <Card key={p.id} className="p-4">
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <div className="min-w-0">
-                  <a href={p.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-bold text-primary hover:underline">
+                  <a
+                    href={p.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 font-bold text-primary hover:underline"
+                  >
                     {p.name}
                     <ExternalLink className="h-3.5 w-3.5" aria-hidden />
                   </a>
@@ -68,11 +101,25 @@ export default function CPPage() {
                   <button
                     key={s.key}
                     type="button"
-                    onClick={() => setStatus((x) => ({ ...x, [p.id]: x[p.id] === s.key ? "none" : s.key }))}
+                    disabled={busy}
+                    onClick={() => {
+                      if (demo)
+                        setStatus((x) => ({
+                          ...x,
+                          [p.id]: x[p.id] === s.key ? "none" : s.key,
+                        }));
+                      else
+                        void mutate("cp", {
+                          problem: p.id,
+                          status: st === s.key ? "none" : s.key,
+                        });
+                    }}
                     aria-pressed={st === s.key}
                     className={cn(
                       "rounded-full border px-3 py-1 text-xs font-medium transition-colors",
-                      st === s.key ? "border-primary bg-primary text-primary-foreground" : "border-border hover:bg-muted",
+                      st === s.key
+                        ? "border-primary bg-primary text-primary-foreground"
+                        : "border-border hover:bg-muted",
                     )}
                   >
                     {bn ? s.bn : s.en}
@@ -84,12 +131,26 @@ export default function CPPage() {
                   className="ml-auto inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
                 >
                   <Lightbulb className="h-3.5 w-3.5" aria-hidden />
-                  {hint[p.id] ? (bn ? "হিন্ট লুকান" : "Hide hint") : bn ? "হিন্ট দরকার" : "Need a hint"}
+                  {hint[p.id]
+                    ? bn
+                      ? "হিন্ট লুকান"
+                      : "Hide hint"
+                    : bn
+                      ? "হিন্ট দরকার"
+                      : "Need a hint"}
                 </button>
               </div>
-              {hint[p.id] && <p className="mt-2 rounded-md bg-warning/10 p-2 text-xs text-warning">{localize(p.hint, lang)}</p>}
+              {hint[p.id] && (
+                <p className="mt-2 rounded-md bg-warning/10 p-2 text-xs text-warning">
+                  {localize(p.hint, lang)}
+                </p>
+              )}
               {st === "attempted" && (
-                <p className="mt-2 text-xs text-muted-foreground">{bn ? "পরে upsolve করার জন্য চিহ্নিত।" : "Marked to upsolve later."}</p>
+                <p className="mt-2 text-xs text-muted-foreground">
+                  {bn
+                    ? "পরে upsolve করার জন্য চিহ্নিত।"
+                    : "Marked to upsolve later."}
+                </p>
               )}
             </Card>
           );

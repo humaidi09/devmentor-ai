@@ -14,7 +14,8 @@ import {
 import { VerificationBadge } from "@/components/verification-badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { getDemoResource } from "@/lib/demo-data";
+import { useResources } from "@/lib/resources";
+import { useAccount } from "@/lib/account";
 import { localize } from "@/lib/content-bn";
 import { useLanguage } from "@/lib/i18n";
 import { useSavedResources } from "@/lib/saved-store";
@@ -23,7 +24,9 @@ import { formatDate } from "@/lib/utils";
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex flex-col gap-0.5 p-4 sm:flex-row sm:gap-4">
-      <span className="w-32 shrink-0 text-sm font-medium text-muted-foreground">{label}</span>
+      <span className="w-32 shrink-0 text-sm font-medium text-muted-foreground">
+        {label}
+      </span>
       <span className="text-sm">{value}</span>
     </div>
   );
@@ -34,7 +37,13 @@ export default function ResourceDetailPage() {
   const { t, lang } = useLanguage();
   const bn = lang === "bn";
   const { isSaved, toggle } = useSavedResources();
-  const resource = getDemoResource(params.id);
+  const { resources, loading, error } = useResources();
+  const { busy } = useAccount();
+  const resource = resources.find((r) => r.id === params.id);
+  if (loading)
+    return <p role="status">{bn ? "লোড হচ্ছে…" : "Loading resource…"}</p>;
+  if (error)
+    return <p role="alert">{bn ? "রিসোর্স লোড করা যায়নি।" : error}</p>;
 
   if (!resource) {
     return (
@@ -79,35 +88,71 @@ export default function ResourceDetailPage() {
         </div>
       )}
 
-      {resource.isDemo && <p className="mb-2 text-sm text-muted-foreground">{bn ? "নমুনা — বাস্তব সেবা নয়" : "DEMO — fictional service"}</p>}
+      {resource.isDemo && (
+        <p className="mb-2 text-sm text-muted-foreground">
+          {bn ? "নমুনা — বাস্তব সেবা নয়" : "DEMO — fictional service"}
+        </p>
+      )}
       <div className="mb-2 flex items-start justify-between gap-3">
         <h1 className="text-2xl font-bold">{localize(resource.name, lang)}</h1>
         <VerificationBadge state={resource.verification} />
       </div>
-      <p className="text-muted-foreground">{localize(resource.description, lang)}</p>
+      <p className="text-muted-foreground">
+        {localize(resource.description, lang)}
+      </p>
 
       <Card className="mt-5 divide-y divide-border">
-        <Row label={bn ? "যোগ্যতা" : "Eligibility"} value={localize(resource.eligibility, lang)} />
-        <Row label={bn ? "খরচ" : "Cost"} value={resource.cost ? localize(resource.cost, lang) : (bn ? "উল্লেখ নেই" : "Not stated")} />
-        <Row label={bn ? "অবস্থান" : "Location"} value={localize(resource.location, lang)} />
+        <Row
+          label={bn ? "যোগ্যতা" : "Eligibility"}
+          value={localize(resource.eligibility, lang)}
+        />
+        <Row
+          label={bn ? "খরচ" : "Cost"}
+          value={
+            resource.cost
+              ? localize(resource.cost, lang)
+              : bn
+                ? "উল্লেখ নেই"
+                : "Not stated"
+          }
+        />
+        <Row
+          label={bn ? "অবস্থান" : "Location"}
+          value={localize(resource.location, lang)}
+        />
         {resource.officialContact && (
-          <Row label={bn ? "যোগাযোগ" : "Contact"} value={resource.officialContact} />
+          <Row
+            label={bn ? "যোগাযোগ" : "Contact"}
+            value={resource.officialContact}
+          />
         )}
-        <Row label={t("lastChecked")} value={formatDate(resource.lastCheckedAt, lang)} />
+        <Row
+          label={t("lastChecked")}
+          value={formatDate(resource.lastCheckedAt, lang)}
+        />
         {resource.timeSensitiveDate && (
-          <Row label={bn ? "গুরুত্বপূর্ণ তারিখ" : "Key date"} value={formatDate(resource.timeSensitiveDate, lang)} />
+          <Row
+            label={bn ? "গুরুত্বপূর্ণ তারিখ" : "Key date"}
+            value={formatDate(resource.timeSensitiveDate, lang)}
+          />
         )}
       </Card>
 
-      <a
-        href={resource.source.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
-      >
-        <ExternalLink className="h-4 w-4" aria-hidden />
-        {t("officialSource")}: {localize(resource.source.label, lang)}
-      </a>
+      {resource.source.url ? (
+        <a
+          href={resource.source.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+        >
+          <ExternalLink className="h-4 w-4" aria-hidden />
+          {t("officialSource")}: {localize(resource.source.label, lang)}
+        </a>
+      ) : (
+        <p className="mt-4 text-sm">
+          {bn ? "উৎস দেওয়া হয়নি।" : "No official source provided."}
+        </p>
+      )}
 
       <p className="mt-4 rounded-md bg-muted/50 p-3 text-xs text-muted-foreground">
         {bn
@@ -116,7 +161,11 @@ export default function ResourceDetailPage() {
       </p>
 
       <div className="mt-5 flex flex-wrap gap-2">
-        <Button variant={saved ? "secondary" : "primary"} onClick={() => toggle(resource.id)}>
+        <Button
+          variant={saved ? "secondary" : "primary"}
+          disabled={busy}
+          onClick={() => toggle(resource.id)}
+        >
           {saved ? (
             <>
               <BookmarkCheck className="h-4 w-4" aria-hidden />
@@ -129,11 +178,17 @@ export default function ResourceDetailPage() {
             </>
           )}
         </Button>
-        <Link href="/support/steps" className={buttonVariants({ variant: "secondary" })}>
+        <Link
+          href={`/support/steps?resource=${encodeURIComponent(resource.id)}`}
+          className={buttonVariants({ variant: "secondary" })}
+        >
           <ListChecks className="h-4 w-4" aria-hidden />
           {t("createChecklist")}
         </Link>
-        <Link href="/support/human" className={buttonVariants({ variant: "secondary" })}>
+        <Link
+          href="/support/human"
+          className={buttonVariants({ variant: "secondary" })}
+        >
           <Users className="h-4 w-4" aria-hidden />
           {t("talkToHuman")}
         </Link>

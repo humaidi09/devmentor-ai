@@ -15,7 +15,7 @@ self.addEventListener('install', event => {
       await Promise.all(PAGES.slice(i, i + 4).map(async path => {
         try {
           const response = await fetch(path, {cache: 'reload'});
-          if (!response.ok || !response.headers.get('content-type')?.includes('text/html')) return;
+          if (!response.ok || (/private|no-store/.test(response.headers.get('cache-control') || '') && response.headers.get('X-Close-AI-Cache') !== 'public-demo') || !response.headers.get('content-type')?.includes('text/html')) return;
           const html = await response.clone().text();
           await cache.put(path, response);
           const urls = [...html.matchAll(/(?:src|href)="([^"<>]+)"/g)].map(m => new URL(m[1].replaceAll('&amp;', '&'), self.location.origin)).filter(asset);
@@ -57,7 +57,7 @@ self.addEventListener('fetch', event => {
       const cache = await caches.open(CACHE);
       try {
         const response = await fetch(request, {signal: AbortSignal.timeout(4000)});
-        if (response.ok && ALLOWED.has(url.pathname) && !url.search && response.headers.get('content-type')?.includes('text/html')) await cache.put(url.pathname, response.clone());
+        if (response.ok && !(/private|no-store/.test(response.headers.get('cache-control') || '') && response.headers.get('X-Close-AI-Cache') !== 'public-demo') && ALLOWED.has(url.pathname) && !url.search && response.headers.get('content-type')?.includes('text/html')) await cache.put(url.pathname, response.clone());
         if (response.status >= 500) throw new Error('unavailable');
         return response;
       } catch {

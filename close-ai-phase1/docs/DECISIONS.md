@@ -1,5 +1,7 @@
 # Architecture & Product Decision Record
 
+> Historical Phase 1 planning. See the implemented Phase 3 [architecture](../../docs/ARCHITECTURE.md), [privacy](../../docs/PRIVACY_AND_SAFETY.md), [decisions](../../docs/DECISIONS.md) and [report](../../PHASE_3_REPORT.md).
+
 ## D-001 — Student Support remains primary
 **Decision:** Student Support is the visually dominant module.  
 **Reason:** It defines the core product value: moving students from barriers to real support.  

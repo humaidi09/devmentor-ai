@@ -8,6 +8,8 @@ import {
   type ReactNode,
 } from "react";
 
+import { useAccount } from "./account";
+
 export type Lang = "en" | "bn";
 
 type Dict = Record<string, { en: string; bn: string }>;
@@ -68,24 +70,54 @@ interface LanguageCtx {
 const Ctx = createContext<LanguageCtx | null>(null);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
+  const { demo, data, request } = useAccount();
   const [lang, setLangState] = useState<Lang>("en");
 
   useEffect(() => {
+    if (!demo) return;
     let saved: Lang | null = null;
-    try { saved =
-      typeof window !== "undefined"
-        ? (window.localStorage.getItem("close-ai-lang") as Lang | null)
-        : null; } catch { /* storage can be disabled */ }
+    try {
+      saved =
+        typeof window !== "undefined"
+          ? (window.localStorage.getItem("close-ai-lang") as Lang | null)
+          : null;
+    } catch {
+      /* storage can be disabled */
+    }
     if (saved === "en" || saved === "bn") {
       setLangState(saved);
       document.documentElement.lang = saved;
     }
-  }, []);
+  }, [demo]);
+
+  useEffect(() => {
+    if (!demo && data) {
+      const value = data.profile.preferred_language === "bn" ? "bn" : "en";
+      setLangState(value);
+      document.documentElement.lang = value;
+    }
+  }, [demo, data]);
 
   function setLang(l: Lang) {
+    if (!demo && data) {
+      const previous = lang;
+      setLangState(l);
+      document.documentElement.lang = l;
+      void request("/api/account", { preferred_language: l }, "PATCH").catch(
+        () => {
+          setLangState(previous);
+          document.documentElement.lang = previous;
+        },
+      );
+      return;
+    }
     setLangState(l);
     if (typeof window !== "undefined") {
-      try { window.localStorage.setItem("close-ai-lang", l); } catch { /* session-only language */ }
+      try {
+        window.localStorage.setItem("close-ai-lang", l);
+      } catch {
+        /* session-only language */
+      }
       document.documentElement.lang = l;
     }
   }

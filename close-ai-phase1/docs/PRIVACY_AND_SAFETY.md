@@ -1,5 +1,7 @@
 # Privacy and Safety
 
+> Historical Phase 1 planning. See the implemented Phase 3 [architecture](../../docs/ARCHITECTURE.md), [privacy](../../docs/PRIVACY_AND_SAFETY.md), [decisions](../../docs/DECISIONS.md) and [report](../../PHASE_3_REPORT.md).
+
 ## Core rule
 Student Support should collect and expose the minimum information needed to help the student. Student learning activity and sensitive support conversations should not be treated as one undifferentiated dataset.
 

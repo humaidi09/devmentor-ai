@@ -1,112 +1,15 @@
-# Architecture
+# Close AI implemented architecture
 
-## System overview
+Close AI uses the existing Next.js application in `apps/web` as its server and frontend. The earlier FastAPI/DevMentor service is retained in the repository but is not called by this app. Historical Phase 1 rationale is in `close-ai-phase1/docs/ARCHITECTURE.md`; current implementation and validation are in `PHASE_3_REPORT.md`.
 
-```mermaid
-flowchart LR
-  U[User browser] -->|HTTPS| W[Next.js on Vercel]
-  W -->|Supabase JS: email/password auth| S[(Supabase Auth)]
-  W -->|REST + Bearer JWT| A[FastAPI on Render]
-  A -->|verify JWT HS256| S
-  A -->|RLS-scoped PostgREST| DB[(Supabase Postgres + RLS)]
-  A -->|optional| G[Google Gemini]
-  A -->|public API| CF[Codeforces API]
-  A -->|optional| EM[Resend email]
-  GH[GitHub Actions cron] -->|x-cron-secret| A
-```
+Browser → same-origin Next.js routes → Supabase Auth/PostgREST → PostgreSQL RLS. `@supabase/ssr` maintains cookie sessions; middleware refreshes them and `getUser` verifies the identity. Private API handlers repeat verification and derive ownership from the verified user. They carry the user's session to PostgREST; no service-role client is used.
 
-- The browser authenticates directly with **Supabase Auth** and sends the
-  resulting JWT to FastAPI.
-- FastAPI **verifies** the JWT (HS256, `SUPABASE_JWT_SECRET`), then builds a
-  Supabase client **carrying that token**, so Postgres **Row Level Security**
-  enforces per-user access on every query.
-- The **service-role** key is used *only* by cron jobs and never reaches the
-  browser.
-- With no secrets, the API runs in **demo mode** against an in-memory store and
-  mock AI.
+`lib/account` holds transient account UI data and explicit write outcomes; `lib/resources` supplies the selected campus directory. Demo providers retain the original local data paths. Server routes validate strict allowlists, IDs, enums, HTTPS sources and times. Mutations require the canonical request origin. `CLOSE_AI_SITE_URL` can fix the trusted origin behind a reverse proxy and must match the deployment using it.
 
-## Request lifecycle
+Profiles/module preferences are separate from private support saves/plans and optional learning tables. Composite foreign keys prevent attaching another user's plan/step/course. RLS is mandatory on every table. Resource staff roles are campus-scoped, assigned by a SQL operator, and grant no access to other students' data.
 
-```mermaid
-sequenceDiagram
-  participant B as Browser
-  participant A as FastAPI
-  participant D as Postgres (RLS)
-  B->>A: GET /api/dashboard (Bearer JWT)
-  A->>A: decode_token() -> user.id
-  A->>A: get_store_for_user() (RLS-scoped client)
-  A->>D: select tasks/deadlines/... where user_id = auth.uid()
-  D-->>A: rows (RLS filtered)
-  A-->>B: aggregated dashboard JSON
-```
+Resource changes use guard/audit triggers. Reviewers need checked evidence to verify; edits invalidate old verification. Students read published lifecycle states, while never-published drafts/review submissions and internal review notes remain restricted. The frontend downgrades a verified record whose review/deadline has elapsed to an expired display without claiming a scheduler updated the stored state.
 
-## Agentic workflow (chat)
+Sensitive mock conversations are not stored. Visual algorithms and explanations remain deterministic local definitions. Service-worker cache is limited to demonstrably public fictional pages/assets; account mode removes it and private responses use no-store.
 
-The orchestrator is a **controlled, observable** flow — not autonomous agents.
-
-```mermaid
-flowchart TD
-  M[User message] --> IC[Intent classifier]
-  IC --> CTX[Gather context: profile, CP prefs, tasks, snippets]
-  CTX --> R{Intent}
-  R -->|snippet_lookup| SN[Search snippet library] --> P
-  R -->|study_plan / task| LP[Learning Planner hints] --> P
-  R -->|cp_recommendation| CP[CP Coach hints] --> P
-  R -->|code_review / explain| DM[Developer/Study prompt] --> P
-  P[Build grounded prompt] --> AI[Gemini or mock]
-  AI --> RESP[Structured response + suggested actions + links]
-  RESP --> LOG[(agent_audit_log)]
-  RESP --> MSG[(conversations / chat_messages)]
-```
-
-**Human-in-the-loop:** suggested actions (generate plan, create task, get CP
-problems) are *proposed*, never auto-executed. Deleting data, sending email, or
-changing major preferences always requires an explicit user action.
-
-### Modules
-| Module | Code | Responsibility |
-|---|---|---|
-| Orchestrator | `agent/orchestrator.py` | route, ground, respond, audit |
-| Intent router | `agent/intent_router.py` | deterministic keyword classification |
-| Learning Planner | `services/planner_service.py` | plans, priority, recovery |
-| CP Coach | `services/cp_service.py`, `codeforces_client.py` | profile, picks |
-| Developer Assistant | `services/gemini_service.py`, snippets routes | review, snippets |
-| Notification Scheduler | `services/notification_service.py` | create/deliver |
-| Analytics & Reflection | `services/analytics_service.py` | summaries, weak topics |
-
-## Notification & cron workflow
-
-```mermaid
-flowchart LR
-  subgraph GitHub Actions (free)
-    C1[daily-planning\nevery 6h]
-    C2[send-notifications\nevery 15m]
-    C3[weekly-summary\nSun ~18:00 UTC]
-  end
-  C1 -->|x-cron-secret| EP1[/internal/cron/daily-planning/]
-  C2 -->|x-cron-secret| EP2[/internal/cron/send-notifications/]
-  C3 -->|x-cron-secret| EP3[/internal/cron/weekly-summary/]
-  EP1 --> J[Idempotent per-user processing]
-  EP2 --> J
-  EP3 --> J
-  J --> DB[(Supabase, service role)]
-```
-
-- All cron endpoints are **idempotent** and compute "today"/"this week" **per
-  user timezone**, so repeated/approximate runs are safe.
-- Delivery respects **quiet hours** and a **daily cap**; in-app always works,
-  email/push only when configured.
-
-## Data model
-14 tables in `supabase/migrations/0001`: `profiles, courses, deadlines, tasks,
-study_sessions, cp_preferences, cp_recommendations, snippets, quiz_attempts,
-notifications, weekly_summaries, conversations, chat_messages, agent_audit_log`.
-RLS in `0002`, snippet full-text search in `0003`, notification settings in `0004`.
-
-## Security model
-- Supabase Auth + JWT verification in FastAPI.
-- RLS: users touch only their own rows; built-in public snippets are read-only
-  to all; audit log is append + read-own.
-- Service role confined to server-side cron.
-- Rate limits on `/api/chat` and `/api/cp/*`; Pydantic validates all input;
-  consistent error envelope; logs never contain secrets.
+Migrations 0001–0004 are preserved; 0005–0006 adapt the actual existing schema. Legacy client grants on unused private tables are revoked. This compatibility boundary matters before applying migrations to an old shared deployment.

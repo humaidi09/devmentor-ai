@@ -2,6 +2,8 @@
 
 import { Globe, ShieldCheck, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { useAccount } from "@/lib/account";
+import { ProfileControls } from "@/components/profile-controls";
 import { usePreferences } from "@/lib/preferences";
 
 import { LanguageToggle } from "@/components/language-toggle";
@@ -15,14 +17,17 @@ function Toggle({
   checked,
   onChange,
   label,
+  disabled,
 }: {
   checked: boolean;
   onChange: (v: boolean) => void;
   label: string;
+  disabled?: boolean;
 }) {
   return (
     <button
       type="button"
+      disabled={disabled}
       role="switch"
       aria-checked={checked}
       aria-label={label}
@@ -63,11 +68,13 @@ function SettingRow({
 }
 
 export default function SettingsPage() {
+  const { demo, busy } = useAccount();
   const { t, lang } = useLanguage();
   const bn = lang === "bn";
   const { preferences, save, storageUnavailable } = usePreferences();
   const modules = preferences.modules;
-  const setModules = (update: (m: typeof modules) => typeof modules) => save({ ...preferences, modules: update(modules) });
+  const setModules = (update: (m: typeof modules) => typeof modules) =>
+    save({ ...preferences, modules: update(modules) });
 
   function clearLocal() {
     if (typeof window === "undefined") return;
@@ -77,15 +84,27 @@ export default function SettingsPage() {
         : "This clears the demo data stored in this browser. Continue?",
     );
     if (!ok) return;
-    for (const key of Object.keys(window.localStorage)) if (key.startsWith("close-ai-")) window.localStorage.removeItem(key);
+    for (const key of Object.keys(window.localStorage))
+      if (key.startsWith("close-ai-")) window.localStorage.removeItem(key);
     window.location.reload();
   }
 
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <PageHeader title={t("settings")} />
-      <Link href="/onboarding" className="block text-primary underline">{bn ? "ক্যাম্পাস ও নীরব সময়ের পছন্দ" : "Campus and quiet-hour preferences"}</Link>
-      {storageUnavailable && <p role="status">{bn ? "সংরক্ষণ বন্ধ। পছন্দ শুধু এই সেশনে থাকবে।" : "Storage unavailable. Preferences last only for this session."}</p>}
+      <ProfileControls />
+      <Link href="/onboarding" className="block text-primary underline">
+        {bn
+          ? "ক্যাম্পাস ও নীরব সময়ের পছন্দ"
+          : "Campus and quiet-hour preferences"}
+      </Link>
+      {storageUnavailable && (
+        <p role="status">
+          {bn
+            ? "সংরক্ষণ বন্ধ। পছন্দ শুধু এই সেশনে থাকবে।"
+            : "Storage unavailable. Preferences last only for this session."}
+        </p>
+      )}
 
       <section>
         <h2 className="mb-2 flex items-center gap-2 text-sm font-semibold text-muted-foreground">
@@ -93,7 +112,9 @@ export default function SettingsPage() {
           {t("language")}
         </h2>
         <Card className="flex items-center justify-between p-4">
-          <p className="text-sm">{bn ? "ইন্টারফেস ভাষা" : "Interface language"}</p>
+          <p className="text-sm">
+            {bn ? "ইন্টারফেস ভাষা" : "Interface language"}
+          </p>
           <LanguageToggle />
         </Card>
       </section>
@@ -104,10 +125,26 @@ export default function SettingsPage() {
         </h2>
         <Card className="divide-y divide-border">
           <SettingRow
+            title={bn ? "Student Support" : "Student Support"}
+            desc={
+              bn
+                ? "শুরুর প্রস্তাব দেখান; সরাসরি সহায়তা সব সময় পাওয়া যাবে।"
+                : "Show suggested starters; direct support stays available."
+            }
+          >
+            <Toggle
+              disabled={busy}
+              checked={preferences.support}
+              onChange={(value) => save({ ...preferences, support: value })}
+              label={bn ? "Student Support" : "Student Support"}
+            />
+          </SettingRow>
+          <SettingRow
             title={bn ? "একাডেমিক স্টাডি" : "Academic Study"}
             desc={bn ? "কোর্স ও ডেডলাইন" : "Courses & deadlines"}
           >
             <Toggle
+              disabled={busy}
               checked={modules.academic}
               onChange={(v) => setModules((m) => ({ ...m, academic: v }))}
               label={bn ? "একাডেমিক স্টাডি" : "Academic Study"}
@@ -118,6 +155,7 @@ export default function SettingsPage() {
             desc={bn ? "স্কিল ও ভিজ্যুয়াল ল্যাব" : "Skills & Visual Lab"}
           >
             <Toggle
+              disabled={busy}
               checked={modules.developer}
               onChange={(v) => setModules((m) => ({ ...m, developer: v }))}
               label={bn ? "ডেভেলপার পাথ" : "Developer Path"}
@@ -128,6 +166,7 @@ export default function SettingsPage() {
             desc={bn ? "প্র্যাকটিস ট্র্যাকিং" : "Practice tracking"}
           >
             <Toggle
+              disabled={busy}
               checked={modules.cp}
               onChange={(v) => setModules((m) => ({ ...m, cp: v }))}
               label={bn ? "CP কোচ" : "CP Coach"}
@@ -151,6 +190,7 @@ export default function SettingsPage() {
             }
           >
             <Toggle
+              disabled={busy}
               checked={preferences.reminders}
               onChange={(v) => save({ ...preferences, reminders: v })}
               label={bn ? "রিমাইন্ডার" : "Reminders"}
@@ -164,22 +204,24 @@ export default function SettingsPage() {
         </p>
       </section>
 
-      <section>
-        <h2 className="mb-2 text-sm font-semibold text-destructive">
-          {bn ? "ডেটা নিয়ন্ত্রণ" : "Data controls"}
-        </h2>
-        <Card className="space-y-3 p-4">
-          <p className="text-sm text-muted-foreground">
-            {bn
-              ? "পছন্দ ও সংরক্ষিত রিসোর্স এই ব্রাউজারে থাকে। অনলাইন চ্যাট উত্তর তৈরির জন্য প্রক্রিয়া করা হয়, সংরক্ষণ করা হয় না।"
-              : "Preferences and saved resources stay in this browser. Online chat is processed for a reply, not saved."}
-          </p>
-          <Button variant="destructive" onClick={clearLocal}>
-            <Trash2 className="h-4 w-4" aria-hidden />
-            {bn ? "ডেমো ডেটা মুছুন" : "Clear demo data"}
-          </Button>
-        </Card>
-      </section>
+      {demo && (
+        <section>
+          <h2 className="mb-2 text-sm font-semibold text-destructive">
+            {bn ? "ডেটা নিয়ন্ত্রণ" : "Data controls"}
+          </h2>
+          <Card className="space-y-3 p-4">
+            <p className="text-sm text-muted-foreground">
+              {bn
+                ? "পছন্দ ও সংরক্ষিত রিসোর্স এই ব্রাউজারে থাকে। অনলাইন চ্যাট উত্তর তৈরির জন্য প্রক্রিয়া করা হয়, সংরক্ষণ করা হয় না।"
+                : "Preferences and saved resources stay in this browser. Online chat is processed for a reply, not saved."}
+            </p>
+            <Button variant="destructive" onClick={clearLocal}>
+              <Trash2 className="h-4 w-4" aria-hidden />
+              {bn ? "ডেমো ডেটা মুছুন" : "Clear demo data"}
+            </Button>
+          </Card>
+        </section>
+      )}
     </div>
   );
 }

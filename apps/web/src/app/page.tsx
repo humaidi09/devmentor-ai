@@ -1,16 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, BadgeCheck, Languages, ShieldCheck, Users } from "lucide-react";
+import {
+  ArrowRight,
+  BadgeCheck,
+  Languages,
+  ShieldCheck,
+  Users,
+} from "lucide-react";
 
 import { BrandMark } from "@/components/brand";
 import { LanguageToggle } from "@/components/language-toggle";
 import { Card } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
+import { useAccount } from "@/lib/account";
 import { APP_NAME } from "@/lib/config";
 import { useLanguage } from "@/lib/i18n";
 
 export default function LandingPage() {
+  const { demo } = useAccount();
   const { t, lang } = useLanguage();
   const bn = lang === "bn";
 
@@ -51,14 +59,22 @@ export default function LandingPage() {
         </div>
       </header>
 
-      <main id="main-content" tabIndex={-1} className="mx-auto max-w-5xl px-4 sm:px-6">
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="mx-auto max-w-5xl px-4 sm:px-6"
+      >
         <section className="py-14 text-center sm:py-20">
           <p className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
             <ShieldCheck className="h-3.5 w-3.5 text-primary" aria-hidden />
-            {bn ? "যাচাইকৃত সহায়তা, গোপনীয়তা-প্রথম" : "Verified support, privacy-first"}
+            {bn
+              ? "যাচাইকৃত সহায়তা, গোপনীয়তা-প্রথম"
+              : "Verified support, privacy-first"}
           </p>
           <h1 className="mx-auto max-w-3xl text-balance text-3xl font-bold tracking-tight sm:text-5xl">
-            {bn ? "বাধা থেকে বাস্তব সহায়তায়।" : "From student barriers to real support."}
+            {bn
+              ? "বাধা থেকে বাস্তব সহায়তায়।"
+              : "From student barriers to real support."}
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground sm:text-lg">
             {bn
@@ -70,7 +86,10 @@ export default function LandingPage() {
               {t("getSupport")}
               <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
-            <Link href="/support/human" className={buttonVariants({ variant: "secondary", size: "lg" })}>
+            <Link
+              href="/support/human"
+              className={buttonVariants({ variant: "secondary", size: "lg" })}
+            >
               {t("talkToHuman")}
             </Link>
           </div>
@@ -98,7 +117,11 @@ export default function LandingPage() {
       </main>
 
       <footer className="mx-auto max-w-5xl px-4 py-8 text-center text-xs text-muted-foreground sm:px-6">
-        {t("demoNotice")}
+        {demo
+          ? t("demoNotice")
+          : bn
+            ? "আপনার পছন্দ ও অনুমোদিত ধাপ নিজের অ্যাকাউন্টে সংরক্ষণ করুন।"
+            : "Save preferences and approved steps in your own account."}
       </footer>
     </div>
   );
