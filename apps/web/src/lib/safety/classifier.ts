@@ -87,3 +87,11 @@ export function classify(message: string) {
               : "other";
   return { intent, kind, urgent, professional };
 }
+
+export function retrievalIntent(c: ReturnType<typeof classify>) {
+  return c.urgent
+    ? "wellbeing"
+    : c.professional
+      ? (c.intent ?? "general")
+      : c.intent;
+}

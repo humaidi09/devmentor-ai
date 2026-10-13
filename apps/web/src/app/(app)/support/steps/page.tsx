@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Bell, BellOff, Plus, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -42,7 +43,16 @@ export default function StepsPage() {
           sessionStorage.getItem("close-ai-demo-approved-steps") || "[]",
         );
         if (Array.isArray(approved))
-          setSteps([...DEMO_NEXT_STEPS, ...approved]);
+          setSteps([
+            ...DEMO_NEXT_STEPS,
+            ...approved.filter(
+              (x) =>
+                x &&
+                typeof x.id === "string" &&
+                typeof x.title === "string" &&
+                Object.keys(STATUS_LABELS).includes(x.status),
+            ),
+          ]);
       } catch {
         /* session-only demo */
       }
@@ -324,6 +334,12 @@ export default function StepsPage() {
                   <label htmlFor={`status-${step.id}`} className="text-xs">
                     {bn ? "অবস্থা" : "Status"}
                   </label>
+                  <Link
+                    href={`/notifications?step=${step.id}`}
+                    className="text-xs text-primary underline"
+                  >
+                    {bn ? "Reminder-এর সময় বেছে নিন" : "Choose reminder time"}
+                  </Link>
                   <Select
                     id={`status-${step.id}`}
                     value={step.status}

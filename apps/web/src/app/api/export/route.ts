@@ -27,23 +27,30 @@ export async function GET(req: NextRequest) {
       "cp_preferences",
       "cp_manual_progress",
       "learning_tasks",
+      "learning_progress",
+      "notification_preferences",
+      "notifications",
     ]) {
       const rows: unknown[] = [];
-      const order =
-        table === "modules_enabled"
-          ? "user_id"
-          : table === "cp_manual_progress"
-            ? "problem_key"
-            : "id";
+      const order = [
+        "modules_enabled",
+        "notification_preferences",
+        "learning_progress",
+      ].includes(table)
+        ? "user_id"
+        : table === "cp_manual_progress"
+          ? "problem_key"
+          : "id";
       for (let offset = 0; ; offset += 500) {
-        const batch = dbResult(
-          await db
-            .from(table)
-            .select("*")
-            .eq("user_id", user.id)
-            .order(order)
-            .range(offset, offset + 499),
-        );
+        let query = db
+          .from(table)
+          .select("*")
+          .eq("user_id", user.id)
+          .order(order)
+          .range(offset, offset + 499);
+        if (table === "learning_progress")
+          query = query.order("kind").order("topic_key");
+        const batch = dbResult(await query);
         rows.push(...batch);
         if (batch.length < 500) break;
       }

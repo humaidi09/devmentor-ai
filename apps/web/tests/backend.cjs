@@ -1,3 +1,4 @@
+const { localDockerEnv } = require("./docker-env.cjs");
 const assert = require("node:assert/strict");
 const { createClient } = require("@supabase/supabase-js");
 const { execFileSync } = require("node:child_process");
@@ -27,7 +28,7 @@ function sql(statement) {
       "-Atc",
       statement,
     ],
-    { encoding: "utf8" },
+    { encoding: "utf8", env: localDockerEnv() },
   ).trim();
 }
 async function user(label) {
@@ -96,13 +97,11 @@ async function denied(result) {
         .eq("id", a.id),
     );
     await ok(
-      a.db
-        .from("consent_records")
-        .insert({
-          user_id: a.id,
-          consent_type: "optional_profile_data",
-          granted: true,
-        }),
+      a.db.from("consent_records").insert({
+        user_id: a.id,
+        consent_type: "optional_profile_data",
+        granted: true,
+      }),
     );
     await ok(
       a.db
@@ -134,9 +133,19 @@ async function denied(result) {
         .from("saved_resources")
         .insert({ user_id: a.id, resource_id: "r-house-office" }),
     );
-    await ok(a.db.from("saved_resources").delete().eq("user_id",a.id).eq("resource_id","r-house-office"));
-    assert.equal((await ok(a.db.from("saved_resources").select())).length,0);
-    await ok(a.db.from("saved_resources").insert({user_id:a.id,resource_id:"r-house-office"}));
+    await ok(
+      a.db
+        .from("saved_resources")
+        .delete()
+        .eq("user_id", a.id)
+        .eq("resource_id", "r-house-office"),
+    );
+    assert.equal((await ok(a.db.from("saved_resources").select())).length, 0);
+    await ok(
+      a.db
+        .from("saved_resources")
+        .insert({ user_id: a.id, resource_id: "r-house-office" }),
+    );
     assert.equal((await ok(b.db.from("saved_resources").select())).length, 0);
     await denied(
       b.db
@@ -408,10 +417,20 @@ async function denied(result) {
     console.log(
       "PASS student/staff separation, campus roles, checked verification, audit notes, immutable DEMO and edit downgrade",
     );
-    await ok(a.db.from("action_steps").update({status:"not_relevant"}).eq("id",step.id));
-    assert.equal((await ok(a.db.from("action_steps").select("status").eq("id",step.id)))[0].status,"not_relevant");
-    await ok(a.db.from("action_steps").delete().eq("id",step.id));
-    assert.equal((await ok(a.db.from("reminders").select())).length,0);
+    await ok(
+      a.db
+        .from("action_steps")
+        .update({ status: "not_relevant" })
+        .eq("id", step.id),
+    );
+    assert.equal(
+      (
+        await ok(a.db.from("action_steps").select("status").eq("id", step.id))
+      )[0].status,
+      "not_relevant",
+    );
+    await ok(a.db.from("action_steps").delete().eq("id", step.id));
+    assert.equal((await ok(a.db.from("reminders").select())).length, 0);
     await ok(a.db.rpc("erase_close_ai_data"));
     assert.equal((await ok(a.db.from("action_plans").select())).length, 0);
     assert.equal((await ok(a.db.from("saved_resources").select())).length, 0);

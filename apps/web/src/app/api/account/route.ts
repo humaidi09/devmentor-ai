@@ -57,9 +57,13 @@ export async function GET(req: NextRequest) {
         .eq("user_id", user.id),
       db
         .from("cp_preferences")
-        .select("codeforces_handle")
+        .select("codeforces_handle,codeforces_connected_at")
         .eq("user_id", user.id)
         .maybeSingle(),
+      db
+        .from("learning_progress")
+        .select("kind,topic_key,status,position,updated_at")
+        .eq("user_id", user.id),
     ]);
     results.forEach(dbResult);
     const p = results[0].data!;
@@ -91,7 +95,7 @@ export async function GET(req: NextRequest) {
         source: "manual",
       })),
       reminders: results[5]
-        .data!.filter((r) => r.enabled)
+        .data!.filter((r) => r.enabled && r.action_step_id)
         .map((r) => r.action_step_id),
       consents: results[6].data,
       roles: results[7].data,
@@ -105,6 +109,8 @@ export async function GET(req: NextRequest) {
         results[9].data!.map((r) => [r.problem_key, r.status]),
       ),
       cpHandle: results[10].data?.codeforces_handle ?? "",
+      cpConnected: !!results[10].data?.codeforces_connected_at,
+      learningProgress: results[11].data ?? [],
     });
   } catch (e) {
     return failure(e);

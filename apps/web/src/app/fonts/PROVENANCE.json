@@ -1,0 +1,32 @@
+[
+  {
+    "file": "Inter.woff2",
+    "source": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2",
+    "stylesheet": "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap",
+    "subset": "latin",
+    "sha256": "c940764593d0fe5d596be327ca7558855e018039fb78509aa21921fd3644c3e4",
+    "license": "Inter-OFL.txt",
+    "licenseSource": "https://raw.githubusercontent.com/google/fonts/main/ofl/inter/OFL.txt",
+    "bytes": 48432
+  },
+  {
+    "file": "NotoSansBengali.woff2",
+    "source": "https://fonts.gstatic.com/s/notosansbengali/v33/Cn-fJsCGWQxOjaGwMQ6fIiMywrNJIky6nvd8BjzVMvJx2mc4I3mYrtU3_I-n.woff2",
+    "stylesheet": "https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400..700&display=swap",
+    "subset": "bengali",
+    "sha256": "d8cebde0595ce46cfbf85911792fc7cb5525d8ba61e1a2f8979cb4389d40c948",
+    "license": "NotoSansBengali-OFL.txt",
+    "licenseSource": "https://raw.githubusercontent.com/google/fonts/main/ofl/notosansbengali/OFL.txt",
+    "bytes": 107884
+  },
+  {
+    "file": "JetBrainsMono.woff2",
+    "source": "https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbV2o-flEEny0FZhsfKu5WU4xD7OwGtT0rU.woff2",
+    "stylesheet": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&display=swap",
+    "subset": "latin",
+    "sha256": "1e06740a02a443fb7f3eeda8fcaa685a0f6c620e3f01e6666e847295469ce3ad",
+    "license": "JetBrainsMono-OFL.txt",
+    "licenseSource": "https://raw.githubusercontent.com/google/fonts/main/ofl/jetbrainsmono/OFL.txt",
+    "bytes": 40480
+  }
+]

@@ -83,6 +83,7 @@ jobs:
           done
           npm run test:backend
           node tests/ai-backend.cjs
+          node tests/phase5-backend.cjs
       - run: npm run build:account-test
         working-directory: apps/web
       - run: node tests/client-boundary.cjs
@@ -99,6 +100,7 @@ jobs:
           done
           npm run test:account-browser
           node tests/ai-browser.cjs
+          node tests/phase5-browser.cjs
           TEST_BASE_URL=http://127.0.0.1:3002 npm run test:browser
       - name: Preserve integration diagnostics
         if: failure()

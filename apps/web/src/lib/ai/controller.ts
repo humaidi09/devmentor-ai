@@ -1,6 +1,6 @@
 import type { ChatMessage, SupportResource } from "../types";
-import { classify } from "../safety/classifier";
-import { rankResources } from "../resources/grounding";
+import { classify, retrievalIntent } from "../safety/classifier";
+import { currentResource, rankResources } from "../resources/grounding";
 import { validateDecision, type AiProvider } from "./provider";
 export async function groundedReply(
   message: string,
@@ -58,7 +58,7 @@ export async function groundedReply(
   const candidates = rankResources(
     campus ? rows : [],
     campus,
-    c.professional ? "wellbeing" : c.intent,
+    retrievalIntent(c),
     message,
   );
   let decision;
@@ -81,7 +81,9 @@ export async function groundedReply(
       : "Sorry, something went wrong. AI is unavailable. Browse verified resources manually or talk to a human.";
     return reply;
   }
-  const sources = candidates.filter((r) => decision.resourceIds.includes(r.id));
+  const sources = candidates.filter(
+    (r) => decision.resourceIds.includes(r.id) && currentResource(r, campus),
+  );
   reply.sources = sources;
   reply.state = sources.length ? "success" : "no_resource";
   reply.uncertain = !sources.length;

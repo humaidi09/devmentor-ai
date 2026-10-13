@@ -1,5 +1,6 @@
 "use client";
 
+import { RecentTopics } from "@/components/visual/recent-topics";
 import Link from "next/link";
 
 import { PageHeader } from "@/components/page-header";
@@ -19,14 +20,21 @@ export default function VisualLabPage() {
     <div className="space-y-6">
       <PageHeader
         title={bn ? "ভিজ্যুয়াল লার্নিং ল্যাব" : "Visual Learning Lab"}
-        subtitle={bn ? "ইন্টার্যাক্টিভ, ধাপে ধাপে — প্রতিটিতে টেক্সট ধাপও আছে।" : "Interactive, step by step — every topic also has a text-steps mode."}
+        subtitle={
+          bn
+            ? "ইন্টার্যাক্টিভ, ধাপে ধাপে — প্রতিটিতে টেক্সট ধাপও আছে।"
+            : "Interactive, step by step — every topic also has a text-steps mode."
+        }
       />
+      <RecentTopics />
       {CATEGORIES.map((cat) => {
         const items = TOPICS.filter((t) => t.category === cat);
         if (!items.length) return null;
         return (
           <section key={localize(cat, lang)}>
-            <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-muted-foreground">{localize(cat, lang)}</h2>
+            <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+              {localize(cat, lang)}
+            </h2>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {items.map((t) => (
                 <Link
@@ -36,7 +44,9 @@ export default function VisualLabPage() {
                 >
                   <Card className="h-full p-4 transition-shadow hover:shadow-lift">
                     <h3 className="font-bold">{localize(t.title, lang)}</h3>
-                    <p className="mt-1 text-sm text-muted-foreground">{localize(t.summary, lang)}</p>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      {localize(t.summary, lang)}
+                    </p>
                     <Badge variant="muted" className="mt-3">
                       {t.steps.length} {bn ? "ধাপ" : "steps"}
                     </Badge>

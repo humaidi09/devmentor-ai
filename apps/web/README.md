@@ -1,6 +1,6 @@
 # Close AI web app
 
-Next.js 15 / React 19, strict TypeScript, Node.js 22 in CI. The original Phase 2 design and bilingual demo remain intact; Phase 3 adds Supabase Auth, RLS and student/resource persistence. No external AI or notification integration is used.
+Next.js 15 / React 19, strict TypeScript, Node.js 22 in CI. The original Phase 2 design and bilingual demo remain intact; Phases 3–5 add Supabase Auth/RLS, grounded optional Gemini chat, in-app reminders, optional Codeforces public data and transparent learning progress.
 
 ## Demo development
 
@@ -14,7 +14,7 @@ No credentials are needed. `NEXT_PUBLIC_DEMO_MODE=true` (the default) explicitly
 ## Account setup
 
 1. Use a Supabase project dedicated to Close AI, or review legacy compatibility before updating a shared old DevMentor database.
-2. Apply **all** migrations in repository `supabase/migrations` order (0001–0006). With a linked Supabase CLI project, use `supabase db push` from the repository root. Do not reset a hosted production database. Existing legacy profiles/courses/CP tables are adapted; unused old private-table client grants are revoked.
+2. Apply **all** migrations in repository `supabase/migrations` order (0001–0009). With a linked Supabase CLI project, use `supabase db push` from the repository root. Do not reset a hosted production database. Existing legacy profiles/courses/CP tables are adapted; unused old private-table client grants are revoked.
 3. Optionally run `supabase/seed-demo.sql` as a trusted SQL operator. It contains fictional DEMO resources only, not personal test users or real contacts.
 4. Enable Supabase email/password Auth. For hosted accounts keep email confirmation enabled; set the Auth Site URL and allow the exact website `/auth/callback` URL. Local test auto-confirm is only a fixture setting, not a production recommendation.
 5. Copy `.env.example` to `.env.local`, fill the **public** project URL and anon/publishable key, set `NEXT_PUBLIC_DEMO_MODE=false` and `NEXT_PUBLIC_ACCOUNT_MODE_ENABLED=true`, and set `CLOSE_AI_SITE_URL` to this deployment's canonical HTTPS origin. Configure preview deployments with their own allowed origin/redirect, rather than reusing the production origin.
@@ -79,7 +79,7 @@ The test build uses generated local anon JWTs, not real project credentials. Bac
 
 Profile/module choices, private saves/plans/steps, consent changes and optional manual learning progress use the signed-in user's session and RLS. Support storage/reminder intent is opt-in. Writes show errors on failure and await database confirmation. Campus-not-listed leaves real account resources empty; choose explicit demo mode to explore fictional resources.
 
-Chat remains a deterministic fictional mock and is not stored. Visual definitions/playback stay local. Reminders store intent and quiet-hour preferences; they send no email/push/SMS. CP handles are unverified preferences, not synchronized profiles.
+Account chat uses campus-verified database resources with mock or explicitly opted-in server-side Gemini selection. Chat is not stored. Visual definitions/playback stay local. In-app reminders deliver while the app is open, respecting approved schedules, consent, category settings and quiet hours. No email/push/SMS is configured. Codeforces handles require public-profile preview and explicit confirmation; disconnect removes the identifier. Older unconfirmed handle preferences are not treated as connected.
 
 Settings support JSON export, individual step/plan/save deletion and confirmed transactional app-data reset. Reset retains the Auth login and creates default profile/preferences. Full Auth-account deletion is operator-assisted and visibly marked as such.
 
@@ -88,3 +88,11 @@ Settings support JSON export, individual step/plan/save deletion and confirmed t
 `prebuild` generates a uniquely versioned `public/sw.js`. Only public fictional demo documents and static assets can enter its allowlist. A server public-demo marker distinguishes safe fictional HTML in a mixed deployment. API/export responses, user messages and personalized account responses are not cached. Account mode unregisters the worker and deletes only Close AI's demo caches. Initial online caching is required; external links need a connection.
 
 See the repository [Phase 3 report](../../PHASE_3_REPORT.md), [architecture](../../docs/ARCHITECTURE.md) and [authorization/privacy boundaries](../../docs/PRIVACY_AND_SAFETY.md).
+
+## Phase 4/5 checks
+
+After the local stack/gateway are ready, run `npm run test:backend`, `npm run test:grounding-backend`, `npm run test:phase5-backend`. Build/start with `npm run build:account-test` and `node tests/start-account.cjs`. Account browser scripts use `http://localhost:3002`; run `npm run test:account-browser`, `node tests/ai-browser.cjs`, `npm run test:phase5-browser`, and `TEST_BASE_URL=http://127.0.0.1:3002 npm run test:browser`. Use system Chromium via `PLAYWRIGHT_EXECUTABLE_PATH=/usr/bin/chromium` when appropriate. Do not rebuild the same `.next` while its server is running.
+
+`npm run test:ai-live` and `npm run test:codeforces-live` are explicit optional real-network tests with public fictional/Codeforces data; CI uses deterministic adapters. `CLOSE_AI_LIVE_TESTS=1 npm run test:phase5-browser` additionally verifies the real local account Codeforces connect/disconnect flow. This does not configure a hosted deployment. AI keys remain server-only; Codeforces uses no key; email/push remain deferred. See [Phase 4](../../PHASE_4_REPORT.md) and [Phase 5](../../PHASE_5_REPORT.md) reports for actual outcomes.
+
+For a shorter explicit real connection check, run `npm run test:codeforces-live-browser` against the local account server. This creates a disposable local fixture account, previews the public `tourist` profile, confirms only after an explicit consent checkbox, verifies persistence, and disconnects in Settings. It is not part of CI.

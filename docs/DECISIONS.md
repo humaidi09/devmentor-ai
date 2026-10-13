@@ -18,3 +18,14 @@
 - Mock account chat retrieves real DB resources; Demo remains explicitly fictional, including offline. Account offline shows retry/manual routes rather than substituting fictional data.
 - Gemini is isolated behind `AiProvider`; server-only configuration and HTTP adapter preserve managed proxy/CA trust. Students opt in per message. Model availability can change independently of model-list success.
 - Draft saves are explicit, consent guarded, transactional and idempotent. Budget counters are operational metadata only; no unrestricted model tools.
+
+## Phase 5 decisions
+
+- In-app delivery is the MUST scope. Email/push need a configured provider and separate opt-in; neither is implemented or shown as a connected service. No Phase 6 production jobs/deployment are started.
+- Reuse reminders/notifications/CP preference and progress tables. Add only notification preferences and optional explicit visual/project progress. Keep all user data under RLS; staff permissions remain resource-only.
+- Deliver at app-open/visible polling, with a user-scoped database RPC using server time, row locks and occurrence dedupe. This gives functional in-app reminders without a privileged service-role web client. Document that off-app delivery is absent.
+- Daily/weekly recurrence preserves local wall-clock time across DST. Nonexistent initial local times are rejected; ambiguous repeated initial times use PostgreSQL's standard-time occurrence. Equal quiet-hour times mean all-day quiet. Missed recurrences consolidate to one.
+- Treat Codeforces as an optional public integration with a fixed official destination, typed normalization, response size limits, short TTLs, single-flight/throttle and bounded requests. Do not create a generic external URL proxy or store raw remote data.
+- Keep a connected handle/time as private preference data, never staff/student-visible by default. Preview then confirm; consent withdrawal/disconnect clears the identifier. No Codeforces secret or extra integration table is needed.
+- Keep learning suggestions deterministic and transparent instead of exporting private learning records to another model. Explicit visual/project progress can be edited/deleted; no automatic completion or hidden scores. Preserve the six existing visual engines.
+- Bundle the approved fonts locally with OFL licenses/provenance after Google's CSS URL format exposed a Next.js font-loader parser failure. This preserves font families and makes builds independent of remote font availability.

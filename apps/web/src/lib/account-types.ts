@@ -34,4 +34,12 @@ export interface AccountData {
   developerDone: Record<string, boolean>;
   cpStatus: Record<string, string>;
   cpHandle: string;
+  cpConnected: boolean;
+  learningProgress: {
+    kind: "visual" | "project";
+    topic_key: string;
+    status: string;
+    position: number;
+    updated_at: string;
+  }[];
 }
