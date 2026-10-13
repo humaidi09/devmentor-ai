@@ -3,26 +3,27 @@
 @tailwind utilities;
 
 :root {
-  --background: 210 40% 98%;
-  --foreground: 222 47% 11%;
-  --card: 0 0% 100%;
-  --card-foreground: 222 47% 11%;
-  --muted: 210 40% 96%;
-  --muted-foreground: 215 19% 35%;
-  --primary: 175 77% 26%;
-  --primary-foreground: 0 0% 100%;
-  --border: 213 27% 84%;
-  --input: 213 27% 84%;
-  --ring: 175 77% 26%;
-  --success: 142 72% 24%;
-  --success-foreground: 0 0% 100%;
-  --warning: 35 92% 26%;
-  --warning-foreground: 0 0% 100%;
-  --destructive: 0 74% 42%;
-  --destructive-foreground: 0 0% 100%;
-  --info: 201 96% 32%;
-  --info-foreground: 0 0% 100%;
+  --background: 222 65% 3%;
+  --foreground: 218 100% 97%;
+  --card: 218 42% 8%;
+  --card-foreground: 218 100% 97%;
+  --muted: 217 34% 14%;
+  --muted-foreground: 215 25% 74%;
+  --primary: 207 100% 65%;
+  --primary-foreground: 220 73% 8%;
+  --border: 216 32% 23%;
+  --input: 216 32% 28%;
+  --ring: 207 100% 65%;
+  --success: 170 67% 65%;
+  --success-foreground: 220 73% 8%;
+  --warning: 39 100% 67%;
+  --warning-foreground: 222 65% 3%;
+  --destructive: 0 88% 73%;
+  --destructive-foreground: 222 65% 3%;
+  --info: 207 100% 69%;
+  --info-foreground: 220 73% 8%;
   --radius: 12px;
+  color-scheme: dark;
 }
 
 html {
@@ -30,7 +31,14 @@ html {
 }
 
 body {
-  background-color: hsl(var(--background));
+  background:
+    linear-gradient(rgba(95, 124, 171, 0.075) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(95, 124, 171, 0.075) 1px, transparent 1px),
+    radial-gradient(ellipse at 24% 24%, rgba(25, 83, 190, 0.15), transparent 38rem),
+    radial-gradient(ellipse at 78% 55%, rgba(90, 44, 173, 0.14), transparent 38rem),
+    #03060c;
+  background-size: 38px 38px, 38px 38px, auto, auto, auto;
+  background-attachment: fixed;
   color: hsl(var(--foreground));
   font-family: var(--font-sans), var(--font-bengali), system-ui, sans-serif;
   line-height: 1.6;
@@ -40,34 +48,18 @@ body {
 
 .landing-shell,
 .app-shell {
-  --background: 150 9% 6%;
-  --foreground: 150 11% 93%;
-  --card: 150 8% 10%;
-  --card-foreground: 150 11% 93%;
-  --muted: 150 7% 15%;
-  --muted-foreground: 150 5% 68%;
-  --primary: 152 64% 57%;
-  --primary-foreground: 150 30% 8%;
-  --border: 150 6% 23%;
-  --input: 150 6% 27%;
-  --ring: 152 64% 57%;
-  --success: 152 60% 56%;
-  --success-foreground: 150 30% 8%;
-  --warning: 37 88% 66%;
-  --warning-foreground: 150 30% 8%;
-  --destructive: 0 77% 69%;
-  --destructive-foreground: 150 30% 8%;
-  --info: 193 83% 70%;
-  --info-foreground: 150 30% 8%;
   color-scheme: dark;
   color: hsl(var(--foreground));
 }
 
 .landing-shell {
   background:
-    radial-gradient(circle at 85% 11%, rgba(70, 196, 125, 0.12), transparent 25rem),
-    radial-gradient(circle at 7% 28%, rgba(70, 126, 106, 0.06), transparent 31rem),
-    hsl(var(--background));
+    linear-gradient(rgba(92, 120, 166, 0.075) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(92, 120, 166, 0.075) 1px, transparent 1px),
+    radial-gradient(circle at 78% 13%, rgba(31, 106, 232, 0.18), transparent 29rem),
+    radial-gradient(circle at 15% 58%, rgba(104, 51, 187, 0.14), transparent 30rem),
+    #03060c;
+  background-size: 38px 38px, 38px 38px, auto, auto, auto;
 }
 
 .landing-header {
@@ -92,7 +84,7 @@ body {
 
 .hero-highlight {
   color: hsl(var(--primary));
-  background: linear-gradient(100deg, #53cd94 5%, #a3e8b3 60%, #63d8bd 100%);
+  background: linear-gradient(100deg, #ffc365 5%, #ffdc88 60%, #f5aa39 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -103,8 +95,8 @@ body {
 }
 
 .hero-visual-card {
-  background: linear-gradient(145deg, #1a241e, #101714);
-  box-shadow: 0 32px 80px -38px rgba(0, 0, 0, 0.75), 0 14px 32px -22px rgba(67, 200, 128, 0.16);
+  background: linear-gradient(145deg, #111a2b, #080c16);
+  box-shadow: 0 32px 80px -38px rgba(0, 0, 0, 0.82), 0 14px 42px -22px rgba(55, 134, 255, 0.35);
 }
 
 .hero-visual-card::before {
@@ -113,7 +105,7 @@ body {
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
-  background-image: radial-gradient(rgba(83, 205, 148, 0.14) 0.8px, transparent 0.8px);
+  background-image: radial-gradient(rgba(89, 162, 255, 0.2) 0.8px, transparent 0.8px);
   background-size: 17px 17px;
   mask-image: linear-gradient(110deg, transparent 45%, black);
 }
@@ -130,7 +122,7 @@ body {
   height: 12rem;
   top: -2.5rem;
   right: -2rem;
-  background: rgba(65, 188, 116, 0.19);
+  background: rgba(35, 133, 255, 0.28);
 }
 
 .hero-orb-two {
@@ -138,7 +130,7 @@ body {
   height: 9rem;
   bottom: -2rem;
   left: -2rem;
-  background: rgba(53, 133, 105, 0.13);
+  background: rgba(124, 58, 213, 0.2);
 }
 
 .preview-search,
@@ -156,7 +148,7 @@ body {
 }
 
 .section-kicker {
-  color: hsl(var(--primary));
+  color: hsl(var(--warning));
   font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.14em;
@@ -209,30 +201,28 @@ body {
   transform: translateX(4px);
 }
 
-.path-card-teal { --path-color: #0d766e; --path-wash: #e0f5f0; }
-.path-card-blue { --path-color: #305eaf; --path-wash: #e8efff; }
-.path-card-violet { --path-color: #7550a9; --path-wash: #f1eafb; }
-.path-card-amber { --path-color: #a75c12; --path-wash: #fff1da; }
-.path-card-rose { --path-color: #af5268; --path-wash: #fce9ef; }
-
-.landing-shell .path-card-teal { --path-color: #66d6a4; --path-wash: rgba(83, 205, 148, 0.12); }
-.landing-shell .path-card-blue { --path-color: #84c5ee; --path-wash: rgba(94, 175, 223, 0.12); }
-.landing-shell .path-card-violet { --path-color: #c1a6ee; --path-wash: rgba(166, 124, 225, 0.12); }
-.landing-shell .path-card-amber { --path-color: #e7bc76; --path-wash: rgba(223, 166, 79, 0.12); }
-.landing-shell .path-card-rose { --path-color: #ed9bb4; --path-wash: rgba(229, 116, 153, 0.12); }
+.path-card-teal { --path-color: #6ccaff; --path-wash: rgba(53, 166, 255, 0.14); }
+.path-card-blue { --path-color: #75aeff; --path-wash: rgba(53, 135, 255, 0.16); }
+.path-card-violet { --path-color: #bd9aff; --path-wash: rgba(141, 83, 232, 0.16); }
+.path-card-amber { --path-color: #ffca71; --path-wash: rgba(255, 188, 64, 0.15); }
+.path-card-rose { --path-color: #c4a0ff; --path-wash: rgba(152, 94, 236, 0.16); }
 
 .feature-band {
-  background: linear-gradient(125deg, #132019, #131a17);
+  background: linear-gradient(125deg, #0c1424, #140e28);
 }
 
 .app-shell {
   background:
-    radial-gradient(circle at 88% 4%, rgba(51, 184, 125, 0.07), transparent 32rem),
-    hsl(var(--background));
+    linear-gradient(rgba(92, 120, 166, 0.065) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(92, 120, 166, 0.065) 1px, transparent 1px),
+    radial-gradient(circle at 88% 4%, rgba(29, 105, 225, 0.15), transparent 32rem),
+    radial-gradient(circle at 14% 72%, rgba(103, 46, 176, 0.11), transparent 35rem),
+    #03060c;
+  background-size: 38px 38px, 38px 38px, auto, auto, auto;
 }
 
 .app-sidebar {
-  background: linear-gradient(180deg, #111714, #0c100e);
+  background: linear-gradient(180deg, #0c1321, #070b14);
 }
 
 .app-nav-link {
@@ -248,8 +238,8 @@ body {
 }
 
 .dashboard-hero {
-  background: linear-gradient(115deg, #14231c 0%, #17201e 65%, #1b1c22 100%);
-  border: 1px solid rgba(83, 205, 148, 0.22);
+  background: linear-gradient(115deg, #10213c 0%, #111529 65%, #21152f 100%);
+  border: 1px solid rgba(89, 162, 255, 0.28);
 }
 
 .dashboard-starter {
@@ -267,14 +257,15 @@ body {
 .dashboard-tool:hover,
 .dashboard-tool:focus-visible {
   transform: translateY(-4px);
-  border-color: rgba(83, 205, 148, 0.55);
+  border-color: rgba(89, 162, 255, 0.62);
   box-shadow: 0 18px 32px -22px rgba(0, 0, 0, 0.7);
 }
 
 .studio-hero {
   background:
-    radial-gradient(circle at 82% 16%, rgba(69, 209, 139, 0.16), transparent 19rem),
-    linear-gradient(135deg, #142019, #101512 65%);
+    radial-gradient(circle at 82% 16%, rgba(58, 146, 255, 0.23), transparent 19rem),
+    radial-gradient(circle at 13% 85%, rgba(132, 71, 213, 0.13), transparent 22rem),
+    linear-gradient(135deg, #0d1930, #0b0e19 65%);
 }
 
 .studio-card {
@@ -292,10 +283,10 @@ body {
 
 .studio-thumbnail {
   background:
-    linear-gradient(rgba(85, 195, 130, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(85, 195, 130, 0.07) 1px, transparent 1px),
-    radial-gradient(circle at 50% 45%, rgba(74, 211, 143, 0.18), transparent 58%),
-    #101914;
+    linear-gradient(rgba(91, 139, 220, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(91, 139, 220, 0.1) 1px, transparent 1px),
+    radial-gradient(circle at 50% 45%, rgba(45, 137, 255, 0.26), transparent 58%),
+    #080d18;
   background-size: 20px 20px, 20px 20px, auto, auto;
 }
 
@@ -310,16 +301,16 @@ body {
 }
 
 .studio-player {
-  background: #101613;
+  background: #080d18;
   border-color: hsl(var(--primary) / 0.22);
 }
 
 .concept-stage {
   background:
-    linear-gradient(rgba(83, 205, 148, 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(83, 205, 148, 0.055) 1px, transparent 1px),
-    radial-gradient(circle at 50% 50%, rgba(45, 166, 107, 0.11), transparent 70%),
-    #0b110e;
+    linear-gradient(rgba(91, 139, 220, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(91, 139, 220, 0.08) 1px, transparent 1px),
+    radial-gradient(circle at 50% 50%, rgba(38, 112, 237, 0.16), transparent 70%),
+    #070b14;
   background-size: 24px 24px, 24px 24px, auto, auto;
 }
 
@@ -366,8 +357,8 @@ body {
   }
 
   @keyframes dot-breathe {
-    0%, 100% { box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.12); }
-    50% { box-shadow: 0 0 0 8px rgba(13, 148, 136, 0.04); }
+    0%, 100% { box-shadow: 0 0 0 4px rgba(74, 169, 255, 0.18); }
+    50% { box-shadow: 0 0 0 8px rgba(74, 169, 255, 0.06); }
   }
 
   .hero-copy { animation: soft-rise 650ms both; }

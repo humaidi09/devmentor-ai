@@ -41,7 +41,7 @@ export function GraphRenderer({ step }: { step: VizStep }) {
                 dominantBaseline="central"
                 fontSize="12"
                 fontWeight="700"
-                fill={isCur || isVis ? "#ffffff" : "hsl(var(--foreground))"}
+                fill={isCur ? "hsl(var(--primary-foreground))" : isVis ? "hsl(var(--success-foreground))" : "hsl(var(--foreground))"}
               >
                 {id}
               </text>

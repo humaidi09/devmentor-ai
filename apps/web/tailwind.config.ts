@@ -56,8 +56,8 @@ const config: Config = {
         display: ["2.25rem", { lineHeight: "1.15" }],
       },
       boxShadow: {
-        soft: "0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.06)",
-        lift: "0 8px 24px rgba(15, 23, 42, 0.08)",
+        soft: "0 8px 24px -14px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(79, 139, 225, 0.06)",
+        lift: "0 16px 34px -18px rgba(31, 107, 240, 0.45), 0 8px 24px -15px rgba(0, 0, 0, 0.8)",
       },
       keyframes: {
         "fade-in": { from: { opacity: "0" }, to: { opacity: "1" } },

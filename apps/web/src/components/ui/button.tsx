@@ -6,8 +6,8 @@ type Variant = "primary" | "secondary" | "ghost" | "destructive";
 type Size = "sm" | "md" | "lg" | "icon";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-soft",
-  secondary: "border border-border bg-card text-foreground hover:bg-muted",
+  primary: "border border-primary/55 bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_24px_-8px_rgba(74,169,255,0.7)]",
+  secondary: "border border-primary/35 bg-primary/10 text-foreground hover:border-primary/60 hover:bg-primary/15",
   ghost: "text-foreground hover:bg-muted",
   destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
 };
