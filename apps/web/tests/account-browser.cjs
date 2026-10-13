@@ -95,6 +95,22 @@ const resourceName = "DEMO browser resource " + crypto.randomUUID().slice(0, 8);
     await page.getByRole("button", { name: "Continue", exact: true }).click();
     await page.waitForURL("**/dashboard");
     console.log("PASS profile, consent, module and campus persistence");
+    const knowledge = {
+      id: "crossref:10.1234/browser", provider: "crossref", category: "research",
+      collection: "study", title: "Browser test paper", url: "https://doi.org/10.1234/browser",
+      source: "Crossref", summary: "Metadata", publishedAt: "2025",
+      retrievedAt: new Date().toISOString(),
+    };
+    assert.equal((await context.request.post(base + "/api/knowledge/saved", { headers: { Origin: base }, data: knowledge })).status(), 200);
+    assert.equal((await (await context.request.get(base + "/api/knowledge/saved")).json()).items[0].title, "Browser test paper");
+    assert.equal((await context.request.post(base + "/api/knowledge/saved", { headers: { Origin: base }, data: { ...knowledge, url: "https://evil.test/fake" } })).status(), 400);
+    assert.equal((await context.request.post(base + "/api/data/cp", { headers: { Origin: base }, data: { problem: "lc-two-sum", status: "upsolve" } })).status(), 200);
+    assert.equal((await (await context.request.get(base + "/api/account")).json()).cpStatus["lc-two-sum"], "upsolve");
+    assert.equal((await context.request.delete(base + "/api/data/cp", { headers: { Origin: base }, data: { confirmation: "CLEAR CP PROGRESS" } })).status(), 200);
+    assert.equal((await (await context.request.get(base + "/api/account")).json()).cpStatus["lc-two-sum"], undefined);
+    assert.equal((await context.request.delete(base + "/api/knowledge/saved", { headers: { Origin: base }, data: { id: knowledge.id } })).status(), 200);
+    assert.equal((await (await context.request.get(base + "/api/knowledge/saved")).json()).items.length, 0);
+    console.log("PASS saved knowledge, trusted URL validation and individual CP progress APIs");
     await go("/support/resources/r-house-office");
     await page.getByRole("button", { name: "Save", exact: true }).click();
     await page.getByRole("button", { name: "Saved", exact: true }).waitFor();
@@ -194,6 +210,7 @@ const resourceName = "DEMO browser resource " + crypto.randomUUID().slice(0, 8);
     const exported = await (
       await context.request.get(base + "/api/export")
     ).json();
+    assert.equal(exported.saved_knowledge.length, 0);
     assert.equal(exported.profile[0].display_name, "Test Student A");
     assert.ok(
       exported.action_plans.some(

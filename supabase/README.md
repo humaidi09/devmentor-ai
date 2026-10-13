@@ -1,6 +1,6 @@
 # Close AI database
 
-Migrations 0001–0004 preserve the older DevMentor schema. Apply them in order before 0005 (Close AI core/RLS/roles) and 0006 (atomic ordering, consent/data controls, study tasks). Do not rename or rewrite already-applied versions.
+Migrations 0001–0004 preserve the older DevMentor schema. Apply them in order before 0005 (Close AI core/RLS/roles), 0006 (atomic ordering, consent/data controls, study tasks), and later migrations through 0010 (saved knowledge and CP progress). Do not rename or rewrite already-applied versions.
 
 `seed-demo.sql` contains only fictional Close AI campus/resources/categories and is re-runnable. Every synthetic resource has `is_demo=true`; it grants no student/staff permissions and creates no Auth users. `seed.sql` is the old snippet seed and is not needed for Close AI. Regenerate the new seed from the repository root with `apps/web/node_modules/.bin/tsx scripts/seed-close-ai.ts`.
 

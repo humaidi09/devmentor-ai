@@ -124,4 +124,9 @@ export const CF_TOPICS = [
   "dp",
   "greedy",
   "trees",
+  "two pointers",
+  "sortings",
+  "shortest paths",
+  "bitmasks",
+  "brute force",
 ] as const;

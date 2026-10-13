@@ -3,6 +3,7 @@ import { localize } from "./content-bn";
 import { DEMO_RESOURCES } from "./demo-data";
 import type { Lang } from "./i18n";
 import type { ChatMessage, SuggestedAction, SupportResource } from "./types";
+import { classify } from "./safety/classifier";
 
 /**
  * Deterministic demo support engine.
@@ -11,7 +12,7 @@ import type { ChatMessage, SuggestedAction, SupportResource } from "./types";
  *  - Only VERIFIED resources are ever surfaced.
  *  - It never invents a resource; if nothing matches it says so and offers a
  *    human / broader-search fallback.
- *  - A human-support option is always offered.
+ *  - External help remains available for urgent or professional matters.
  *  - It suggests, never decides eligibility or contacts anyone.
  */
 const KEYWORDS: Record<string, string[]> = {
@@ -45,6 +46,7 @@ export function matchResources(
 
 export function buildDemoReply(message: string, lang: Lang): ChatMessage {
   const sources = matchResources(message);
+  const safety = classify(message);
   const uncertain = sources.length === 0;
   const actions: SuggestedAction[] = [];
   let content: string;
@@ -52,9 +54,8 @@ export function buildDemoReply(message: string, lang: Lang): ChatMessage {
   if (uncertain) {
     content =
       lang === "bn"
-        ? "আমি নিশ্চিত নই কোন নির্দিষ্ট যাচাইকৃত রিসোর্স এটার সাথে মিলছে, আর আমি কিছু বানিয়ে বলব না। আপনি আরেকটু বিস্তারিত বলতে পারেন, অথবা সরাসরি একজন মানুষের সাথে কথা বলতে পারেন।"
-        : "I'm not sure which verified resource matches this, and I won't invent one. You can add a little more detail, or talk to a human directly.";
-    actions.push({ label: lang === "bn" ? "একজন মানুষের সাথে কথা বলুন" : "Talk to a human", kind: "human" });
+        ? "আমি নিশ্চিত নই কোন নির্দিষ্ট যাচাইকৃত রিসোর্স এটার সাথে মিলছে, আর আমি কিছু বানিয়ে বলব না। আরেকটু বিস্তারিত লিখুন বা উৎসগুলো নিজে দেখুন।"
+        : "I'm not sure which verified resource matches this, and I won't invent one. Add a little more detail or browse the sources yourself.";
     actions.push({ label: lang === "bn" ? "সব রিসোর্স দেখুন" : "Browse all resources", kind: "continue" });
   } else {
     content =
@@ -69,8 +70,9 @@ export function buildDemoReply(message: string, lang: Lang): ChatMessage {
       });
     }
     actions.push({ label: lang === "bn" ? "চেকলিস্ট তৈরি করুন" : "Create a checklist", kind: "checklist" });
-    actions.push({ label: lang === "bn" ? "একজন মানুষের সাথে কথা বলুন" : "Talk to a human", kind: "human" });
   }
+  if (safety.urgent || safety.professional || safety.kind === "human")
+    actions.push({ label: lang === "bn" ? "জরুরি বা বিশেষজ্ঞ সহায়তা" : "Urgent or specialist help", kind: "human" });
 
   return {
     id: `a_${Date.now()}`,
@@ -79,5 +81,6 @@ export function buildDemoReply(message: string, lang: Lang): ChatMessage {
     sources,
     uncertain,
     suggestedActions: actions,
+    humanSupportAvailable: safety.urgent || safety.professional || safety.kind === "human",
   };
 }

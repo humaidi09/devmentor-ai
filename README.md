@@ -1,6 +1,6 @@
 # Close AI
 
-Student support first, with optional Academic Study, Developer Path, Visual Learning and CP manual progress. The application lives in [`apps/web`](apps/web): Next.js + Supabase Auth/PostgreSQL/RLS, with a separate bilingual fictional demo.
+Close AI is a student learning workspace with an AI assistant, Live Knowledge search, Academic Study, Developer Path, Visual Lab and a topic-based CP Problem Library. The application lives in [`apps/web`](apps/web): Next.js + Supabase Auth/PostgreSQL/RLS, with a separate bilingual fictional demo.
 
 ```bash
 cd apps/web
@@ -9,6 +9,8 @@ npm run dev
 ```
 
 Default demo mode needs no credentials. For persistent accounts, follow [Supabase setup and checks](apps/web/README.md). All seeded campus support records are fictional and marked **DEMO**. Account mode now supports validated Gemini resource selection, optional Codeforces public data and consent-controlled in-app reminders. Demo remains local/mock; hosted account configuration is still required.
+
+Live Knowledge searches Crossref research metadata, World Bank public indicators and GitHub repositories through server-side adapters. Results always link to the original source and show retrieval dates. In demo mode, saved knowledge and CP progress stay in the browser session; account persistence requires migration `0010_knowledge_cp.sql`. LeetCode is represented by curated links and metadata, with no scraping. [Major upgrade report](MAJOR_FEATURE_UPGRADE_REPORT.md) records completed features, tests and remaining limits.
 
 Phase 1 planning is preserved in [`close-ai-phase1`](close-ai-phase1). [Phase 2 verification](close-ai-phase1/docs/PHASE_2_REPORT.md), [Phase 3](PHASE_3_REPORT.md), [Phase 4](PHASE_4_REPORT.md), [Phase 5](PHASE_5_REPORT.md) and [Phase 6](PHASE_6_REPORT.md) reports describe actual behavior, tests and remaining deployment limits. The older FastAPI service is retained in `apps/api` but is not called by Close AI.
 

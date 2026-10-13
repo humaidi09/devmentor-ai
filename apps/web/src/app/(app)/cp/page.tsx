@@ -29,6 +29,7 @@ const STATUS_OPTIONS: { key: CPStatus; en: string; bn: string }[] = [
   { key: "attempted", en: "Attempted", bn: "চেষ্টা" },
   { key: "skipped", en: "Skipped", bn: "বাদ" },
   { key: "need_hint", en: "Need Hint", bn: "হিন্ট প্রয়োজন" },
+  { key: "upsolve", en: "Upsolve Later", bn: "পরে আপসলভ" },
   { key: "upsolved", en: "Upsolved", bn: "Upsolve হয়েছে" },
 ];
 export default function CPPage() {
@@ -53,7 +54,7 @@ export default function CPPage() {
       .filter((p) => !DEMO_CP_PROBLEMS.some((d) => d.url === p.url))
       .map((p) => ({
         ...p,
-        rating: p.rating ?? 800,
+        rating: p.rating,
         hint: bn
           ? "একটি ছোট উদাহরণ দিয়ে input/output বোঝার চেষ্টা করুন।"
           : "Restate the input/output and try a small example.",
@@ -69,7 +70,7 @@ export default function CPPage() {
     ]);
   const problems = practiceProblems(
     catalog,
-    { topic, min, max, mode, includeSolved: showCompleted },
+    { topic, min, max, mode, includeSolved: showCompleted, includeUnrated: true },
     status,
     accepted,
     seed,
@@ -92,6 +93,7 @@ export default function CPPage() {
                     "solved",
                     "skipped",
                     "need_hint",
+                    "upsolve",
                     "upsolved",
                   ].includes(String(value)),
               ),
@@ -164,6 +166,10 @@ export default function CPPage() {
             : "Track your practice. Hints first; the manual catalog works without external APIs."
         }
       />
+      <Card className="flex flex-wrap items-center justify-between gap-3 bg-primary/5 p-4">
+        <div><h2 className="font-bold">{bn ? "টপিক-ভিত্তিক সমস্যা লাইব্রেরি" : "Topic-based Problem Library"}</h2><p className="text-sm text-muted-foreground">{bn ? "Codeforces ও LeetCode লিংক, filter, হিন্ট ও progress।" : "Codeforces and LeetCode links, filters, hints and progress."}</p></div>
+        <Link href="/cp/library" className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">{bn ? "লাইব্রেরি খুলুন" : "Open library"}</Link>
+      </Card>
       <CodeforcesConnection onProfile={setProfile} />
       {profile && (
         <p className="text-sm">
@@ -320,7 +326,7 @@ export default function CPPage() {
                 <ExternalLink className="h-3.5 w-3.5" aria-hidden />
               </a>
               <div className="mt-1 flex flex-wrap gap-1.5">
-                <Badge variant="info">{p.rating}</Badge>
+                <Badge variant="info">{p.rating === null ? (bn ? "রেটিং অজানা" : "Rating unavailable") : `CF ${p.rating}`}</Badge>
                 {p.tags.map((t) => (
                   <Badge key={t} variant="muted">
                     {localize(t, lang)}

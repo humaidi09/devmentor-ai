@@ -19,6 +19,7 @@ export function practiceProblems<
     max: number;
     mode: string;
     includeSolved?: boolean;
+    includeUnrated?: boolean;
   },
   status: Record<string, string>,
   accepted: string[] = [],
@@ -27,9 +28,9 @@ export function practiceProblems<
   const weak = weakTopics(problems, status);
   const rows = problems.filter(
     (p) =>
-      p.rating !== null &&
-      p.rating >= options.min &&
-      p.rating <= options.max &&
+      (p.rating === null
+        ? !!options.includeUnrated
+        : p.rating >= options.min && p.rating <= options.max) &&
       (!options.topic || p.tags.includes(options.topic)) &&
       (options.includeSolved ||
         (!["solved", "upsolved"].includes(status[p.id]) &&

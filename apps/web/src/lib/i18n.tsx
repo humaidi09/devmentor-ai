@@ -21,7 +21,8 @@ export const strings: Dict = {
   mainNav: { en: "Main navigation", bn: "মূল নেভিগেশন" },
   primaryNav: { en: "Primary navigation", bn: "প্রধান নেভিগেশন" },
   home: { en: "Home", bn: "হোম" },
-  support: { en: "Support", bn: "সহায়তা" },
+  support: { en: "AI Assistant", bn: "এআই সহকারী" },
+  liveKnowledge: { en: "Knowledge", bn: "নলেজ" },
   learn: { en: "Learn", bn: "শেখা" },
   settings: { en: "Settings", bn: "সেটিংস" },
   dashboard: { en: "Dashboard", bn: "ড্যাশবোর্ড" },
@@ -47,8 +48,8 @@ export const strings: Dict = {
   preferNotToSay: { en: "Prefer not to say", bn: "বলতে চাই না" },
   language: { en: "Language", bn: "ভাষা" },
   tagline: {
-    en: "From student barriers to real support.",
-    bn: "শিক্ষার্থীর বাধা থেকে বাস্তব সহায়তায়।",
+    en: "Ask, research, visualize and practice in one learning workspace.",
+    bn: "একটি শেখার জায়গায় প্রশ্ন, গবেষণা, চিত্র আর অনুশীলন।",
   },
   demoNotice: {
     en: "Demo mode — sample data, no account needed.",

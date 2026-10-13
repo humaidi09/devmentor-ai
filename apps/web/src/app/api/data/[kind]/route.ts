@@ -185,23 +185,23 @@ async function write(req: NextRequest, ctx: Context) {
       );
     } else if (kind === "cp" && method === "POST") {
       exact(b, ["problem", "status"]);
-      dbResult(
-        await db.from("cp_manual_progress").upsert(
-          {
-            user_id: uid,
-            problem_key: id(b.problem),
-            status: choice(b.status, [
-              "none",
-              "attempted",
-              "solved",
-              "skipped",
-              "need_hint",
-              "upsolved",
-            ]),
-          },
-          { onConflict: "user_id,problem_key" },
-        ),
-      );
+      const problem = id(b.problem);
+      const status = choice(b.status, ["none", "attempted", "solved", "skipped", "need_hint", "upsolve", "upsolved"]);
+      const old = dbResult(await db.from("cp_manual_progress")
+        .select("status,attempts,first_attempt_at,solved_at")
+        .eq("user_id", uid).eq("problem_key", problem).maybeSingle());
+      const practice = ["attempted", "solved", "need_hint", "upsolve", "upsolved"].includes(status);
+      const first = old?.first_attempt_at ?? (practice ? new Date().toISOString() : null);
+      const attempts = (old?.attempts ?? 0) + (practice && !old?.first_attempt_at ? 1 : 0);
+      dbResult(await db.from("cp_manual_progress").upsert({
+        user_id: uid, problem_key: problem, status, attempts,
+        first_attempt_at: first,
+        solved_at: old?.solved_at ?? (["solved", "upsolved"].includes(status) ? new Date().toISOString() : null),
+      }, { onConflict: "user_id,problem_key" }));
+    } else if (kind === "cp" && method === "DELETE") {
+      exact(b, ["confirmation"]);
+      if (b.confirmation !== "CLEAR CP PROGRESS") throw new ApiError(400, "Confirmation required.");
+      dbResult(await db.from("cp_manual_progress").delete().eq("user_id", uid));
     } else if (kind === "cp-handle") {
       throw new ApiError(
         400,

@@ -30,7 +30,7 @@ const mono = localFont({
 
 export const metadata: Metadata = {
   title: {
-    default: `${APP_NAME} — Student Support`,
+    default: `${APP_NAME} — Student Learning Workspace`,
     template: `%s · ${APP_NAME}`,
   },
   description: APP_TAGLINE,

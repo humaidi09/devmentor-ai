@@ -117,8 +117,7 @@ export class CodeforcesClient {
       (v) =>
         problemsResponse(v)
           .filter((p) => p.rating !== null)
-          .slice(-300)
-          .reverse(),
+          .slice(0, 300),
       1_800_000,
     );
   }

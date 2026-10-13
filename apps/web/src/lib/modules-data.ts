@@ -131,11 +131,12 @@ export type CPStatus =
   | "solved"
   | "skipped"
   | "need_hint"
+  | "upsolve"
   | "upsolved";
 export interface CPProblem {
   id: string;
   name: string;
-  rating: number;
+  rating: number | null;
   tags: string[];
   url: string;
   hint: string;
@@ -145,7 +146,7 @@ export const DEMO_CP_PROBLEMS: CPProblem[] = [
   {
     id: "p1",
     name: "Watermelon",
-    rating: 800,
+    rating: null,
     tags: ["math", "brute force"],
     url: "https://codeforces.com/problemset/problem/4/A",
     hint: "Any even number greater than 2 can be split into two positive even parts. What does that tell you?",
@@ -153,7 +154,7 @@ export const DEMO_CP_PROBLEMS: CPProblem[] = [
   {
     id: "p2",
     name: "Theatre Square",
-    rating: 1000,
+    rating: null,
     tags: ["math"],
     url: "https://codeforces.com/problemset/problem/1/A",
     hint: "Use ceiling division along each dimension, then multiply the two counts.",
@@ -161,7 +162,7 @@ export const DEMO_CP_PROBLEMS: CPProblem[] = [
   {
     id: "p3",
     name: "Way Too Long Words",
-    rating: 800,
+    rating: null,
     tags: ["strings"],
     url: "https://codeforces.com/problemset/problem/71/A",
     hint: "If a word's length is greater than 10, abbreviate as first letter + (length - 2) + last letter.",
@@ -169,7 +170,7 @@ export const DEMO_CP_PROBLEMS: CPProblem[] = [
   {
     id: "p4",
     name: "Next Round",
-    rating: 800,
+    rating: null,
     tags: ["implementation"],
     url: "https://codeforces.com/problemset/problem/158/A",
     hint: "Count how many scores are greater than zero AND at least the k-th place score.",

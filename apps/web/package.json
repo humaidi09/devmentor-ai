@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "test:logic": "tsx --test tests/*.test.ts",
     "test:browser": "node tests/browser.cjs",
+    "test:upgrade-browser": "node tests/upgrade-browser.cjs",
     "prebuild": "node scripts/build-offline.cjs",
     "test:backend": "node tests/backend.cjs",
     "build:account-test": "node tests/build-account.cjs",

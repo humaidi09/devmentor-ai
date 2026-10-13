@@ -6,9 +6,9 @@ import {
   Library,
   ListChecks,
   MessagesSquare,
+  Search,
   Settings,
   Trophy,
-  Users,
   type LucideIcon,
 } from "lucide-react";
 
@@ -21,13 +21,13 @@ export interface NavItem {
 export const PRIMARY_NAV: NavItem[] = [
   { href: "/dashboard", key: "home", icon: Home },
   { href: "/support", key: "support", icon: MessagesSquare },
+  { href: "/knowledge", key: "liveKnowledge", icon: Search },
 ];
 
 export const SUPPORT_NAV: NavItem[] = [
   { href: "/support/resources", key: "resources", icon: Library },
   { href: "/support/saved", key: "saved", icon: Bookmark },
   { href: "/support/steps", key: "nextSteps", icon: ListChecks },
-  { href: "/support/human", key: "humanSupport", icon: Users },
 ];
 
 export const MODULES_NAV: NavItem[] = [
@@ -38,10 +38,11 @@ export const MODULES_NAV: NavItem[] = [
 
 export const SETTINGS_NAV: NavItem[] = [{ href: "/settings", key: "settings", icon: Settings }];
 
-/** Mobile bottom bar — keep to 5 items, Support always one tap away. */
+/** Core learning tools remain one tap away on mobile. */
 export const MOBILE_NAV: NavItem[] = [
   { href: "/dashboard", key: "home", icon: Home },
   { href: "/support", key: "support", icon: MessagesSquare },
+  { href: "/knowledge", key: "liveKnowledge", icon: Search },
   { href: "/learn", key: "learn", icon: Code2 },
   { href: "/cp", key: "cp", icon: Trophy },
   { href: "/settings", key: "settings", icon: Settings },

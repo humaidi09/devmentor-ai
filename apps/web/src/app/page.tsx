@@ -11,6 +11,7 @@ import {
   GraduationCap,
   Languages,
   MessageCircle,
+  Search,
   ShieldCheck,
   Sparkles,
   Trophy,
@@ -54,13 +55,20 @@ export default function LandingPage() {
 
   const paths = [
     {
+      href: "/knowledge",
+      icon: Search,
+      tone: "blue",
+      title: bn ? "লাইভ নলেজ" : "Live knowledge",
+      desc: bn ? "গবেষণা, পাবলিক ডেটা ও কোডের উৎস খুঁজুন।" : "Search research, public data and code with original sources.",
+    },
+    {
       href: "/support",
       icon: Users,
       tone: "teal",
-      title: bn ? "শিক্ষার্থী সহায়তা" : "Student support",
+      title: bn ? "শিক্ষার্থী এআই সহকারী" : "Student AI assistant",
       desc: bn
-        ? "সহায়তা খুঁজুন, পরবর্তী ধাপ ঠিক করুন এবং মানুষের সঙ্গে যোগাযোগের পথ দেখুন।"
-        : "Find support, plan your next step, and see how to reach a person.",
+        ? "প্রশ্ন করুন, উৎস দেখুন এবং পরবর্তী ধাপ নিজের মতো ঠিক করুন।"
+        : "Ask questions, inspect sources, and choose your next step.",
     },
     {
       href: "/study",
@@ -103,18 +111,18 @@ export default function LandingPage() {
   const journey = [
     {
       icon: MessageCircle,
-      title: bn ? "আপনার কথা বলুন" : "Tell us what’s happening",
+      title: bn ? "প্রশ্ন করুন" : "Ask a question",
       detail: bn ? "নিজের ভাষায় শুরু করুন" : "Start in your own words",
     },
     {
       icon: Compass,
-      title: bn ? "সহায়তার পথ দেখুন" : "Explore support options",
-      detail: bn ? "উৎস ও ধাপ যাচাই করুন" : "Check sources and next steps",
+      title: bn ? "উৎস খুঁজুন" : "Explore original sources",
+      detail: bn ? "তারিখ ও তথ্য যাচাই করুন" : "Check dates and evidence",
     },
     {
       icon: CheckCircle2,
-      title: bn ? "নিজের মতো এগোন" : "Move forward your way",
-      detail: bn ? "সিদ্ধান্ত আপনার হাতে" : "You choose what comes next",
+      title: bn ? "শিখে অনুশীলন করুন" : "Learn and practice",
+      detail: bn ? "চিত্র ও সমস্যায় এগোন" : "Visualize and solve problems",
     },
   ];
 
@@ -145,23 +153,23 @@ export default function LandingPage() {
             </p>
             <h1 className="max-w-2xl text-balance text-4xl font-bold tracking-tight sm:text-5xl lg:text-[3.55rem]">
               {bn ? (
-                <>বাধা পেরিয়ে <span className="hero-highlight">এগিয়ে যান।</span></>
+                <>জানুন, বুঝুন, <span className="hero-highlight">এগিয়ে যান।</span></>
               ) : (
-                <>From student barriers to <span className="hero-highlight">real support.</span></>
+                <>Your ideas grow with <span className="hero-highlight">better learning.</span></>
               )}
             </h1>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
               {bn
-                ? "আপনার সমস্যাটা বলুন। Close AI আপনার ক্যাম্পাসের যাচাইকৃত সহায়তা খুঁজে দেয়, বাস্তব পরবর্তী ধাপ দেখায়, আর দরকার হলে একজন মানুষের কাছে পৌঁছানোর পথ দেখায়।"
-                : "Tell us what's in your way. Close AI helps you find verified campus support, understand realistic next steps, and find a way to reach a person when you need one."}
+                ? "প্রশ্ন করুন, বিশ্বস্ত উৎস খুঁজুন, ধারণা চিত্রে বুঝুন এবং নিজের গতিতে অনুশীলন করুন। আপনার শেখার পথ আপনার হাতে।"
+                : "Ask questions, find original sources, understand concepts visually, and practice at your own pace. Your learning path stays in your hands."}
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link href="/onboarding" className={buttonVariants({ size: "lg" })}>
                 {t("getSupport")}
                 <ArrowRight className="h-4 w-4" aria-hidden />
               </Link>
-              <Link href="/support/human" className={buttonVariants({ variant: "secondary", size: "lg" })}>
-                {t("talkToHuman")}
+              <Link href="/knowledge" className={buttonVariants({ variant: "secondary", size: "lg" })}>
+                {bn ? "উৎস খুঁজুন" : "Explore knowledge"}
               </Link>
             </div>
             <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-medium text-muted-foreground sm:text-sm">
@@ -170,7 +178,7 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <div className="hero-visual relative" role="group" aria-label={bn ? "সহায়তা পাওয়ার তিনটি ধাপ" : "Three steps to finding support"}>
+          <div className="hero-visual relative" role="group" aria-label={bn ? "শেখার তিনটি ধাপ" : "Three steps to learning"}>
             <div className="hero-orb hero-orb-one" aria-hidden />
             <div className="hero-orb hero-orb-two" aria-hidden />
             <div className="hero-visual-card relative rounded-[2rem] border border-white/70 p-5 shadow-xl sm:p-7">
@@ -179,7 +187,7 @@ export default function LandingPage() {
                   <span className="grid h-10 w-10 place-items-center rounded-2xl bg-primary text-primary-foreground"><Sparkles className="h-5 w-5" aria-hidden /></span>
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.15em] text-primary">{bn ? "ক্লোজ এআই" : "CLOSE AI"}</p>
-                    <h2 className="text-base font-bold">{bn ? "সহায়তার পথ" : "Your support journey"}</h2>
+                    <h2 className="text-base font-bold">{bn ? "শেখার পথ" : "Your learning journey"}</h2>
                   </div>
                 </div>
                 <span className="hero-visual-spark" aria-hidden><Sparkles className="h-5 w-5" /></span>

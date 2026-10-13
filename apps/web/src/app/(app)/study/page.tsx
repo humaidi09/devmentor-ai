@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import { useAccount } from "@/lib/account";
 import { AccountStudy } from "@/components/account-study";
+import { KnowledgeCollection } from "@/components/knowledge-collection";
 import { PageHeader } from "@/components/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -42,7 +43,7 @@ export default function StudyPage() {
     setTasks((s) => s.map((x) => (x.id === id ? { ...x, done: !x.done } : x)));
   }
 
-  if (!demo) return <AccountStudy />;
+  if (!demo) return <div className="space-y-5"><KnowledgeCollection collection="study" /><AccountStudy /></div>;
   return (
     <div className="space-y-6">
       <PageHeader
@@ -53,6 +54,8 @@ export default function StudyPage() {
             : "Courses, deadlines, and study plans — all editable by you."
         }
       />
+
+      <KnowledgeCollection collection="study" onDemoAdd={(title) => setTasks((current) => [...current, { id: `knowledge_${Date.now()}`, title, done: false }])} />
 
       <section className="grid gap-6 lg:grid-cols-2">
         <div>

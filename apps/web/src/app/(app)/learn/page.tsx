@@ -1,6 +1,7 @@
 "use client";
 
 import { DeveloperRecommendation } from "@/components/developer-recommendation";
+import { KnowledgeCollection } from "@/components/knowledge-collection";
 import Link from "next/link";
 import { Check, Copy, Sparkles } from "lucide-react";
 import { useState } from "react";
@@ -83,6 +84,8 @@ export default function LearnPage() {
             : "Pick a path and track milestones. No job or salary guarantees."
         }
       />
+
+      <KnowledgeCollection collection="developer" />
 
       <div className="flex flex-wrap gap-2">
         {DEMO_PATHWAYS.map((p) => (

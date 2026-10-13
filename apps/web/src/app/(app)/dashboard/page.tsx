@@ -76,6 +76,9 @@ export default function DashboardPage() {
             {t("getSupport")}
             <ArrowRight className="h-4 w-4" aria-hidden />
           </Link>
+          <Link href="/knowledge" className={buttonVariants({ variant: "secondary", size: "lg" })}>
+            {bn ? "উৎস খুঁজুন" : "Search sources"}
+          </Link>
         </div>
         <div className="mt-4 flex flex-wrap gap-2">
           {(preferences.support ? starters : []).map((s) => (

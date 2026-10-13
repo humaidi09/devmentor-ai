@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
         ...reply,
         provider: "mock",
         state: reply.uncertain ? "clarification" : "success",
-        humanSupportAvailable: true,
+        humanSupportAvailable: reply.humanSupportAvailable,
         draft: reply.sources?.length
           ? {
               resourceId: reply.sources[0].id,

@@ -14,7 +14,7 @@ No credentials are needed. `NEXT_PUBLIC_DEMO_MODE=true` (the default) explicitly
 ## Account setup
 
 1. Use a Supabase project dedicated to Close AI, or review legacy compatibility before updating a shared old DevMentor database.
-2. Apply **all** migrations in repository `supabase/migrations` order (0001–0009). With a linked Supabase CLI project, use `supabase db push` from the repository root. Do not reset a hosted production database. Existing legacy profiles/courses/CP tables are adapted; unused old private-table client grants are revoked.
+2. Apply **all** migrations in repository `supabase/migrations` order (0001–0010). With a linked Supabase CLI project, use `supabase db push` from the repository root. Do not reset a hosted production database. Existing legacy profiles/courses/CP tables are adapted; unused old private-table client grants are revoked.
 3. Optionally run `supabase/seed-demo.sql` as a trusted SQL operator. It contains fictional DEMO resources only, not personal test users or real contacts.
 4. Enable Supabase email/password Auth. For hosted accounts keep email confirmation enabled; set the Auth Site URL and allow the exact website `/auth/callback` URL. Local test auto-confirm is only a fixture setting, not a production recommendation.
 5. Copy `.env.example` to `.env.local`, fill the **public** project URL and anon/publishable key, set `NEXT_PUBLIC_DEMO_MODE=false` and `NEXT_PUBLIC_ACCOUNT_MODE_ENABLED=true`, and set `CLOSE_AI_SITE_URL` to this deployment's canonical HTTPS origin. Configure preview deployments with their own allowed origin/redirect, rather than reusing the production origin.
@@ -39,7 +39,9 @@ npm run build
 npm start -- --hostname 127.0.0.1 --port 3001
 ```
 
-In a second terminal, install Chromium and run `npm run test:browser`. That suite explicitly selects demo mode and covers 20 routes, English/Bangla mobile layout, axe rules, keyboard controls and offline reload/chat/navigation. `PLAYWRIGHT_EXECUTABLE_PATH` can select an installed Chromium. Tests never target the live website.
+In a second terminal, install Chromium and run `npm run test:browser`. That suite explicitly selects demo mode and covers 24 routes, English/Bangla mobile layout, axe rules, keyboard controls and offline reload/chat/navigation. `PLAYWRIGHT_EXECUTABLE_PATH` can select an installed Chromium. Tests never target the live website.
+
+`npm run test:upgrade-browser` covers Live Knowledge search/save, Study handoff and CP hint-to-visual-to-practice navigation. Live Knowledge uses server-side Crossref, World Bank and GitHub adapters. `GITHUB_SEARCH_TOKEN` is optional and server-only; unauthenticated GitHub search has a lower provider rate limit. Account users can opt into Gemini source-backed explanation when `AI_PROVIDER=gemini` and an AI key are configured; the query and public metadata are sent only after an explicit checkbox. Demo search does not use Gemini. Migration `0010` adds per-user saved knowledge and extends existing CP progress; apply it before enabling those account features.
 
 ## Reproducible backend/auth tests
 

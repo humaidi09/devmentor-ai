@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Bot, Send, User, Users } from "lucide-react";
+import { Bot, Search, Send, User } from "lucide-react";
 import { Suspense, useEffect, useRef, useState } from "react";
 
 import { ChecklistDraft } from "@/components/checklist-draft";
@@ -123,8 +123,8 @@ function ChatInner() {
           id: `e_${Date.now()}`,
           role: "assistant",
           content: bn
-            ? "দুঃখিত, কিছু একটা সমস্যা হয়েছে। আবার চেষ্টা করুন, অথবা একজন মানুষের সাথে কথা বলুন।"
-            : "Sorry, something went wrong. Please try again, or talk to a human.",
+            ? "দুঃখিত, কিছু একটা সমস্যা হয়েছে। আবার চেষ্টা করুন।"
+            : "Sorry, something went wrong. Please try again.",
         },
       ]);
     } finally {
@@ -182,11 +182,11 @@ function ChatInner() {
         }
       >
         <Link
-          href="/support/human"
+          href="/knowledge"
           className={buttonVariants({ variant: "secondary", size: "sm" })}
         >
-          <Users className="h-4 w-4" aria-hidden />
-          {t("talkToHuman")}
+          <Search className="h-4 w-4" aria-hidden />
+          {t("liveKnowledge")}
         </Link>
       </PageHeader>
 
@@ -363,13 +363,9 @@ function ChatInner() {
                 id: `skip_${Date.now()}`,
                 role: "assistant",
                 content: bn
-                  ? "কোনো তথ্য দিতে হবে না। রিসোর্স নিজে দেখুন বা মানুষের সহায়তা নিন।"
-                  : "You do not need to share more. Browse resources or talk to a human.",
+                  ? "কোনো তথ্য দিতে হবে না। রিসোর্স নিজে দেখুন।"
+                  : "You do not need to share more. Browse resources yourself.",
                 suggestedActions: [
-                  {
-                    kind: "human",
-                    label: bn ? "মানুষের সহায়তা" : "Talk to a human",
-                  },
                   {
                     kind: "continue",
                     label: bn ? "সব রিসোর্স" : "Browse resources",

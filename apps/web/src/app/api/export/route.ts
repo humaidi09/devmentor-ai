@@ -17,6 +17,7 @@ export async function GET(req: NextRequest) {
     for (const table of [
       "modules_enabled",
       "saved_resources",
+      "saved_knowledge",
       "action_plans",
       "action_steps",
       "reminders",
@@ -40,6 +41,8 @@ export async function GET(req: NextRequest) {
         ? "user_id"
         : table === "cp_manual_progress"
           ? "problem_key"
+          : table === "saved_knowledge"
+            ? "external_id"
           : "id";
       for (let offset = 0; ; offset += 500) {
         let query = db

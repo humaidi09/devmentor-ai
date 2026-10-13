@@ -86,7 +86,7 @@ test("no matches, wrong campus and no campus cannot invent a recommendation", as
     [],
   );
 });
-test("malicious model output fails closed and gives manual/human fallback", async () => {
+test("malicious model output fails closed and gives a manual fallback", async () => {
   const reply = await groundedReply(
     "tuition fee",
     "en",
@@ -103,7 +103,8 @@ test("malicious model output fails closed and gives manual/human fallback", asyn
   );
   assert.equal(reply.state, "error");
   assert.deepEqual(reply.sources, []);
-  assert.ok(reply.suggestedActions!.some((a) => a.kind === "human"));
+  assert.ok(reply.suggestedActions!.some((a) => a.kind === "continue"));
+  assert.ok(!reply.suggestedActions!.some((a) => a.kind === "human"));
 });
 test("retrieved injection is isolated as untrusted data; Gemini receives no private profile/history", async () => {
   let captured: any;

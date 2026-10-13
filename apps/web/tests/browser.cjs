@@ -165,9 +165,13 @@ assert.ok(
       "/support/saved",
       "/support/steps",
       "/support/human",
+      "/knowledge",
       "/study",
       "/learn",
       "/cp",
+      "/cp/library",
+      "/cp/topics/bfs",
+      "/cp/topics/dfs",
       "/settings",
       "/learn/visual-lab",
       ...[

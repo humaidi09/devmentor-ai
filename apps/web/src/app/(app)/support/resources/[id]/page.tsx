@@ -8,7 +8,6 @@ import {
   BookmarkCheck,
   ExternalLink,
   ListChecks,
-  Users,
 } from "lucide-react";
 
 import { VerificationBadge } from "@/components/verification-badge";
@@ -184,13 +183,6 @@ export default function ResourceDetailPage() {
         >
           <ListChecks className="h-4 w-4" aria-hidden />
           {t("createChecklist")}
-        </Link>
-        <Link
-          href="/support/human"
-          className={buttonVariants({ variant: "secondary" })}
-        >
-          <Users className="h-4 w-4" aria-hidden />
-          {t("talkToHuman")}
         </Link>
       </div>
     </div>

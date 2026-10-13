@@ -10,13 +10,18 @@ test('resource matching excludes expired and unreviewed samples', () => {
   assert.deepEqual(results.map(r => r.id), ['r-fin-tuition']);
   assert.ok(results.every(r => r.isDemo && r.verification === 'verified'));
 });
-test('unknown needs offer uncertainty and an immediate human route without invented sources', () => {
+test('unknown needs offer uncertainty and source browsing without invented sources', () => {
   for (const lang of ['en', 'bn'] as const) {
     const reply = buildDemoReply('unknown need', lang);
     assert.equal(reply.uncertain, true);
     assert.deepEqual(reply.sources, []);
-    assert.ok(reply.suggestedActions!.some(a => a.kind === 'human'));
+    assert.ok(reply.suggestedActions!.some(a => a.kind === 'continue'));
+    assert.ok(!reply.suggestedActions!.some(a => a.kind === 'human'));
   }
+});
+test('urgent needs retain a small external-help fallback', () => {
+  const reply = buildDemoReply('I want to kill myself', 'en');
+  assert.ok(reply.suggestedActions!.some(a => a.kind === 'human'));
 });
 test('Bangla requests find appropriate sample resources and localized actions', () => {
   const reply = buildDemoReply('টিউশন ফি নিয়ে চিন্তিত', 'bn');

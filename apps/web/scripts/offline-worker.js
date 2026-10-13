@@ -1,7 +1,7 @@
 /* Phase 2 caches public demo pages/assets only. Never cache API responses, query
    responses or user data. Revisit this allowlist before introducing accounts. */
 const CACHE = 'close-ai-public-__BUILD_VERSION__';
-const PAGES = ['/', '/onboarding', '/dashboard', '/support', '/support/resources', '/support/saved', '/support/steps', '/support/human', '/study', '/learn', '/cp', '/settings', '/learn/visual-lab',
+const PAGES = ['/', '/onboarding', '/dashboard', '/support', '/support/resources', '/support/saved', '/support/steps', '/support/human', '/knowledge', '/study', '/learn', '/cp', '/cp/library', '/settings', '/learn/visual-lab',
   ...['bubble-sort', 'binary-search', 'bfs', 'dfs', 'sql-inner-join', 'normalization'].map(x => '/learn/visual-lab/' + x),
   ...['r-fin-tuition', 'r-fin-merit', 'r-fin-emergency', 'r-aca-tutoring', 'r-house-office', 'r-career-cell', 'r-well-hub', 'r-intl-visa'].map(x => '/support/resources/' + x)];
 const ALLOWED = new Set(PAGES);

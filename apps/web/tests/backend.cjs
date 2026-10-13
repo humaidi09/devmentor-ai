@@ -152,6 +152,25 @@ async function denied(result) {
         .from("saved_resources")
         .insert({ user_id: a.id, resource_id: "r-house-office" }),
     );
+    await ok(a.db.from("saved_knowledge").insert({
+      user_id: a.id, external_id: "crossref:10.1234/test", provider: "crossref",
+      category: "research", collection: "study", title: "Test paper",
+      url: "https://doi.org/10.1234/test", source: "Crossref", summary: "Metadata",
+      retrieved_at: new Date().toISOString(),
+    }));
+    assert.equal((await ok(a.db.from("saved_knowledge").select())).length, 1);
+    assert.equal((await ok(b.db.from("saved_knowledge").select())).length, 0);
+    await denied(b.db.from("saved_knowledge").insert({
+      user_id: a.id, external_id: "crossref:forged", provider: "crossref",
+      category: "research", title: "Forgery", url: "https://doi.org/test",
+      source: "Crossref", retrieved_at: new Date().toISOString(),
+    }));
+    await ok(a.db.from("cp_manual_progress").upsert({
+      user_id: a.id, problem_key: "lc-two-sum", status: "upsolve", attempts: 1,
+      first_attempt_at: new Date().toISOString(),
+    }));
+    assert.equal((await ok(a.db.from("cp_manual_progress").select("status")))[0].status, "upsolve");
+    assert.equal((await ok(b.db.from("cp_manual_progress").select())).length, 0);
     const plan = await ok(
       a.db
         .from("action_plans")
@@ -434,6 +453,7 @@ async function denied(result) {
     await ok(a.db.rpc("erase_close_ai_data"));
     assert.equal((await ok(a.db.from("action_plans").select())).length, 0);
     assert.equal((await ok(a.db.from("saved_resources").select())).length, 0);
+    assert.equal((await ok(a.db.from("saved_knowledge").select())).length, 0);
     assert.equal((await ok(b.db.from("courses").select()))[0].id, course.id);
     console.log("PASS transactional own-data reset preserves another user");
     const tables = sql(

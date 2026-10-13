@@ -1,6 +1,6 @@
 import { accountModeEnabled } from "./auth/mode";
 export const APP_NAME = "Close AI";
-export const APP_TAGLINE = "From student barriers to real support.";
+export const APP_TAGLINE = "Ask, research, visualize and practice in one student learning workspace.";
 
 // .trim() guards against the classic whitespace-in-env-var bug that makes a
 // URL/key silently malformed in production.

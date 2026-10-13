@@ -19,18 +19,16 @@ export async function groundedReply(
     sources: [],
     provider: provider.name,
     state: "success",
-    humanSupportAvailable: true,
+    humanSupportAvailable: c.urgent || c.professional || c.kind === "human",
     suggestedActions: [
-      {
-        kind: "human",
-        label: bn ? "একজন মানুষের সাথে কথা বলুন" : "Talk to a human",
-      },
       {
         kind: "continue",
         label: bn ? "সব রিসোর্স দেখুন" : "Browse all resources",
       },
     ],
   };
+  if (reply.humanSupportAvailable)
+    reply.suggestedActions?.push({ kind: "human", label: bn ? "জরুরি বা বিশেষজ্ঞ সহায়তা" : "Urgent or specialist help" });
   if (c.kind === "cp" || c.kind === "developer" || c.kind === "study") {
     reply.content = bn
       ? "সংশ্লিষ্ট শেখার মডিউলে আপনার পছন্দ অনুযায়ী এগোতে পারেন। কোনো সময়সূচি পরিবর্তন করা হয়নি।"
@@ -43,16 +41,16 @@ export async function groundedReply(
     reply.state = clarified ? "no_resource" : "clarification";
     reply.uncertain = true;
     reply.content = bn
-      ? "কোন ক্যাম্পাসের তথ্য চান? Settings-এ বেছে নিন, অথবা তথ্য না দিয়ে resource directory বা মানুষের সহায়তা নিন।"
-      : "Which campus are you asking about? Choose it in Settings, or prefer not to say and browse the directory or talk to a human.";
+      ? "কোন ক্যাম্পাসের তথ্য চান? Settings-এ বেছে নিন, অথবা তথ্য না দিয়ে resource directory দেখুন।"
+      : "Which campus are you asking about? Choose it in Settings, or browse the directory without sharing it.";
     return reply;
   }
   if (!c.intent && !c.professional && c.kind !== "human") {
     reply.state = clarified ? "no_resource" : "clarification";
     reply.uncertain = true;
     reply.content = bn
-      ? "কোন ধরনের সহায়তা চান—আর্থিক, পড়াশোনা, নাকি আবাসন? বলতে না চাইলে সরাসরি মানুষের সহায়তা নিতে পারেন।"
-      : "What kind of support would help—financial, academic or housing? You can prefer not to say or talk to a human now.";
+      ? "কোন ধরনের সহায়তা চান—আর্থিক, পড়াশোনা, নাকি আবাসন? বলতে না চাইলে রিসোর্স নিজে দেখুন।"
+      : "What kind of support would help—financial, academic or housing? You can browse resources without sharing more.";
     return reply;
   }
   const candidates = rankResources(
@@ -77,8 +75,8 @@ export async function groundedReply(
     reply.state = "error";
     reply.uncertain = true;
     reply.content = bn
-      ? "AI এখন উপলব্ধ নয়। যাচাইকৃত রিসোর্স নিজে খুঁজতে বা মানুষের সহায়তা নিতে পারেন।"
-      : "Sorry, something went wrong. AI is unavailable. Browse verified resources manually or talk to a human.";
+      ? "AI এখন উপলব্ধ নয়। যাচাইকৃত রিসোর্স নিজে দেখুন।"
+      : "Sorry, something went wrong. AI is unavailable. Browse verified resources manually.";
     return reply;
   }
   const sources = candidates.filter(
@@ -92,8 +90,8 @@ export async function groundedReply(
       ? "আপনার ক্যাম্পাস ও নির্বাচিত বিভাগের সাথে মেলে এমন যাচাইকৃত রিসোর্স নিচে আছে। তথ্য সরাসরি সংরক্ষিত উৎস থেকে দেখানো হয়েছে।"
       : "Here are some verified resources that may match your campus and support category. Facts below come directly from stored sources."
     : bn
-      ? "উপযুক্ত বর্তমান যাচাইকৃত রিসোর্স পাওয়া যায়নি। আমি নিশ্চিত নই; অন্য বিভাগ খুঁজুন বা মানুষের সহায়তা নিন।"
-      : "I’m not sure: no suitable current verified resource was found. Broaden your search or talk to a human.";
+      ? "উপযুক্ত বর্তমান যাচাইকৃত রিসোর্স পাওয়া যায়নি। আমি নিশ্চিত নই; অন্য বিভাগ বা লাইভ নলেজ খুঁজুন।"
+      : "I’m not sure: no suitable current verified resource was found. Broaden your search or try Live Knowledge.";
   if (c.professional) {
     reply.content =
       (c.urgent
