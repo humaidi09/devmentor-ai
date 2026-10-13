@@ -13,6 +13,7 @@ import subprocess
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
+from dsa_storyboards import STORIES, validate as validate_storyboards
 
 WIDTH, HEIGHT, FPS = 432, 768, 8
 SEGMENT_SECONDS, SEGMENTS = 8, 8
@@ -30,12 +31,14 @@ def font(path, size):
 
 
 FONT_REG = font("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 20)
+FONT_CONCEPT = font("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 18)
 FONT_SMALL = font("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 14)
 FONT_BOLD = font("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 30)
 FONT_BOLD_SMALL = font("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 24)
 FONT_BOLD_TINY = font("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 21)
 FONT_NODE = font("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 18)
 FONT_BN = font("/usr/share/fonts/truetype/noto/NotoSansBengali-Regular.ttf", 20)
+FONT_MONO = font("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", 15)
 
 
 def mixed_runs(value):
@@ -88,87 +91,229 @@ def paragraph(draw, value, x, y, face, fill, max_width=570, max_lines=3, gap=6):
     return y
 
 
+def centered(draw, value, x, y, face, fill):
+    draw.text((x - draw.textlength(str(value), font=face) / 2, y), str(value), font=face, fill=fill)
+
+
+def arrow(draw, start, end, color=GREEN, width=3):
+    x1, y1 = start
+    x2, y2 = end
+    draw.line((x1, y1, x2, y2), fill=color, width=width)
+    angle = math.atan2(y2-y1, x2-x1)
+    for side in (-0.52, 0.52):
+        draw.line((x2, y2, x2 - 10*math.cos(angle+side), y2 - 10*math.sin(angle+side)), fill=color, width=width)
+
+
+def node(draw, label, center, active=False, done=False, size=48, phase=0):
+    x, y = center
+    if active:
+        halo = 7 + 3*math.sin(phase*3)
+        draw.rounded_rectangle((x-size/2-halo,y-size/2-halo,x+size/2+halo,y+size/2+halo),13,
+                               outline=(31, 104, 63),width=2)
+    fill = (32, 108, 67) if active else (28, 63, 44) if done else CARD
+    outline = GREEN if active else (77, 161, 109) if done else BORDER
+    draw.rounded_rectangle((x-size/2, y-size/2, x+size/2, y+size/2), 10, fill=fill, outline=outline, width=3 if active else 1)
+    value = str(label)
+    face = FONT_NODE if draw.textlength(value, font=FONT_NODE) < size-6 else FONT_SMALL
+    centered(draw, value, x, y-face.size/2-2, face, WHITE if active else MUTED)
+
+
+def draw_story(draw, story, beat, within, next_beat=None, segment=0, previous=None):
+    values, selected, done, _ = beat
+    active, completed = set(selected), set(done)
+    kind = story["kind"]
+    draw.rounded_rectangle((22, 222, 410, 514), 19, fill=(13, 25, 19), outline=(40, 92, 58), width=2)
+    draw.rounded_rectangle((37,497,395,502),2,fill=BORDER)
+    draw.rounded_rectangle((37,497,37+358*(within/SEGMENT_SECONDS),502),2,fill=GREEN)
+    if kind in ("line", "bars", "text", "linked", "queue", "dp"):
+        count = len(values)
+        cell = min(54, 350 / max(count, 1) - 5)
+        gap = min(10, (354 - count*cell) / max(count-1, 1)) if count > 1 else 0
+        left = 216 - (count*cell + (count-1)*gap)/2 + cell/2
+        centers = [(left + i*(cell+gap), 370) for i in range(count)]
+        if kind == "bars":
+            for i, value in enumerate(values):
+                x = centers[i][0]
+                lift = 0
+                if next_beat and value in next_beat[0] and within > 5.5:
+                    target = centers[next_beat[0].index(value)][0]
+                    travel = min(1,(within-5.5)/2.5)
+                    travel = travel*travel*(3-2*travel)
+                    lift = -31*math.sin(travel*math.pi) if target > x else 31*math.sin(travel*math.pi) if target < x else 0
+                    x += (target-x)*travel
+                height = max(30, abs(int(value))*21)
+                draw.rounded_rectangle((x-cell/2, 430-height+lift, x+cell/2, 430+lift), 7,
+                    fill=(56, 185, 105) if i in active else (38, 88, 58) if i in completed else (33, 51, 40))
+                centered(draw, value, x, 445+lift, FONT_NODE, WHITE)
+        elif kind == "linked":
+            for i in range(count-1):
+                arrow(draw, (centers[i][0]+cell/2, 370), (centers[i+1][0]-cell/2-4, 370), (69, 154, 100), 2)
+            for i, value in enumerate(values):node(draw, value, centers[i], i in active, i in completed, cell,within)
+            centered(draw, "HEAD", centers[0][0], 296, FONT_SMALL, GREEN)
+            centered(draw, "NULL", centers[-1][0], 446, FONT_SMALL, MUTED)
+            if story["edges"]:
+                arrow(draw, (centers[-1][0], 400), (centers[1][0], 400), (221, 155, 77), 2)
+        elif kind == "queue":
+            for i, value in enumerate(values):node(draw, value, centers[i], i in active, i in completed, cell,within)
+            arrow(draw, (centers[0][0], 283), (centers[0][0], 335), GREEN, 2)
+            centered(draw, "FRONT", centers[0][0], 262, FONT_SMALL, GREEN)
+            centered(draw, "BACK", centers[-1][0], 434, FONT_SMALL, MUTED)
+        else:
+            if kind == "text" and story["aux"]:
+                aux = story["aux"]
+                offset = 2 if selected and min(selected) >= 2 else 0
+                old_selected = previous[1] if previous else []
+                old_offset = 2 if old_selected and min(old_selected) >= 2 else 0
+                shown_offset = old_offset + (offset-old_offset)*min(1,within/1.8)
+                for i, char in enumerate(aux):
+                    target = offset+i
+                    if target < len(centers):
+                        x=centers[0][0]+(shown_offset+i)*(cell+gap)
+                        node(draw, char, (x, 447), target in active, False, cell-7,within)
+                draw.text((35, 428), "P", font=FONT_SMALL, fill=GREEN)
+            for i, value in enumerate(values):
+                shown=value
+                if kind=="dp" and previous and i in active and i<len(previous[0]):
+                    old=previous[0][i]
+                    if isinstance(old,(int,float)) and isinstance(value,(int,float)):
+                        shown=round(old+(value-old)*min(1,within/1.6))
+                node(draw, shown, centers[i], i in active, i in completed, cell,within)
+            if kind == "dp":
+                for i in range(2, count):
+                    if i in active:
+                        arrow(draw, (centers[i-2][0], 322), (centers[i][0]-8, 335), GREEN, 2)
+                        arrow(draw, (centers[i-1][0], 319), (centers[i][0]+8, 335), GREEN, 2)
+            for i in active:
+                if i < len(centers):
+                    centered(draw, str(i), centers[i][0], 293, FONT_SMALL, GREEN)
+            focused=[centers[i][0] for i in selected if i<len(centers)]
+            if focused:
+                marker=focused[0] if len(focused)==1 else focused[0]+(focused[-1]-focused[0])*(within/SEGMENT_SECONDS)
+                arrow(draw,(marker,306),(marker,330),GREEN,2)
+        if kind == "text":draw.text((33, 338), "TEXT", font=FONT_SMALL, fill=MUTED)
+        if kind == "dp":draw.text((33, 338), "DP", font=FONT_SMALL, fill=MUTED)
+    elif kind in ("tree", "graph", "trie"):
+        positions = ([(216,274),(113,350),(319,350),(69,439),(157,439),(272,439),(365,439)]
+                     if kind != "graph" else [(216,275),(103,350),(329,350),(65,445),(158,445),(350,445)])
+        edges = story["edges"] or [(0,1),(0,2),(1,3),(1,4),(2,5),(2,6)]
+        for edge_index,(a,b) in enumerate(edges):
+            if a < len(values) and b < len(values):
+                colored = a in completed and (b in completed or b in active)
+                arrow(draw, positions[a], positions[b], GREEN if colored else BORDER, 2)
+                if kind=="graph" and edge_index<len(story["aux"]):
+                    mx=(positions[a][0]+positions[b][0])/2
+                    my=(positions[a][1]+positions[b][1])/2
+                    draw.rounded_rectangle((mx-10,my-10,mx+10,my+10),5,fill=BG,outline=BORDER)
+                    centered(draw,story["aux"][edge_index],mx,my-8,FONT_SMALL,WHITE)
+        for i,value in enumerate(values):
+            if i < len(positions):node(draw,value,positions[i],i in active,i in completed,56 if kind != "trie" else 45,within)
+    elif kind == "stack":
+        if story["aux"]:
+            for i, char in enumerate(story["aux"]):
+                centered(draw, char, 149+i*45, 245, FONT_NODE, GREEN if i==max(0,min(segment-1,3)) else MUTED)
+        draw.rectangle((133, 277, 136, 476), fill=BORDER)
+        draw.rectangle((296, 277, 299, 476), fill=BORDER)
+        for i,value in enumerate(values):
+            x,y=216,448-i*55
+            node(draw,value,(x,y-25*max(0,1-within/1.2) if i in active else y),i in active,i in completed,46,within)
+        arrow(draw,(348,340),(348,282),GREEN,2)
+        centered(draw,"TOP",347,349,FONT_SMALL,GREEN)
+    elif kind == "map":
+        for i,value in enumerate(values[:5]):
+            y=263+i*49
+            draw.rounded_rectangle((56,y,376,y+41),9,fill=(28,88,51) if i in active else CARD,outline=GREEN if i in active else BORDER,width=2 if i in active else 1)
+            draw.text((73,y+10),str(value)[:28],font=FONT_NODE,fill=WHITE if i in active else MUTED)
+    elif kind == "grid":
+        rows=len(values);cols=max(map(len,values))
+        width=min(64,315/cols);left=216-cols*width/2;top=282
+        for r,row in enumerate(values):
+            for c,value in enumerate(row):
+                index=r*cols+c
+                shown=value
+                if previous and index in active and r<len(previous[0]) and c<len(previous[0][r]):
+                    old=previous[0][r][c]
+                    if isinstance(old,(int,float)) and isinstance(value,(int,float)):
+                        shown=round(old+(value-old)*min(1,within/1.6))
+                node(draw,shown,(left+c*width+width/2,top+r*63),index in active,index in completed,width-8,within)
+    elif kind == "interval":
+        draw.line((54,454,383,454),fill=MUTED,width=2)
+        for tick in range(1,8):
+            x=54+tick*41
+            centered(draw,tick,x,465,FONT_SMALL,MUTED)
+        for i,(start,end) in enumerate(values):
+            y=275+i*48
+            left=54+start*41;right=54+end*41
+            draw.rounded_rectangle((left,y,right,y+31),7,fill=(45,157,89) if i in active or i in completed else CARD,
+                                   outline=GREEN if i in active else BORDER,width=2 if i in active else 1)
+            centered(draw,chr(65+i), (left+right)/2,y+5,FONT_NODE,WHITE)
+    elif kind == "bits":
+        for row,value in enumerate(values):
+            y=280+row*62
+            for i,char in enumerate(str(value)):
+                x=126+i*53
+                node(draw,char,(x,y),i in active,i in completed,43,within)
+            draw.text((41,y-10),["A", "B", "OUT"][row],font=FONT_SMALL,fill=GREEN if row==2 else MUTED)
+
+
 def frame(lesson, number):
     segment = min(number // (FPS * SEGMENT_SECONDS), SEGMENTS - 1)
     within = (number % (FPS * SEGMENT_SECONDS)) / FPS
     progress = number / max(FRAMES - 1, 1)
+    story = STORIES[lesson["id"]]
+    beats = story["beats"]
+    if segment == 0:
+        beat = (story["initial"], [], [], "Watch the example change, one action at a time.")
+    elif segment <= 4:
+        beat = beats[segment-1]
+    elif segment == 5:
+        beat = beats[min(int(within/2),3)]
+    else:
+        beat = beats[-1]
     im = Image.new("RGB", (WIDTH, HEIGHT), BG)
     draw = ImageDraw.Draw(im)
-    for x in range(0, WIDTH, 32):
-        draw.line((x, 0, x, HEIGHT), fill=(14, 27, 19), width=1)
-    for y in range(0, HEIGHT, 32):
-        draw.line((0, y, WIDTH, y), fill=(14, 27, 19), width=1)
-    glow_x = 30 + int(progress * 370)
-    draw.ellipse((glow_x - 95, -130, glow_x + 95, 60), fill=(17, 38, 26))
-
-    draw.rounded_rectangle((22, 24, 249, 54), 13, fill=(23, 54, 35), outline=(43, 112, 70))
-    draw.text((34, 29), "CLOSE AI  /  DSA VISUALS", font=FONT_SMALL, fill=GREEN)
-    draw.text((354, 30), f"{segment + 1:02d} / 08", font=FONT_SMALL, fill=MUTED)
+    for x in range(0, WIDTH, 32):draw.line((x, 0, x, HEIGHT), fill=(14, 27, 19), width=1)
+    for y in range(0, HEIGHT, 32):draw.line((0, y, WIDTH, y), fill=(14, 27, 19), width=1)
+    draw.rounded_rectangle((22, 22, 188, 50), 12, fill=(23, 54, 35), outline=(43, 112, 70))
+    draw.text((34, 27), "CLOSE AI  /  DSA", font=FONT_SMALL, fill=GREEN)
+    draw.text((347, 27), f"{segment+1:02d} / 08", font=FONT_SMALL, fill=MUTED)
     title = lesson["title"]
-    title_face = next(face for face in (FONT_BOLD, FONT_BOLD_SMALL, FONT_BOLD_TINY)
-                      if draw.textlength(title, font=face) <= 382)
-    draw.text((24, 75), title, font=title_face, fill=WHITE)
-    draw.line((24, 124, 408, 124), fill=BORDER, width=1)
-
-    labels = ["START HERE", "THE SIMPLE IDEA", "ONE SMALL EXAMPLE", "STEP 1", "STEP 2", "STEP 3", "COMMON PATTERNS", "YOUR TURN"]
-    draw.text((24, 143), labels[segment], font=FONT_SMALL, fill=GREEN)
-    if segment == 0:
-        en = "One topic. One concrete example. Follow the highlighted idea."
-        bn = "একটি টপিক, একটি ছোট উদাহরণ। আলোকিত অংশ ধরে এগোও।"
-    elif segment == 1:
-        en, bn = lesson["concept"], lesson["conceptBn"]
-    elif segment == 2:
-        en, bn = lesson["example"], lesson["exampleBn"]
-    elif segment in (3, 4, 5):
-        step = lesson["steps"][segment - 3]
-        en, bn = step["en"], step["bn"]
-    elif segment == 6:
-        en = "These patterns appear in real coding problems. Pick one to explore next."
-        bn = "বাস্তব সমস্যায় এই কৌশলগুলো কাজে লাগে। এরপর একটি বেছে অনুশীলন করো।"
-    else:
-        en = "Pause, replay, then explain the example in your own words."
-        bn = "থামাও, আবার দেখো, তারপর উদাহরণটি নিজের ভাষায় বোঝাও।"
-    slide = int((1 - min(within / 0.6, 1)) * 18)
-    en_y = paragraph(draw, en, 24, 183 + slide, FONT_REG, WHITE, max_width=384, max_lines=3, gap=10)
-    paragraph(draw, bn, 24, max(en_y + 14, 289 + slide), FONT_BN, MUTED, max_width=384, max_lines=3, gap=8)
-
-    if segment == 6:
-        for index, label in enumerate(lesson["patterns"][:4]):
-            row, col = divmod(index, 2)
-            x, y = 24 + col * 194, 442 + row * 85
-            draw.rounded_rectangle((x, y, x + 184, y + 72), 12, fill=CARD, outline=BORDER)
-            paragraph(draw, label, x + 12, y + 12, FONT_SMALL, GREEN, max_width=160, max_lines=2)
-    else:
-        active = (segment - 3) % 4 if segment in (3, 4, 5) else (int(within * 1.3) % 4)
-        for index, label in enumerate(lesson["visual"][:4]):
-            x, y = 24, 419 + index * 72
-            selected = index == active
-            pulse = math.sin(within * math.pi * 1.8) * 3 if selected else 0
-            draw.rounded_rectangle((x, y - pulse, x + 384, y + 60 - pulse), 13, fill=(28, 88, 51) if selected else CARD, outline=GREEN if selected else BORDER, width=2 if selected else 1)
-            draw.rounded_rectangle((x + 12, y + 13 - pulse, x + 46, y + 47 - pulse), 8, fill=(49, 142, 80) if selected else (31, 47, 36))
-            draw.text((x + 21, y + 19 - pulse), str(index + 1), font=FONT_SMALL, fill=WHITE)
-            chunks = lines(draw, label, FONT_NODE, 314, 2)
-            for row, part in enumerate(chunks):
-                draw.text((x + 62, y + 10 + row * 24 - pulse), part, font=FONT_NODE, fill=WHITE if selected else MUTED)
-            if index < 3:
-                draw.line((x + 27, y + 61, x + 27, y + 71), fill=GREEN, width=2)
-
-    draw.text((24, 718), "English +", font=FONT_SMALL, fill=MUTED)
-    draw.text((95, 711), "বাংলা", font=FONT_BN, fill=MUTED)
-    draw.text((164, 718), "•  Pause and replay any time", font=FONT_SMALL, fill=MUTED)
-    draw.rounded_rectangle((24, 749, 408, 755), 2, fill=BORDER)
-    draw.rounded_rectangle((24, 749, 24 + int(384 * progress), 755), 2, fill=GREEN)
-    # Keep the timeline moving throughout; short soft cuts mark each chapter.
-    fade = min(within / 0.32, (SEGMENT_SECONDS - within) / 0.32, 1.0)
-    if fade < 1:
-        im = Image.blend(Image.new("RGB", (WIDTH, HEIGHT), BG), im, max(0.3, fade))
+    title_face = next((face for face in (FONT_BOLD,FONT_BOLD_SMALL,FONT_BOLD_TINY) if draw.textlength(title,font=face)<=382),FONT_BOLD_TINY)
+    draw.text((24, 73), title, font=title_face, fill=WHITE)
+    draw.line((24, 118, 408, 118), fill=BORDER, width=1)
+    heading = "WORKED EXAMPLE" if segment==0 else "REPLAY THE STEPS" if segment==5 else "THE KEY IDEA" if segment==6 else "TRY IT YOURSELF" if segment==7 else f"ACTION {segment} OF 4"
+    draw.text((24, 132), heading, font=FONT_SMALL, fill=GREEN)
+    concept = lesson["concept"]
+    paragraph(draw, concept, 24, 151, FONT_CONCEPT, WHITE, max_width=384,max_lines=3,gap=2)
+    following = beats[segment] if 1<=segment<4 else None
+    previous = beats[segment-2] if 2<=segment<=4 else (story["initial"],[],[],"") if segment==1 else None
+    visual_time = within
+    if segment == 5:
+        replay_index = min(int(within/2),3)
+        previous = beats[replay_index-1] if replay_index else (story["initial"],[],[],"")
+        visual_time = (within % 2)*4
+    draw_story(draw,story,beat,visual_time,following,segment,previous)
+    # A changing pseudocode strip ties the visual action to a repeatable rule.
+    draw.rounded_rectangle((22,526,410,626),11,fill=(17,25,21),outline=BORDER)
+    draw.text((35,537),"TRACE / WHAT CHANGED",font=FONT_SMALL,fill=MUTED)
+    for i, storyboard_beat in enumerate(beats):
+        label = storyboard_beat[3]
+        x,y=36,559+i*16
+        selected=(i==max(0,min(segment-1,3))) if segment!=5 else i==min(int(within/2),3)
+        draw.text((x,y),f"{i+1}. {label[:36]}",font=FONT_MONO,fill=GREEN if selected else MUTED)
+    note = beat[3]
+    if segment==6:note="Why it works: "+concept
+    elif segment==7:note="Pause and predict the next action. Then replay."
+    paragraph(draw,note,24,642,FONT_REG,WHITE,max_width=384,max_lines=2,gap=4)
+    paragraph(draw,lesson["conceptBn"],24,693,FONT_BN,MUTED,max_width=384,max_lines=2,gap=3)
+    draw.rounded_rectangle((24,749,408,755),2,fill=BORDER)
+    draw.rounded_rectangle((24,749,24+int(384*progress),755),2,fill=GREEN)
     return im
 
 
 def render(lesson, output_dir):
     video = output_dir / f'{lesson["id"]}.mp4'
     poster = output_dir / f'{lesson["id"]}.jpg'
-    frame(lesson, 12).save(poster, quality=87, optimize=True)
+    frame(lesson, 11 * FPS).save(poster, quality=87, optimize=True)
     command = [
         "ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-f", "rawvideo",
         "-pixel_format", "rgb24", "-video_size", f"{WIDTH}x{HEIGHT}", "-framerate", str(FPS),
@@ -196,6 +341,7 @@ def main():
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
     lessons = json.loads(args.manifest.read_text())
+    validate_storyboards([lesson["id"] for lesson in lessons])
     selected = [lesson for lesson in lessons if (not args.id or lesson["id"] == args.id) and
                 (not args.missing or not (args.output / f'{lesson["id"]}.mp4').exists() or
                  not (args.output / f'{lesson["id"]}.jpg').exists())]
