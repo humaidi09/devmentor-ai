@@ -1,77 +1,52 @@
-# Deployment
+# Close AI deployment and recovery
 
-> Legacy DevMentor service documentation. Close AI does not call that service; follow [current setup](../apps/web/README.md) and [Phase 3 report](../PHASE_3_REPORT.md).
+The product is the Next.js application in `apps/web`. The older FastAPI service in `apps/api`, its Render configuration and cron workflows are retained for historical DevMentor use; Close AI does not call them. Do not copy legacy API service-role, cron, email or push settings into the Close AI website.
 
-All services have free tiers. Target: **$0/month**.
+## Environments and release gate
 
-## 0. Supabase (database + auth)
-1. Create a project at supabase.com.
-2. SQL editor → run in order:
-   - `supabase/migrations/0001_initial_schema.sql`
-   - `supabase/migrations/0002_rls_policies.sql`
-   - `supabase/migrations/0003_snippet_search.sql`
-   - `supabase/migrations/0004_notification_settings.sql`
-   - `supabase/seed.sql` (built-in public snippets)
-3. Project Settings → API: copy **Project URL**, **anon key**, **service_role
-   key**, and **JWT Secret**.
-4. Authentication → providers: enable **Email**.
+| Environment | Data | Purpose |
+| --- | --- | --- |
+| Local demo | Fictional browser data | UI, offline and accessibility development without credentials. |
+| Local account fixture | Disposable loopback PostgreSQL, GoTrue and PostgREST | Migrations, auth, RLS and regression tests. `bash supabase/test-stack.sh reset` destroys only this fixture. |
+| Preview/staging | Dedicated non-production Supabase project | Email-confirmation, redirect, backup/restore and deployment smoke tests before pilot. |
+| Limited pilot | Separate Supabase project and verified campus records | Only after [pre-launch gates](PRE_LAUNCH_CHECKLIST.md) and named human owners pass. |
 
-## 1. Backend → Render (free web service)
-1. New → Web Service → connect the repo, root `apps/api`.
-2. Build: `pip install -r requirements.txt`
-3. Start: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-4. Environment:
-   ```
-   DEMO_MODE=false
-   SUPABASE_URL=...
-   SUPABASE_ANON_KEY=...
-   SUPABASE_SERVICE_ROLE_KEY=...
-   SUPABASE_JWT_SECRET=...
-   GEMINI_API_KEY=...            # optional
-   GEMINI_MODEL=gemini-2.0-flash
-   CRON_SECRET=<long-random>
-   API_CORS_ORIGINS=https://<your-vercel-app>.vercel.app
-   ```
-5. Note the service URL, e.g. `https://devmentor-api.onrender.com`.
+Never use fictional seed records as actual campus support. The committed `supabase/seed-demo.sql` contains DEMO-labelled examples only. Do not run destructive tests or `db reset` on staging/pilot data.
 
-> Render free instances **sleep** after inactivity → first request cold-starts
-> (~30–60s). See free-tier limitations.
+## Database and Auth
 
-## 2. Frontend → Vercel
-1. New Project → import repo → root `apps/web`.
-2. Environment:
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=...
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=...
-   NEXT_PUBLIC_API_BASE_URL=https://devmentor-api.onrender.com
-   NEXT_PUBLIC_DEMO_MODE=false
-   ```
-3. Deploy. Framework preset: Next.js (auto).
+1. Choose and document the intended Supabase project. For a legacy shared database, review `0005_close_ai_core.sql` first: it revokes older private-table client grants and adds owner constraints. Resolve conflicting historical rows before migration.
+2. Take a provider-managed database backup and prove restore to a separate environment before a pilot migration. Record the backup time, operator and restore result; an untested backup is not a recovery claim.
+3. Apply `supabase/migrations/0001` through `0009` in order with a linked Supabase CLI (`supabase db push`) or an authorized SQL operator. Inspect the migration plan and use a maintenance window. Never run `db reset` on hosted data.
+4. Verify every public application table has RLS, sample two-user isolation and staff role boundaries against the target project. The local fixture passing does not establish hosted authorization.
+5. Enable email/password Auth with email confirmation. Set the Auth Site URL and exact HTTPS `/auth/callback` redirect for each deployment. Test signup, confirmation, signin, signout, expiry and account switching on staging.
+6. Create real campus records only after a maintainer and reviewer verify official source, contact, eligibility, cost, location, campus and last-checked date. Assign campus resource roles through a trusted SQL operator, never through student-facing settings.
 
-## 3. Scheduled jobs → GitHub Actions
-Free hosts can't run an always-on worker, so cron is driven by Actions calling
-idempotent endpoints.
+## Vercel website configuration
 
-Repo → Settings → Secrets and variables → Actions → add:
-- `API_BASE_URL` = your Render URL
-- `CRON_SECRET` = same value as the API
+Configure the project whose production alias serves the intended website. All `NEXT_PUBLIC_*` values are compiled into the build, so change them **before** redeploying. The Supabase project URL and anon/publishable key are public identifiers; they do not bypass RLS. Never add a service-role key to this app.
 
-Workflows live in `.github/workflows/cron-*.yml` and also support manual
-`workflow_dispatch`. Timing is approximate (see limitations); endpoints are
-idempotent and timezone-aware so this is safe.
+| Variable | Demo | Account staging/pilot |
+| --- | --- | --- |
+| `NEXT_PUBLIC_DEMO_MODE` | `true` | `false` |
+| `NEXT_PUBLIC_ACCOUNT_MODE_ENABLED` | `false` | `true` |
+| `NEXT_PUBLIC_SUPABASE_URL` | empty | Target project HTTPS URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | empty | Target public anon/publishable key |
+| `CLOSE_AI_SITE_URL` | optional | Canonical HTTPS origin for that deployment |
+| `AI_PROVIDER` | `mock` | `mock` until a tested provider is approved; optional `gemini` |
+| `AI_MODEL` | optional | Tested model ID when using Gemini |
+| `AI_API_KEY` or `GEMINI_API_KEY` | absent | Server-only, if Gemini is enabled |
 
-## 4. Email (optional) — Resend
-Create a free Resend key → set `RESEND_API_KEY` and `EMAIL_FROM` on the API.
-Without it, email notifications are logged, not sent; in-app always works.
+An account build requires **both** account flags and both public Supabase values. Preview and pilot deployments need their own canonical origin and allowed Auth redirects. `CLOSE_AI_SITE_URL` must match the browser origin; it protects same-origin mutations and redirects. Gemini is optional; mock and manual resource browsing remain usable on provider failure. Codeforces needs no key. In-app reminders only check while a signed-in app is open; no email, push or remote scheduler is configured.
 
-## 5. Web push (optional) — Firebase
-Add FCM config/server key later and wire the service worker. Until then the app
-uses in-app notifications (+ optional email). This is a documented future
-enhancement, not required for MVP.
+## Release smoke checks
 
-## Smoke test
-```bash
-curl https://devmentor-api.onrender.com/health
-# {"status":"ok","demo_mode":false,"supabase_configured":true,...}
-```
-Then sign up on the Vercel app, complete onboarding, and open the dashboard.
+After deployment, request `/api/status` and record `mode`, `supabaseConfigured` and commit `revision`. This endpoint reports configuration presence, not a successful database connection. Verify the deployed Git revision, homepage, `/support/resources`, `/support/human`, `/learn/visual-lab/bfs` and small-screen navigation. In account mode, use two staging users to verify Auth, selected-campus resource filtering, save/unsave, approved plans, export/reset and cross-user denial. Check a current verified source and an expired/needs-review source. Confirm AI refusal/fallback and Codeforces disconnect. Inspect response security headers and private `Cache-Control` on account pages/API. Record actual outcomes in [TEST_REPORT.md](TEST_REPORT.md).
+
+Current observed public website on 2026-10-13: `https://devmentor-ai-rho.vercel.app/api/status` reported `mode=demo`, `supabaseConfigured=false`, revision `951efe4`. It is a functioning fictional demo, not a configured account deployment. This environment's Supabase Management request returned HTTP 401 (`JWT could not be decoded`). The configured Vercel token authenticated as `humaidi09` but could not list the `hussain8` team (403) or access project `devmentor-ai` by slug (404). Hosted migrations, Auth settings and account variables were therefore not changed or verified.
+
+## Backup, rollback and monitoring
+
+Before pilot, the database owner must define backup cadence and retention for Auth users and all app tables, run and record a separate-project restore drill, and own accidental-deletion recovery. Do not restore a snapshot over live data without identifying the affected users and writes since that snapshot. A Vercel build can be rolled back to a previous verified deployment; schema rollback requires a reviewed migration or restore plan, not an assumed reversible `db push`.
+
+Monitor anonymous uptime/status, aggregate 5xx rates and provider/integration failures without storing chat text, passwords, tokens or student profile fields. Set an escalation contact and response window before inviting pilot users. No external monitoring or recovery drill has been configured or tested yet.
