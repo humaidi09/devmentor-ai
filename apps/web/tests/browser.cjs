@@ -28,6 +28,17 @@ assert.ok(
     const page = await context.newPage();
     const errors = [];
     page.on("pageerror", (e) => errors.push(e.message));
+    for (const path of ["/", "/api/status"]) {
+      const response = await context.request.get(base + path);
+      assert.equal(response.status(), 200, path + " status");
+      const headers = response.headers();
+      assert.equal(headers["x-content-type-options"], "nosniff");
+      assert.equal(headers["x-frame-options"], "DENY");
+      assert.equal(headers["referrer-policy"], "strict-origin-when-cross-origin");
+      assert.match(headers["content-security-policy"], /frame-ancestors 'none'/);
+      assert.match(headers["permissions-policy"], /camera=\(\)/);
+    }
+    console.log("PASS browser security headers on HTML and API");
     const go = async (path) => {
       await page.goto(base + path, { waitUntil: "networkidle" });
     };

@@ -1,6 +1,6 @@
 # API Reference
 
-> Legacy DevMentor service documentation. Close AI does not call that service; follow [current setup](../apps/web/README.md) and [Phase 3 report](../PHASE_3_REPORT.md).
+> Historical DevMentor service API. Close AI does not call these routes; its live endpoints are the Next.js handlers under `apps/web/src/app/api`. Follow [current setup](../apps/web/README.md) and [deployment guidance](DEPLOYMENT.md).
 
 Base URL: `http://localhost:8000` (local) · interactive docs at `/docs`.
 

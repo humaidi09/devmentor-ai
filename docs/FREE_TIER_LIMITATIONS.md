@@ -1,6 +1,6 @@
 # Free-Tier Limitations
 
-> Legacy DevMentor service documentation. Close AI does not call that service; follow [current setup](../apps/web/README.md) and [Phase 3 report](../PHASE_3_REPORT.md).
+> Historical DevMentor service documentation. Its notification, runtime and dependency-risk claims do not describe Close AI. For the current app, use [deployment guidance](DEPLOYMENT.md), [Phase 6 security findings](SECURITY_REVIEW.md) and the [Phase 6 report](../PHASE_6_REPORT.md).
 
 DevMentor is designed to run at **$0/month**. That comes with honest trade-offs.
 We do not claim anything is unlimited or "free forever."

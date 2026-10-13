@@ -1,6 +1,6 @@
 # Privacy, Safety & Ethics
 
-> Legacy DevMentor service documentation. Close AI does not call that service; follow [current setup](../apps/web/README.md) and [Phase 3 report](../PHASE_3_REPORT.md).
+> Historical DevMentor service documentation. Close AI does not call that service and does not store support conversations. For current behavior, read [Close AI privacy and authorization](PRIVACY_AND_SAFETY.md) and the [Phase 6 review](../PHASE_6_REPORT.md).
 
 ## What we store and why
 To personalize your plan we store: profile (name, language, timezone, level,
