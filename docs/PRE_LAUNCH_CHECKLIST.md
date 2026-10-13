@@ -9,7 +9,7 @@
 - [x] Six visual engines have logic checks; bilingual browser, axe, keyboard, mobile and offline checks pass on tested routes.
 - [x] App-data export/reset and operator-assisted Auth deletion limitation are visible and locally tested where applicable.
 - [x] Local response security headers and account private-cache boundary are checked.
-- [ ] Hosted Supabase access is repaired; migrations `0001`–`0009` and RLS are applied and verified on the intended project.
+- [ ] Hosted Supabase access is repaired; migrations `0001`–`0010` and RLS are applied and verified on the intended project.
 - [ ] Vercel project access is granted; public account variables, canonical origin and Auth callback redirects are configured and redeployed.
 - [ ] Hosted signup/confirmation, signin/signout, session expiry and two-user isolation pass with staging users.
 - [ ] A pilot campus, maintainer, reviewer, support escalation owner and feedback owner are named.

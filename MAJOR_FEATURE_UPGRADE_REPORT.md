@@ -1,6 +1,6 @@
 # Close AI major feature upgrade — review report
 
-Status: implemented and verified locally on 2026-10-13. This change is in the working tree for review; it has **not** been pushed or deployed to the hosted site. The current hosted demo therefore does not show this upgrade. Apply migration `0010_knowledge_cp.sql` before enabling account-mode saved knowledge or the extended CP progress states.
+Status: implemented and verified locally on 2026-10-13. GitHub and hosted deployment status must be checked against the release commit; a successful local build does not prove the hosted site has updated. Apply migration `0010_knowledge_cp.sql` before enabling account-mode saved knowledge or the extended CP progress states.
 
 ## What changed
 
@@ -34,7 +34,7 @@ Status: implemented and verified locally on 2026-10-13. This change is in the wo
 
 ## Limits and demo data
 
-- The public hosted site is still a fictional demo. This working-tree upgrade is not deployed. Demo account data is synthetic, demo knowledge saves and CP progress are session-only, and demo assistant behavior remains local/mock. Account persistence and optional Gemini require hosted Supabase/auth/environment setup and migration `0010`.
+- The public hosted site has been configured as a fictional demo; verify its deployed revision after each release. Demo account data is synthetic, demo knowledge saves and CP progress are session-only, and demo assistant behavior remains local/mock. Account persistence and optional Gemini require hosted Supabase/auth/environment setup and migration `0010`.
 - Gemini explanation was validated with schema/unit tests and account availability controls; no live keyed Gemini request was made in this environment. It may fail on provider quota, invalid output or weak metadata, and the UI explicitly asks students to check original sources.
 - Crossref metadata is not full-paper content; World Bank supports a short allowlisted set of indicators/countries; GitHub repositories are examples rather than official documentation. The comparison view preserves separate source claims; written AI synthesis is available only with the optional configured Gemini path. The app does not infer a factual conflict from unrelated metadata.
 - Codeforces problems are public metadata from its API when reachable, with a bounded tag sample and conservative topic mapping. Some topics have only curated links. LeetCode has curated metadata/links, no live scraper or synced LeetCode account. Curated Codeforces links deliberately show unknown rating until live metadata is verified. Daily practice uses the recorded status and available library; it does not claim to measure skill or predict rating growth.
@@ -43,6 +43,6 @@ Status: implemented and verified locally on 2026-10-13. This change is in the wo
 
 ## Recommended next work
 
-1. Review and deploy this change, apply migration `0010` to the intended Supabase project, set the account-mode environment, then repeat hosted smoke tests for search, saves, CP progress and data export.
+1. Verify the deployed Git revision and live demo routes. Once the intended hosted Supabase project and backup/restore plan are available, apply migration `0010`, set the account-mode environment, then repeat hosted smoke tests for saves, CP progress and data export.
 2. Add official documentation/book/video providers where their API and licensing terms permit, plus a clearer side-by-side source comparison workflow for overlapping claims.
 3. Expand curated CP coverage and Visual Lab animations topic by topic, checking source links and instructional quality. Add a durable distributed cache/quota if real traffic requires it.
