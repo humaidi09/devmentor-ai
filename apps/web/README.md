@@ -43,6 +43,8 @@ In a second terminal, install Chromium and run `npm run test:browser`. That suit
 
 `npm run test:upgrade-browser` covers Live Knowledge search/save, Study handoff and CP hint-to-visual-to-practice navigation. Live Knowledge uses server-side Crossref, World Bank and GitHub adapters. `GITHUB_SEARCH_TOKEN` is optional and server-only; unauthenticated GitHub search has a lower provider rate limit. Account users can opt into Gemini source-backed explanation when `AI_PROVIDER=gemini` and an AI key are configured; the query and public metadata are sent only after an explicit checkbox. Demo search does not use Gemini. Migration `0010` adds per-user saved knowledge and extends existing CP progress; apply it before enabling those account features.
 
+The CP Library includes a checked-in catalog of 1,260 problem links and metadata: 600 Codeforces, 600 free LeetCode, and 60 CodeChef. It supports platform, topic, difficulty, title, progress, and Codeforces-rating filters. The catalog is a dated snapshot, not live data or copied problem statements. Run `python3 scripts/refresh-cp-catalog.py` from `apps/web` to refresh it from each platform's public metadata endpoints, then review the generated diff and run `npm run test:logic`. Codeforces topic pages can also load newer public API entries while online. LeetCode difficulty is platform-authored. Codeforces ratings below 1400 are shown as Easy, 1400–1899 Medium, and 1900+ Hard in the snapshot; CodeChef uses below 1200, 1200–1999, and 2000+ respectively. Original platform ratings remain visible. These bands are a browsing aid, not a cross-platform equivalence.
+
 ## Reproducible backend/auth tests
 
 Docker is required. From the repository root:

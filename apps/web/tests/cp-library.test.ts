@@ -1,7 +1,28 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { CURATED_PROBLEMS, CP_TOPICS, dailyPractice, filterProblems, levelFromRating, normalizeCodeforces } from "../src/lib/cp/library";
+import { CATALOG_PROBLEMS, CURATED_PROBLEMS, CP_TOPICS, LIBRARY_PROBLEMS, dailyPractice, filterProblems, levelFromRating, normalizeCodeforces } from "../src/lib/cp/library";
+
+test("catalog contains 1,000+ distinct, topic-tagged problems from all three platforms", () => {
+  assert.ok(CATALOG_PROBLEMS.length >= 1000);
+  assert.equal(new Set(CATALOG_PROBLEMS.map((item) => item.id)).size, CATALOG_PROBLEMS.length);
+  assert.equal(new Set(LIBRARY_PROBLEMS.map((item) => item.id)).size, LIBRARY_PROBLEMS.length);
+  for (const platform of ["codeforces", "leetcode", "codechef"] as const) {
+    const items = CATALOG_PROBLEMS.filter((item) => item.platform === platform);
+    assert.ok(items.length > 0, platform);
+    assert.deepEqual(new Set(items.map((item) => item.normalizedDifficulty)), new Set(["easy", "medium", "hard"]));
+    assert.ok(items.every((item) => item.topics.length > 0 && item.topics.every((topic) => CP_TOPICS.includes(topic))));
+    assert.ok(items.every((item) => new URL(item.url).protocol === "https:"));
+  }
+});
+
+test("CodeChef ratings are shown as CodeChef metadata and excluded from CF rating filters", () => {
+  const chef = CATALOG_PROBLEMS.find((item) => item.platform === "codechef")!;
+  assert.match(chef.originalDifficulty!, /^CodeChef \d+$/);
+  assert.ok(chef.url.startsWith("https://www.codechef.com/problems/"));
+  assert.deepEqual(filterProblems([chef], { minRating: 1 }), []);
+  assert.deepEqual(filterProblems(LIBRARY_PROBLEMS, { platform: "codechef", difficulty: chef.normalizedDifficulty, topic: chef.topics[0] }).some((item) => item.id === chef.id), true);
+});
 
 test("curated LeetCode and Codeforces links contain metadata, never statements", () => {
   assert.ok(CURATED_PROBLEMS.some((item) => item.platform === "leetcode"));

@@ -167,7 +167,7 @@ export default function CPPage() {
         }
       />
       <Card className="flex flex-wrap items-center justify-between gap-3 bg-primary/5 p-4">
-        <div><h2 className="font-bold">{bn ? "টপিক-ভিত্তিক সমস্যা লাইব্রেরি" : "Topic-based Problem Library"}</h2><p className="text-sm text-muted-foreground">{bn ? "Codeforces ও LeetCode লিংক, filter, হিন্ট ও progress।" : "Codeforces and LeetCode links, filters, hints and progress."}</p></div>
+        <div><h2 className="font-bold">{bn ? "টপিক-ভিত্তিক সমস্যা লাইব্রেরি" : "Topic-based Problem Library"}</h2><p className="text-sm text-muted-foreground">{bn ? "Codeforces, LeetCode ও CodeChef-এর ১,২০০+ সমস্যা, filter ও progress।" : "1,200+ Codeforces, LeetCode and CodeChef problems with filters and progress."}</p></div>
         <Link href="/cp/library" className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">{bn ? "লাইব্রেরি খুলুন" : "Open library"}</Link>
       </Card>
       <CodeforcesConnection onProfile={setProfile} />

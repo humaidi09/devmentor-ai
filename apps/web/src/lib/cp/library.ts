@@ -1,3 +1,5 @@
+import catalog from "./catalog.json";
+
 export const CP_TOPICS = [
   "array", "string", "two-pointers", "linked-list", "stack", "queue", "hashing",
   "sorting", "binary-search", "recursion", "backtracking", "tree", "bst", "heap",
@@ -5,7 +7,7 @@ export const CP_TOPICS = [
   "minimum-spanning-tree", "trie", "bit-manipulation",
 ] as const;
 export type CPTopic = (typeof CP_TOPICS)[number];
-export type CPPlatform = "codeforces" | "leetcode";
+export type CPPlatform = "codeforces" | "leetcode" | "codechef";
 export type CPLevel = "beginner" | "easy" | "medium" | "hard" | "unrated";
 export type CPProgressStatus = "none" | "attempted" | "solved" | "need_hint" | "upsolve" | "upsolved" | "skipped";
 
@@ -19,7 +21,7 @@ export interface LibraryProblem {
   originalDifficulty: string | null;
   normalizedDifficulty: CPLevel;
   rating: number | null;
-  source: "curated" | "codeforces-api";
+  source: "curated" | "codeforces-api" | "catalog";
   lastUpdated: string | null;
   hint: string;
 }
@@ -72,6 +74,42 @@ export const CURATED_PROBLEMS: LibraryProblem[] = references.map(([platform, ext
   hint,
 }));
 
+type CatalogRow = [CPPlatform, string, string, CPTopic[], number | null, "easy" | "medium" | "hard"];
+export const CATALOG_RETRIEVED_AT = catalog.retrievedAt;
+export const CATALOG_PROBLEMS: LibraryProblem[] = (catalog.problems as CatalogRow[]).map(
+  ([platform, externalId, title, topics, rating, level]) => ({
+    id: platform === "codeforces" ? `cf-${externalId.replace("/", "-")}` : platform === "leetcode" ? `lc-${externalId}` : `cc-${externalId}`,
+    platform, externalId, title, topics,
+    url: platform === "codeforces"
+      ? `https://codeforces.com/problemset/problem/${externalId}`
+      : platform === "leetcode"
+        ? `https://leetcode.com/problems/${externalId}/`
+        : `https://www.codechef.com/problems/${externalId}`,
+    originalDifficulty: platform === "leetcode" ? level[0].toUpperCase() + level.slice(1) : `${platform === "codeforces" ? "Codeforces" : "CodeChef"} ${rating}`,
+    normalizedDifficulty: level, rating,
+    source: "catalog", lastUpdated: catalog.retrievedAt,
+    hint: "Start with a small example, identify the constraints, and choose an algorithm before coding.",
+  }),
+);
+
+const catalogById = new Map(CATALOG_PROBLEMS.map((problem) => [problem.id, problem]));
+const byPlatform = (["codeforces", "leetcode", "codechef"] as const).map(
+  (platform) => CATALOG_PROBLEMS.filter((problem) => problem.platform === platform),
+);
+const interleavedCatalog: LibraryProblem[] = [];
+for (let index = 0; index < Math.max(...byPlatform.map((items) => items.length)); index++) {
+  for (const items of byPlatform) {
+    if (items[index]) interleavedCatalog.push(items[index]);
+  }
+}
+export const LIBRARY_PROBLEMS: LibraryProblem[] = [
+  ...interleavedCatalog.map((problem) => {
+    const curated = CURATED_PROBLEMS.find((item) => item.id === problem.id);
+    return curated ? { ...problem, hint: curated.hint } : problem;
+  }),
+  ...CURATED_PROBLEMS.filter((problem) => !catalogById.has(problem.id)),
+];
+
 export function levelFromRating(rating: number | null): CPLevel {
   if (rating === null) return "unrated";
   if (rating < 1000) return "beginner";
@@ -117,8 +155,8 @@ export function filterProblems(problems: LibraryProblem[], filters: {
     (!filters.platform || problem.platform === filters.platform) &&
     (!filters.difficulty || problem.normalizedDifficulty === filters.difficulty) &&
     (!filters.status || (filters.progress?.[problem.id] ?? "none") === filters.status) &&
-    (filters.minRating === undefined || (problem.rating !== null && problem.rating >= filters.minRating)) &&
-    (filters.maxRating === undefined || (problem.rating !== null && problem.rating <= filters.maxRating))
+    (filters.minRating === undefined || (problem.platform === "codeforces" && problem.rating !== null && problem.rating >= filters.minRating)) &&
+    (filters.maxRating === undefined || (problem.platform === "codeforces" && problem.rating !== null && problem.rating <= filters.maxRating))
   );
 }
 
