@@ -116,33 +116,18 @@ body {
   background: rgba(120, 153, 229, 0.21);
 }
 
-.hero-visual-spark {
-  color: #0d9488;
+.preview-search,
+.preview-action {
+  transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
 }
 
-.journey-list::before {
-  content: "";
-  position: absolute;
-  top: 2rem;
-  bottom: 2rem;
-  left: 2.1rem;
-  width: 2px;
-  background: linear-gradient(#2db7ac, #86a9df);
-}
-
-.journey-icon {
-  color: hsl(var(--primary));
-  background: #e0f5f0;
-}
-
-.journey-step:nth-child(2) .journey-icon {
-  color: #365eb0;
-  background: #e9effd;
-}
-
-.journey-step:nth-child(3) .journey-icon {
-  color: #8a4da8;
-  background: #f4ebfb;
+.preview-search:hover,
+.preview-search:focus-visible,
+.preview-action:hover,
+.preview-action:focus-visible {
+  transform: translateY(-3px);
+  border-color: rgba(15, 118, 110, 0.45);
+  box-shadow: 0 14px 24px -18px rgba(15, 23, 42, 0.32);
 }
 
 .section-kicker {
@@ -244,6 +229,17 @@ body {
   transform: translateY(-2px);
 }
 
+.dashboard-tool {
+  transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+}
+
+.dashboard-tool:hover,
+.dashboard-tool:focus-visible {
+  transform: translateY(-4px);
+  border-color: rgba(15, 118, 110, 0.45);
+  box-shadow: 0 18px 32px -22px rgba(15, 23, 42, 0.38);
+}
+
 @media (prefers-reduced-motion: no-preference) {
   @keyframes soft-rise {
     from { opacity: 0; transform: translateY(18px); }
@@ -262,13 +258,11 @@ body {
 
   .hero-copy { animation: soft-rise 650ms both; }
   .hero-visual { animation: soft-rise 700ms 140ms both; }
-  .journey-step { animation: soft-rise 550ms both; }
-  .journey-step:nth-child(1) { animation-delay: 280ms; }
-  .journey-step:nth-child(2) { animation-delay: 390ms; }
-  .journey-step:nth-child(3) { animation-delay: 500ms; }
+  .preview-search { animation: soft-rise 550ms 280ms both; }
+  .preview-stage { animation: soft-rise 550ms 390ms both; }
+  .preview-action { animation: soft-rise 550ms 500ms both; }
   .hero-orb-one { animation: float-slow 7s ease-in-out infinite; }
   .hero-orb-two { animation: float-slow 9s 1s ease-in-out infinite reverse; }
-  .hero-float-label { animation: float-slow 6s 1.5s ease-in-out infinite; }
   .hero-status-dot { animation: dot-breathe 3s ease-in-out infinite; }
   .path-card { animation: soft-rise 550ms both; }
   .path-card:nth-child(2) { animation-delay: 70ms; }

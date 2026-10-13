@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Bookmark, ListChecks, MessagesSquare } from "lucide-react";
+import { ArrowRight, Bookmark, Code2, GraduationCap, ListChecks, Play, Search, Trophy } from "lucide-react";
 
 import { useAccount } from "@/lib/account";
 import { useResources } from "@/lib/resources";
@@ -15,21 +15,6 @@ import { localize } from "@/lib/content-bn";
 import { useLanguage } from "@/lib/i18n";
 import type { SupportResource } from "@/lib/types";
 
-const STARTERS = {
-  en: [
-    "I'm worried about tuition fees",
-    "I need help with a course",
-    "I'm looking for an internship",
-    "I want to talk to someone",
-  ],
-  bn: [
-    "টিউশন ফি নিয়ে চিন্তিত",
-    "একটা কোর্সে সাহায্য দরকার",
-    "ইন্টার্নশিপ খুঁজছি",
-    "কারো সাথে কথা বলতে চাই",
-  ],
-};
-
 export default function DashboardPage() {
   const { demo, data } = useAccount();
   const { resources } = useResources();
@@ -37,7 +22,6 @@ export default function DashboardPage() {
   const { ids } = useSavedResources();
   const { t, lang } = useLanguage();
   const bn = lang === "bn";
-  const starters = STARTERS[lang];
   const saved = ids
     .map((id) => resources.find((r) => r.id === id))
     .filter(Boolean) as SupportResource[];
@@ -48,52 +32,73 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       <section>
-        <p className="section-kicker mb-2">{bn ? "আপনার ড্যাশবোর্ড" : "YOUR SPACE"}</p>
+        <p className="section-kicker mb-2">{bn ? "আপনার শেখার ওয়ার্কস্পেস" : "YOUR LEARNING WORKSPACE"}</p>
         <h1 className="text-2xl font-bold sm:text-3xl">
           {bn
-            ? "আজ কীসে সাহায্য দরকার?"
-            : "What would you like help with today?"}
+            ? "আজ কী শিখতে চান?"
+            : "What will you explore today?"}
         </h1>
-        <p className="mt-1 text-muted-foreground">{t("tagline")}</p>
+        <p className="mt-1 text-muted-foreground">{bn ? "উৎস খুঁজুন, ধারণা দেখুন, তারপর অনুশীলন করুন।" : "Find sources, see the idea, then put it into practice."}</p>
       </section>
 
       <Card className="dashboard-hero relative overflow-hidden rounded-2xl p-5 sm:p-7">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex items-start gap-3">
             <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-primary text-primary-foreground shadow-soft">
-              <MessagesSquare className="h-5 w-5" aria-hidden />
+              <Search className="h-5 w-5" aria-hidden />
             </span>
             <div>
-              <h2 className="font-bold">{t("getSupport")}</h2>
-              <p className="text-sm text-muted-foreground">
+              <h2 className="text-lg font-bold">{bn ? "একটি প্রশ্ন দিয়ে শুরু করুন" : "Start with a question"}</h2>
+              <p className="mt-1 max-w-lg text-sm leading-relaxed text-muted-foreground">
                 {bn
-                  ? "আপনার বাধাটা বলুন — আমরা যাচাইকৃত সহায়তা খুঁজে দেব।"
-                  : "Describe your barrier — we'll find verified support."}
+                  ? "মূল উৎস দেখুন, বিষয়টি বুঝুন, তারপর নিজের মতো পরের ধাপ নিন।"
+                  : "Explore original sources, understand the topic, then choose your next step."}
               </p>
             </div>
           </div>
-          <Link href="/support" className={buttonVariants({ size: "lg" })}>
-            {t("getSupport")}
-            <ArrowRight className="h-4 w-4" aria-hidden />
-          </Link>
-          <Link href="/knowledge" className={buttonVariants({ variant: "secondary", size: "lg" })}>
-            {bn ? "উৎস খুঁজুন" : "Search sources"}
-          </Link>
-        </div>
-        <div className="mt-4 flex flex-wrap gap-2">
-          {(preferences.support ? starters : []).map((s) => (
-            <Link
-              key={s}
-              href={`/support?q=${encodeURIComponent(s)}`}
-              className="dashboard-starter rounded-full border border-border bg-card px-3 py-1.5 text-xs hover:border-primary/40 hover:bg-muted"
-            >
-              {s}
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <Link href="/knowledge" className={buttonVariants({ size: "lg" })}>
+              {bn ? "নলেজ খুঁজুন" : "Explore knowledge"}
+              <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
-          ))}
+            {preferences.support && (
+              <Link href="/support" className={buttonVariants({ variant: "secondary", size: "lg" })}>
+                {bn ? "এআই সহকারীকে জিজ্ঞেস করুন" : "Ask the AI assistant"}
+              </Link>
+            )}
+          </div>
+        </div>
+        <div className="mt-5 flex flex-wrap gap-2 border-t border-primary/10 pt-4">
+          <span className="mr-1 self-center text-xs font-semibold text-muted-foreground">{bn ? "দ্রুত শুরু" : "Quick start"}</span>
+          <Link href="/knowledge?topic=BFS" className="dashboard-starter rounded-full border border-border bg-card px-3 py-1.5 text-xs hover:border-primary/40 hover:bg-muted">BFS</Link>
+          {moduleVisible("/learn", preferences) && <Link href="/learn/visual-lab/bfs" className="dashboard-starter rounded-full border border-border bg-card px-3 py-1.5 text-xs hover:border-primary/40 hover:bg-muted">{bn ? "BFS ভিজ্যুয়াল" : "Visualize BFS"}</Link>}
+          {moduleVisible("/cp", preferences) && <Link href="/cp/topics/bfs" className="dashboard-starter rounded-full border border-border bg-card px-3 py-1.5 text-xs hover:border-primary/40 hover:bg-muted">{bn ? "BFS অনুশীলন" : "Practice BFS"}</Link>}
         </div>
       </Card>
 
-      <section className="grid gap-6 lg:grid-cols-2">
+      <section aria-labelledby="dashboard-tools-heading">
+        <p className="section-kicker">{bn ? "পরের ধাপ" : "YOUR NEXT MOVE"}</p>
+        <h2 id="dashboard-tools-heading" className="mb-3 mt-1 text-lg font-bold">{bn ? "একটি টুল বেছে নিন" : "Choose a tool"}</h2>
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {[
+            { href: "/study", icon: GraduationCap, title: bn ? "একাডেমিক স্টাডি" : "Academic study", desc: bn ? "কোর্স ও ডেডলাইন সাজান" : "Organize courses and deadlines", module: "/study" },
+            { href: "/learn", icon: Code2, title: bn ? "ডেভেলপার পাথ" : "Developer path", desc: bn ? "ধাপে ধাপে দক্ষতা গড়ুন" : "Build skills step by step", module: "/learn" },
+            { href: "/learn/visual-lab", icon: Play, title: bn ? "ভিজ্যুয়াল ল্যাব" : "Visual lab", desc: bn ? "ধারণা চোখের সামনে দেখুন" : "See concepts in action", module: "/learn" },
+            { href: "/cp/library", icon: Trophy, title: bn ? "সিপি লাইব্রেরি" : "CP library", desc: bn ? "সমস্যা খুঁজে অনুশীলন করুন" : "Find problems and practice", module: "/cp" },
+          ].filter((item) => moduleVisible(item.module, preferences)).map((item) => {
+            const Icon = item.icon;
+            return (
+              <Link key={item.href} href={item.href} className="dashboard-tool group flex flex-col rounded-2xl border border-border bg-card p-5 shadow-soft">
+                <span className="mb-5 grid h-10 w-10 place-items-center rounded-xl bg-primary/10 text-primary"><Icon className="h-5 w-5" aria-hidden /></span>
+                <span className="mt-auto flex items-center justify-between gap-2 font-bold">{item.title}<ArrowRight className="h-4 w-4 shrink-0 text-primary transition-transform group-hover:translate-x-1" aria-hidden /></span>
+                <span className="mt-1 text-sm text-muted-foreground">{item.desc}</span>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="grid gap-6 border-t border-border/70 pt-6 lg:grid-cols-2" aria-label={bn ? "সংরক্ষিত কাজ" : "Saved work"}>
         <div>
           <div className="mb-3 flex items-center justify-between">
             <h2 className="flex items-center gap-2 font-bold">
@@ -162,43 +167,7 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      <section>
-        <h2 className="mb-3 font-bold">{bn ? "মডিউল" : "Modules"}</h2>
-        <div className="grid gap-3 sm:grid-cols-3">
-          {[
-            {
-              href: "/study",
-              title: bn ? "একাডেমিক স্টাডি" : "Academic Study",
-              desc: bn ? "কোর্স ও ডেডলাইন" : "Courses & deadlines",
-            },
-            {
-              href: "/learn",
-              title: bn ? "ডেভেলপার পাথ" : "Developer Path",
-              desc: bn ? "স্কিল ও ভিজ্যুয়াল ল্যাব" : "Skills & Visual Lab",
-            },
-            {
-              href: "/cp",
-              title: bn ? "CP কোচ" : "CP Coach",
-              desc: bn ? "প্র্যাকটিস ট্র্যাকিং" : "Practice tracking",
-            },
-          ]
-            .filter((m) => moduleVisible(m.href, preferences))
-            .map((m) => (
-              <Link
-                key={m.href}
-                href={m.href}
-                className="block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              >
-                <Card className="h-full p-4 transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lift">
-                  <h3 className="text-sm font-bold">{m.title}</h3>
-                  <p className="mt-0.5 text-xs text-muted-foreground">
-                    {m.desc}
-                  </p>
-                </Card>
-              </Link>
-            ))}
-        </div>
-      </section>
+
     </div>
   );
 }
