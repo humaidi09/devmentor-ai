@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card";
 import { localize } from "@/lib/content-bn";
 import { useLanguage } from "@/lib/i18n";
 import { TOPICS } from "@/lib/visual/topics";
+import dsaGuides from "@/lib/visual/dsa-guides.json";
 
 const CATEGORIES = ["DSA", "Algorithms", "DBMS"] as const;
 
@@ -20,7 +21,7 @@ export default function VisualLabPage() {
       <section className="studio-hero overflow-hidden rounded-3xl border border-primary/25 p-6 sm:p-9">
         <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-primary"><Sparkles className="h-4 w-4" aria-hidden />{bn ? "ভিজ্যুয়াল লার্নিং স্টুডিও" : "Visual learning studio"}</p>
         <h1 className="mt-4 max-w-2xl text-3xl font-bold tracking-tight sm:text-4xl">{bn ? "দেখে বুঝুন। তারপর নিজে করে দেখুন।" : "See the idea. Then make it yours."}</h1>
-        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">{bn ? `${TOPICS.length}টি ছোট animation lesson। Play, pause, গতি বদল ও বাংলা text ধাপ দিয়ে প্রতিটি ধারণা নিজের গতিতে বুঝুন।` : `${TOPICS.length} short animation lessons. Play, pause, change speed and read each step at your own pace.`}</p>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">{bn ? `${Object.keys(dsaGuides).length}টি DSA টপিকে আলাদা ৬৪ সেকেন্ডের ভিডিও, সহজ উদাহরণ ও হাতে চালানোর animation।` : `${Object.keys(dsaGuides).length} DSA topics with their own 64-second videos, simple examples and hands-on animations.`}</p>
         <div className="mt-6 flex flex-wrap gap-2 text-xs font-medium text-primary">
           <span className="rounded-full border border-primary/25 bg-primary/10 px-3 py-1.5">{bn ? "নিজে চালান" : "Interactive playback"}</span>
           <span className="rounded-full border border-primary/25 bg-primary/10 px-3 py-1.5">{bn ? "বাংলা + English" : "Bangla + English"}</span>
@@ -45,7 +46,7 @@ export default function VisualLabPage() {
                 >
                   <Card className="studio-card h-full rounded-2xl p-3 shadow-none">
                     <div className="studio-thumbnail relative grid h-28 place-items-center rounded-xl border border-border/70 sm:h-32">
-                      <span className="absolute left-3 top-3 rounded-md border border-border bg-background/80 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{t.steps.length} {bn ? "ধাপ" : "frames"}</span>
+                      <span className="absolute left-3 top-3 rounded-md border border-border bg-background/80 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{t.id in dsaGuides ? (bn ? "৬৪ সেকেন্ডের ভিডিও" : "64-second video") : `${t.steps.length} ${bn ? "ধাপ" : "frames"}`}</span>
                       <span className="studio-play grid h-12 w-12 place-items-center rounded-full border border-primary/45 bg-primary/20 text-primary"><Play className="ml-0.5 h-5 w-5 fill-current" aria-hidden /></span>
                       <span className="absolute bottom-3 right-3 text-[10px] font-semibold uppercase tracking-wider text-primary">{bn ? "দেখুন" : "Watch"}</span>
                     </div>

@@ -2,6 +2,12 @@
 
 Next.js 15 / React 19, strict TypeScript, Node.js 22 in CI. The original Phase 2 design and bilingual demo remain intact; Phases 3–5 add Supabase Auth/RLS, grounded optional Gemini chat, in-app reminders, optional Codeforces public data and transparent learning progress.
 
+## DSA visual lessons
+
+Visual Lab has 25 DSA topics, including the 23 CP categories plus advanced patterns and range queries. Every DSA topic has its own original 64-second portrait MP4, a Bengali/English plain-language concept and worked example, and a separate interactive step player. The MP4s are silent, contain bilingual on-screen explanations, can be paused/replayed, and have written equivalents beside the player. The four supplied reference clips informed the highlight/motion style; none of their footage, audio or watermarks is included.
+
+The committed assets live in `public/videos/dsa`. To regenerate them, install Python Pillow and FFmpeg with `libx264`, ensure Noto Sans Bengali is installed, then run `npm run videos:build` after `npm ci`. The JSON lesson data and step generators are the source; the renderer writes one MP4 and poster per topic. Regeneration is an authoring step, not part of the Next.js build.
+
 ## Demo development
 
 ```bash

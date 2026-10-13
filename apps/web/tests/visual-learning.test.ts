@@ -3,9 +3,12 @@ import test from 'node:test';
 import { bfs, dfs, bubbleSort, binarySearch, innerJoin, normalization } from '../src/lib/visual/generators';
 import { TOPICS } from '../src/lib/visual/topics';
 import { CP_TOPICS, VISUAL_TOPICS } from '../src/lib/cp/library';
+import guides from '../src/lib/visual/dsa-guides.json';
+import { readFileSync, statSync } from 'node:fs';
+import { join } from 'node:path';
 
 test('every CP topic has a distinct playable visual lesson with bilingual explanations', () => {
-  assert.equal(TOPICS.length, 25);
+  assert.equal(TOPICS.length, 27);
   assert.equal(new Set(TOPICS.map(t => t.id)).size, TOPICS.length);
   for (const topic of CP_TOPICS) {
     const lesson = TOPICS.find((item) => item.id === VISUAL_TOPICS[topic]);
@@ -20,6 +23,24 @@ test('every CP topic has a distinct playable visual lesson with bilingual explan
       assert.ok(s.scene.active.every(index => index >= 0 && index < s.scene!.labels.length));
       assert.ok(s.scene.links.every(([from, to]) => from < s.scene!.labels.length && to < s.scene!.labels.length));
     }
+  }
+});
+test('every DSA guide has a unique video and a plain-language bilingual example', () => {
+  assert.equal(Object.keys(guides).length, 25);
+  for (const topic of CP_TOPICS) {
+    assert.ok(VISUAL_TOPICS[topic] && VISUAL_TOPICS[topic]! in guides, `${topic} is missing its video`);
+  }
+  for (const [id, guide] of Object.entries(guides)) {
+    assert.ok(TOPICS.some(topic => topic.id === id), id);
+    assert.ok(guide.concept.length > 30 && guide.example.length > 15, id);
+    assert.match(guide.conceptBn + guide.exampleBn, /[\u0980-\u09ff]/, id);
+    assert.equal(guide.visual.length, 4, id);
+    assert.equal(guide.patterns.length, 4, id);
+    const video = join(process.cwd(), 'public/videos/dsa', `${id}.mp4`);
+    const poster = join(process.cwd(), 'public/videos/dsa', `${id}.jpg`);
+    assert.ok(statSync(video).size > 50_000, id);
+    assert.ok(statSync(poster).size > 1_000, id);
+    assert.equal(readFileSync(video).toString('ascii', 4, 8), 'ftyp', id);
   }
 });
 test('bubble sort handles duplicates, negatives, empty input and immutable earlier frames', () => {

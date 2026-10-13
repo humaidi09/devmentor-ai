@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 
 import { PageHeader } from "@/components/page-header";
 import { StepPlayer } from "@/components/visual/step-player";
+import { DsaVideoLesson } from "@/components/visual/dsa-video-lesson";
 import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { localize } from "@/lib/content-bn";
@@ -44,6 +45,7 @@ export default function TopicPage() {
         {bn ? "ভিজ্যুয়াল ল্যাব" : "Visual Lab"}
       </Link>
       <PageHeader title={localize(topic.title, lang)} subtitle={localize(topic.summary, lang)} />
+      <DsaVideoLesson topicId={topic.id} title={localize(topic.title, lang)} />
       <StepPlayer key={topic.id} topic={topic} />
       {returnTopic && <Link href={`/cp/topics/${returnTopic}`} className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-primary underline"><ArrowLeft className="h-4 w-4" aria-hidden />{bn ? "সমস্যায় ফিরুন" : "Return to practice"}</Link>}
     </div>

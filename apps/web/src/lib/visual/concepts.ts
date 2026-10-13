@@ -192,6 +192,24 @@ const STORIES: Story[] = [
       [[3], "0101 AND 0011 = 0001, which is decimal 1.", "0101 AND 0011 = 0001, অর্থাৎ দশমিক ১।", "5 & 3 = 1"],
     ],
   },
+  {
+    id: "advanced-patterns", title: "Advanced DSA Patterns", summary: "Choose a faster search strategy from the shape of the problem.",
+    labels: ["Brute force", "Two pointers", "Meet in middle", "Sweep line"],
+    frames: [
+      [[0], "Trying every pair may be too slow when the input grows.", "ইনপুট বড় হলে প্রতিটি জোড়া পরীক্ষা করতে অনেক সময় লাগে।"],
+      [[1, 2], "Sorted data suggests two pointers; independent halves suggest meet in the middle.", "সাজানো তথ্য হলে two pointers, দুই স্বাধীন অংশ হলে meet in the middle ভাবুন।"],
+      [[3], "For intervals or moving points, sort events and sweep once across them.", "interval বা চলমান বিন্দু হলে event সাজিয়ে একবার sweep করুন।"],
+    ],
+  },
+  {
+    id: "range-structures", title: "Range Queries", summary: "Answer repeated interval queries with prefix sums or update-friendly trees.",
+    labels: ["2", "3", "5", "1"],
+    frames: [
+      [[0, 1], "Build cumulative sums: after the first two values the prefix sum is 5.", "শুরুর দুই মানের cumulative sum হলো ৫।"],
+      [[1, 2], "The sum from index 1 to 2 is prefix[3] − prefix[1] = 8.", "ইনডেক্স ১ থেকে ২-এর যোগফল prefix[3] − prefix[1] = ৮।", "3 + 5 = 8"],
+      [[2, 3], "If values change often, use a Fenwick or segment tree for fast updates and queries.", "মান ঘন ঘন বদলালে দ্রুত update ও query-র জন্য Fenwick বা segment tree ব্যবহার করুন।"],
+    ],
+  },
 ];
 
 export const CONCEPT_TOPICS: VizTopic[] = STORIES.map((story) => {
