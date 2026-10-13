@@ -5,6 +5,7 @@ import { Film, Lightbulb, ListChecks } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { useLanguage } from "@/lib/i18n";
 import guides from "@/lib/visual/dsa-guides.json";
+import patternGuides from "@/lib/visual/dsa-pattern-guides.json";
 
 type Guide = {
   concept: string;
@@ -14,9 +15,14 @@ type Guide = {
   visual: string[];
   patterns: string[];
 };
+type PatternGuide = Omit<Guide, "patterns"> & { parent: string; title: string };
 
 export function DsaVideoLesson({ topicId, title }: { topicId: string; title: string }) {
-  const guide = (guides as Record<string, Guide>)[topicId];
+  const pattern = (patternGuides as Record<string, PatternGuide>)[topicId];
+  const guide = (guides as Record<string, Guide>)[topicId] ?? (pattern ? {
+    ...pattern,
+    patterns: (guides as Record<string, Guide>)[pattern.parent].patterns,
+  } : undefined);
   const { lang } = useLanguage();
   const bn = lang === "bn";
   if (!guide) return null;

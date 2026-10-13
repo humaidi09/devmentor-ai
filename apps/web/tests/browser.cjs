@@ -138,6 +138,12 @@ assert.ok(
     await page.getByRole("button", { name: "Play", exact: true }).click();
     await page.getByText("A → C violates the rule", { exact: false }).first().waitFor({ timeout: 5000 });
     await page.getByRole("button", { name: "Pause", exact: true }).click();
+    await go("/learn/visual-lab");
+    await page.locator("details").filter({ hasText: "KMP Pattern Matching" }).locator("summary").click();
+    await page.getByRole("link", { name: /KMP Pattern Matching/ }).click();
+    await page.waitForURL("**/learn/visual-lab/pattern-kmp");
+    assert.equal(await page.locator("video source").getAttribute("src"), "/videos/dsa/pattern-kmp.mp4");
+    await page.getByText("Find ABAC in ABABAC", { exact: false }).waitFor();
     console.log("PASS CP topic animation link, controls and bilingual narration");
     // Keyboard navigation and visible focus, with reduced-motion preference.
     await go("/");
@@ -201,6 +207,7 @@ assert.ok(
         "normalization",
         "backtracking",
         "dynamic-programming",
+        "pattern-kmp",
       ].map((x) => "/learn/visual-lab/" + x),
     ];
     const accessibilityFailures = [];

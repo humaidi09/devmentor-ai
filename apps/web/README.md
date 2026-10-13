@@ -4,7 +4,7 @@ Next.js 15 / React 19, strict TypeScript, Node.js 22 in CI. The original Phase 2
 
 ## DSA visual lessons
 
-Visual Lab has 25 DSA topics, including the 23 CP categories plus advanced patterns and range queries. Every DSA topic has its own original 64-second portrait MP4, a Bengali/English plain-language concept and worked example, and a separate interactive step player. The MP4s are silent, contain bilingual on-screen explanations, can be paused/replayed, and have written equivalents beside the player. The four supplied reference clips informed the highlight/motion style; none of their footage, audio or watermarks is included.
+Visual Lab has 25 main DSA lessons, including the 23 CP categories plus advanced patterns and range queries, and 52 separate pattern lessons from the 16 branches of the reference map. Each of these 77 topics has its own original 64-second portrait MP4, a Bengali/English plain-language concept and worked example, and a separate interactive step player. The MP4s are silent, contain bilingual on-screen explanations, can be paused/replayed, and have written equivalents beside the player. The four supplied reference clips informed the highlight/motion style; none of their footage, audio or watermarks is included.
 
 The committed assets live in `public/videos/dsa`. To regenerate them, install Python Pillow and FFmpeg with `libx264`, ensure Noto Sans Bengali is installed, then run `npm run videos:build` after `npm ci`. The JSON lesson data and step generators are the source; the renderer writes one MP4 and poster per topic. Regeneration is an authoring step, not part of the Next.js build.
 

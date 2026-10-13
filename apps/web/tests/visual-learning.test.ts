@@ -4,11 +4,12 @@ import { bfs, dfs, bubbleSort, binarySearch, innerJoin, normalization } from '..
 import { TOPICS } from '../src/lib/visual/topics';
 import { CP_TOPICS, VISUAL_TOPICS } from '../src/lib/cp/library';
 import guides from '../src/lib/visual/dsa-guides.json';
+import patternGuides from '../src/lib/visual/dsa-pattern-guides.json';
 import { readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
 test('every CP topic has a distinct playable visual lesson with bilingual explanations', () => {
-  assert.equal(TOPICS.length, 27);
+  assert.equal(TOPICS.length, 79);
   assert.equal(new Set(TOPICS.map(t => t.id)).size, TOPICS.length);
   for (const topic of CP_TOPICS) {
     const lesson = TOPICS.find((item) => item.id === VISUAL_TOPICS[topic]);
@@ -27,15 +28,18 @@ test('every CP topic has a distinct playable visual lesson with bilingual explan
 });
 test('every DSA guide has a unique video and a plain-language bilingual example', () => {
   assert.equal(Object.keys(guides).length, 25);
+  assert.equal(Object.keys(patternGuides).length, 52);
+  assert.equal(new Set(Object.values(patternGuides).map(guide => guide.parent)).size, 16);
   for (const topic of CP_TOPICS) {
     assert.ok(VISUAL_TOPICS[topic] && VISUAL_TOPICS[topic]! in guides, `${topic} is missing its video`);
   }
-  for (const [id, guide] of Object.entries(guides)) {
+  for (const [id, guide] of Object.entries({ ...guides, ...patternGuides })) {
     assert.ok(TOPICS.some(topic => topic.id === id), id);
     assert.ok(guide.concept.length > 30 && guide.example.length > 15, id);
     assert.match(guide.conceptBn + guide.exampleBn, /[\u0980-\u09ff]/, id);
     assert.equal(guide.visual.length, 4, id);
-    assert.equal(guide.patterns.length, 4, id);
+    if ('patterns' in guide) assert.equal(guide.patterns.length, 4, id);
+    if ('parent' in guide) assert.ok(guide.parent in guides, id);
     const video = join(process.cwd(), 'public/videos/dsa', `${id}.mp4`);
     const poster = join(process.cwd(), 'public/videos/dsa', `${id}.jpg`);
     assert.ok(statSync(video).size > 50_000, id);

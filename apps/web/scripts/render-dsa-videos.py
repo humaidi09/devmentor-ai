@@ -6,6 +6,7 @@ provides written explanations and a controllable step player beside each video.
 """
 
 import argparse
+from concurrent.futures import ProcessPoolExecutor, as_completed
 import json
 import math
 import subprocess
@@ -32,8 +33,33 @@ FONT_REG = font("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 20)
 FONT_SMALL = font("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 14)
 FONT_BOLD = font("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 30)
 FONT_BOLD_SMALL = font("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 24)
+FONT_BOLD_TINY = font("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 21)
 FONT_NODE = font("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 18)
 FONT_BN = font("/usr/share/fonts/truetype/noto/NotoSansBengali-Regular.ttf", 20)
+
+
+def mixed_runs(value):
+    """Noto Bengali lacks Latin glyphs; render each script with its own font."""
+    runs = []
+    for char in value:
+        bengali = "\u0980" <= char <= "\u09ff" or char in "।॥"
+        if runs and runs[-1][0] == bengali:
+            runs[-1] = (bengali, runs[-1][1] + char)
+        else:
+            runs.append((bengali, char))
+    return runs
+
+
+def mixed_width(draw, value):
+    return sum(draw.textlength(part, font=FONT_BN if bengali else FONT_REG)
+               for bengali, part in mixed_runs(value))
+
+
+def mixed_text(draw, value, x, y, fill):
+    for bengali, part in mixed_runs(value):
+        face = FONT_BN if bengali else FONT_REG
+        draw.text((x, y), part, font=face, fill=fill)
+        x += draw.textlength(part, font=face)
 
 
 def lines(draw, value, face, max_width, max_lines=3):
@@ -41,7 +67,8 @@ def lines(draw, value, face, max_width, max_lines=3):
     out, current = [], ""
     for word in words:
         candidate = f"{current} {word}".strip()
-        if current and draw.textbbox((0, 0), candidate, font=face)[2] > max_width:
+        width = mixed_width(draw, candidate) if face == FONT_BN else draw.textlength(candidate, font=face)
+        if current and width > max_width:
             out.append(current)
             current = word
         else:
@@ -53,7 +80,10 @@ def lines(draw, value, face, max_width, max_lines=3):
 
 def paragraph(draw, value, x, y, face, fill, max_width=570, max_lines=3, gap=6):
     for line in lines(draw, value, face, max_width, max_lines):
-        draw.text((x, y), line, font=face, fill=fill)
+        if face == FONT_BN:
+            mixed_text(draw, line, x, y, fill)
+        else:
+            draw.text((x, y), line, font=face, fill=fill)
         y += face.size + gap
     return y
 
@@ -75,7 +105,8 @@ def frame(lesson, number):
     draw.text((34, 29), "CLOSE AI  /  DSA VISUALS", font=FONT_SMALL, fill=GREEN)
     draw.text((354, 30), f"{segment + 1:02d} / 08", font=FONT_SMALL, fill=MUTED)
     title = lesson["title"]
-    title_face = FONT_BOLD if draw.textbbox((0, 0), title, font=FONT_BOLD)[2] <= 386 else FONT_BOLD_SMALL
+    title_face = next(face for face in (FONT_BOLD, FONT_BOLD_SMALL, FONT_BOLD_TINY)
+                      if draw.textlength(title, font=face) <= 382)
     draw.text((24, 75), title, font=title_face, fill=WHITE)
     draw.line((24, 124, 408, 124), fill=BORDER, width=1)
 
@@ -142,7 +173,7 @@ def render(lesson, output_dir):
         "ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-f", "rawvideo",
         "-pixel_format", "rgb24", "-video_size", f"{WIDTH}x{HEIGHT}", "-framerate", str(FPS),
         "-i", "-", "-c:v", "libx264", "-preset", "veryfast", "-crf", "28",
-        "-pix_fmt", "yuv420p", "-movflags", "+faststart", "-t", "64", str(video),
+        "-pix_fmt", "yuv420p", "-threads", "1", "-movflags", "+faststart", "-t", "64", str(video),
     ]
     process = subprocess.Popen(command, stdin=subprocess.PIPE)
     try:
@@ -160,14 +191,26 @@ def main():
     parser.add_argument("manifest", type=Path)
     parser.add_argument("output", type=Path)
     parser.add_argument("--id")
+    parser.add_argument("--missing", action="store_true", help="render only lessons without both assets")
+    parser.add_argument("--jobs", type=int, default=1, help="parallel rendering workers")
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
     lessons = json.loads(args.manifest.read_text())
-    selected = [lesson for lesson in lessons if not args.id or lesson["id"] == args.id]
+    selected = [lesson for lesson in lessons if (not args.id or lesson["id"] == args.id) and
+                (not args.missing or not (args.output / f'{lesson["id"]}.mp4').exists() or
+                 not (args.output / f'{lesson["id"]}.jpg').exists())]
     if not selected:
         raise SystemExit("No matching lesson")
-    for lesson in selected:
-        render(lesson, args.output)
+    if args.jobs < 1:
+        raise SystemExit("--jobs must be positive")
+    if args.jobs == 1:
+        for lesson in selected:
+            render(lesson, args.output)
+    else:
+        with ProcessPoolExecutor(max_workers=args.jobs) as pool:
+            futures = [pool.submit(render, lesson, args.output) for lesson in selected]
+            for future in as_completed(futures):
+                future.result()
 
 
 if __name__ == "__main__":

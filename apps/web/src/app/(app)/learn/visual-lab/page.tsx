@@ -2,13 +2,14 @@
 
 import { RecentTopics } from "@/components/visual/recent-topics";
 import Link from "next/link";
-import { ArrowUpRight, Play, Sparkles } from "lucide-react";
+import { ArrowUpRight, Film, Play, Sparkles } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { localize } from "@/lib/content-bn";
 import { useLanguage } from "@/lib/i18n";
 import { TOPICS } from "@/lib/visual/topics";
 import dsaGuides from "@/lib/visual/dsa-guides.json";
+import patternGuides from "@/lib/visual/dsa-pattern-guides.json";
 
 const CATEGORIES = ["DSA", "Algorithms", "DBMS"] as const;
 
@@ -21,7 +22,7 @@ export default function VisualLabPage() {
       <section className="studio-hero overflow-hidden rounded-3xl border border-primary/25 p-6 sm:p-9">
         <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-primary"><Sparkles className="h-4 w-4" aria-hidden />{bn ? "ভিজ্যুয়াল লার্নিং স্টুডিও" : "Visual learning studio"}</p>
         <h1 className="mt-4 max-w-2xl text-3xl font-bold tracking-tight sm:text-4xl">{bn ? "দেখে বুঝুন। তারপর নিজে করে দেখুন।" : "See the idea. Then make it yours."}</h1>
-        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">{bn ? `${Object.keys(dsaGuides).length}টি DSA টপিকে আলাদা ৬৪ সেকেন্ডের ভিডিও, সহজ উদাহরণ ও হাতে চালানোর animation।` : `${Object.keys(dsaGuides).length} DSA topics with their own 64-second videos, simple examples and hands-on animations.`}</p>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">{bn ? `${Object.keys(dsaGuides).length + Object.keys(patternGuides).length}টি মূল ও pattern lesson-এ আলাদা ৬৪ সেকেন্ডের ভিডিও, সহজ উদাহরণ ও হাতে চালানোর animation।` : `${Object.keys(dsaGuides).length + Object.keys(patternGuides).length} main and pattern lessons, each with its own 64-second video, simple example and hands-on animation.`}</p>
         <div className="mt-6 flex flex-wrap gap-2 text-xs font-medium text-primary">
           <span className="rounded-full border border-primary/25 bg-primary/10 px-3 py-1.5">{bn ? "নিজে চালান" : "Interactive playback"}</span>
           <span className="rounded-full border border-primary/25 bg-primary/10 px-3 py-1.5">{bn ? "বাংলা + English" : "Bangla + English"}</span>
@@ -30,7 +31,7 @@ export default function VisualLabPage() {
       </section>
       <RecentTopics />
       {CATEGORIES.map((cat) => {
-        const items = TOPICS.filter((t) => t.category === cat);
+        const items = TOPICS.filter((t) => t.category === cat && !(t.id in patternGuides));
         if (!items.length) return null;
         return (
           <section key={localize(cat, lang)}>
@@ -63,6 +64,27 @@ export default function VisualLabPage() {
           </section>
         );
       })}
+      <section id="dsa-patterns" aria-labelledby="pattern-heading" className="space-y-4">
+        <div>
+          <h2 id="pattern-heading" className="text-2xl font-bold">{bn ? "আরও গভীরে: DSA pattern" : "Go deeper: DSA patterns"}</h2>
+          <p className="mt-1 text-sm text-muted-foreground">{bn ? "প্রতিটি ছোট pattern-এর নিজস্ব এক মিনিটের ভিডিও ও উদাহরণ আছে। বিভাগ খুলে বেছে নিন।" : "Every smaller pattern has its own one-minute video and example. Open a category to explore."}</p>
+        </div>
+        {Object.entries(dsaGuides).map(([parentId]) => {
+          const entries = Object.entries(patternGuides).filter(([, guide]) => guide.parent === parentId);
+          if (!entries.length) return null;
+          const parent = TOPICS.find((topic) => topic.id === parentId);
+          return <details key={parentId} className="group rounded-2xl border border-border bg-card/70 p-4 open:border-primary/40">
+            <summary className="cursor-pointer list-none font-semibold text-foreground marker:hidden">{localize(parent?.title ?? parentId, lang)} <span className="ml-2 text-xs font-normal text-muted-foreground">{entries.length} {bn ? "টি ভিডিও" : "videos"}</span><span className="float-right text-primary group-open:rotate-90" aria-hidden>›</span></summary>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {entries.map(([id, guide]) => <Link key={id} href={`/learn/visual-lab/${id}`} className="studio-card rounded-xl border border-border bg-background p-4 focus-visible:ring-2 focus-visible:ring-ring">
+                <span className="flex items-center gap-2 text-xs font-semibold text-primary"><Film className="h-4 w-4" aria-hidden />{bn ? "৬৪ সেকেন্ডের ভিডিও" : "64-second video"}</span>
+                <span className="mt-2 block font-bold">{guide.title}</span>
+                <span className="mt-1 block text-sm text-muted-foreground">{bn ? guide.conceptBn : guide.concept}</span>
+              </Link>)}
+            </div>
+          </details>;
+        })}
+      </section>
     </div>
   );
 }

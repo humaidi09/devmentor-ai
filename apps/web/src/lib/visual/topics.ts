@@ -1,5 +1,6 @@
 import { bfs, binarySearch, bubbleSort, dfs, innerJoin, normalization } from "./generators";
 import { CONCEPT_TOPICS } from "./concepts";
+import { PATTERN_TOPICS } from "./pattern-topics";
 import type { VizTopic } from "./types";
 
 const GRAPH: Record<string, string[]> = {
@@ -54,6 +55,7 @@ export const TOPICS: VizTopic[] = [
     steps: innerJoin(),
   },
   ...CONCEPT_TOPICS,
+  ...PATTERN_TOPICS,
 ];
 
 export function getTopic(id: string): VizTopic | undefined {
