@@ -10,7 +10,7 @@ import { APP_NAME } from "@/lib/config";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen">
+    <div className="app-shell flex min-h-screen">
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col">
         <DemoBanner />

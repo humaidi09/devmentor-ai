@@ -48,6 +48,7 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       <section>
+        <p className="section-kicker mb-2">{bn ? "আপনার ড্যাশবোর্ড" : "YOUR SPACE"}</p>
         <h1 className="text-2xl font-bold sm:text-3xl">
           {bn
             ? "আজ কীসে সাহায্য দরকার?"
@@ -56,10 +57,10 @@ export default function DashboardPage() {
         <p className="mt-1 text-muted-foreground">{t("tagline")}</p>
       </section>
 
-      <Card className="bg-primary/5 p-5">
+      <Card className="dashboard-hero relative overflow-hidden rounded-2xl p-5 sm:p-7">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-start gap-3">
-            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-primary text-primary-foreground">
+            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-primary text-primary-foreground shadow-soft">
               <MessagesSquare className="h-5 w-5" aria-hidden />
             </span>
             <div>
@@ -81,7 +82,7 @@ export default function DashboardPage() {
             <Link
               key={s}
               href={`/support?q=${encodeURIComponent(s)}`}
-              className="rounded-full border border-border bg-card px-3 py-1.5 text-xs transition-colors hover:border-primary/40 hover:bg-muted"
+              className="dashboard-starter rounded-full border border-border bg-card px-3 py-1.5 text-xs hover:border-primary/40 hover:bg-muted"
             >
               {s}
             </Link>
@@ -185,7 +186,7 @@ export default function DashboardPage() {
                 href={m.href}
                 className="block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
-                <Card className="h-full p-4 transition-shadow hover:shadow-lift">
+                <Card className="h-full p-4 transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lift">
                   <h3 className="text-sm font-bold">{m.title}</h3>
                   <p className="mt-0.5 text-xs text-muted-foreground">
                     {m.desc}

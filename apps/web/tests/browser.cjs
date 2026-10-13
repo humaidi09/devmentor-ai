@@ -123,6 +123,18 @@ assert.ok(
     assert.equal(await page.locator("#text-steps li").count(), 9);
     // Keyboard navigation and visible focus, with reduced-motion preference.
     await go("/");
+    assert.equal(
+      await page.locator(".hero-copy").evaluate((el) => getComputedStyle(el).animationName),
+      "none",
+      "hero animation respects reduced motion",
+    );
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+    assert.match(
+      await page.locator(".hero-copy").evaluate((el) => getComputedStyle(el).animationName),
+      /soft-rise/,
+      "hero animation is available when motion is allowed",
+    );
+    await page.emulateMedia({ reducedMotion: "reduce" });
     await page.keyboard.press("Tab");
     assert.equal(
       await page.locator(":focus").innerText(),
