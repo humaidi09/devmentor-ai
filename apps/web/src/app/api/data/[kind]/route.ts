@@ -195,38 +195,38 @@ async function write(req: NextRequest, ctx: Context) {
               "attempted",
               "solved",
               "skipped",
+              "need_hint",
+              "upsolved",
             ]),
           },
           { onConflict: "user_id,problem_key" },
         ),
       );
-    } else if (kind === "cp-handle" && method === "POST") {
-      exact(b, ["handle"]);
-      const handle = text(b.handle, 24, true);
-      if (handle && !/^[A-Za-z0-9_.-]+$/.test(handle))
-        throw new ApiError(400, "Invalid handle.");
-      dbResult(
-        await db
-          .from("cp_preferences")
-          .upsert(
-            { user_id: uid, codeforces_handle: handle },
-            { onConflict: "user_id" },
-          ),
+    } else if (kind === "cp-handle") {
+      throw new ApiError(
+        400,
+        "Preview and confirm the Codeforces connection in CP Coach.",
       );
     } else if (kind === "study-tasks") {
       if (method === "POST") {
-        exact(b, ["title"]);
+        exact(b, ["title", "plannedFor"]);
         dbResult(
-          await db
-            .from("learning_tasks")
-            .insert({ user_id: uid, title: text(b.title) }),
+          await db.from("learning_tasks").insert({
+            user_id: uid,
+            title: text(b.title),
+            planned_for: b.plannedFor === undefined ? null : date(b.plannedFor),
+          }),
         );
       } else if (method === "PATCH") {
-        exact(b, ["id", "completed"]);
+        exact(b, ["id", "completed", "title", "plannedFor"]);
+        const changes: Record<string, unknown> = {};
+        if ("completed" in b) changes.completed = bool(b.completed);
+        if ("title" in b) changes.title = text(b.title);
+        if ("plannedFor" in b) changes.planned_for = date(b.plannedFor);
         dbResult(
           await db
             .from("learning_tasks")
-            .update({ completed: bool(b.completed) })
+            .update(changes)
             .eq("id", uuid(b.id))
             .eq("user_id", uid),
         );
@@ -326,7 +326,7 @@ export async function GET(req: NextRequest, ctx: Context) {
     const tasks = dbResult(
       await db
         .from("learning_tasks")
-        .select("id,title,completed")
+        .select("id,title,completed,planned_for")
         .eq("user_id", user.id)
         .order("created_at"),
     );

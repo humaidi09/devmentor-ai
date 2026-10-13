@@ -1,9 +1,10 @@
+const { localDockerEnv } = require("./docker-env.cjs");
 const { chromium } = require("playwright");
 const { default: AxeBuilder } = require("@axe-core/playwright");
 const assert = require("node:assert/strict");
 const { execFileSync } = require("node:child_process");
 const base = "http://localhost:3002";
-const resourceName = "DEMO browser resource " + crypto.randomUUID().slice(0,8);
+const resourceName = "DEMO browser resource " + crypto.randomUUID().slice(0, 8);
 (async () => {
   const browser = await chromium.launch({
     executablePath: process.env.PLAYWRIGHT_EXECUTABLE_PATH || undefined,
@@ -203,32 +204,34 @@ const resourceName = "DEMO browser resource " + crypto.randomUUID().slice(0,8);
       await context.request.get(base + "/api/account")
     ).json();
     const userId = account.profile.id;
-    execFileSync("docker", [
-      "--host=unix:///var/run/docker.sock",
-      "compose",
-      "-p",
-      "close-ai-phase3",
-      "-f",
-      "../../supabase/compose.test.yml",
-      "exec",
-      "-T",
-      "db",
-      "psql",
-      "-U",
-      "postgres",
-      "-v",
-      "ON_ERROR_STOP=1",
-      "-c",
-      `insert into public.resource_roles(user_id,campus_id,role) values('${userId}','demo-u','resource_maintainer');`,
-    ]);
+    execFileSync(
+      "docker",
+      [
+        "--host=unix:///var/run/docker.sock",
+        "compose",
+        "-p",
+        "close-ai-phase3",
+        "-f",
+        "../../supabase/compose.test.yml",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-U",
+        "postgres",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        `insert into public.resource_roles(user_id,campus_id,role) values('${userId}','demo-u','resource_maintainer');`,
+      ],
+      { env: localDockerEnv() },
+    );
     await go("/maintainer");
     await page
       .getByRole("heading", { name: "Resource workspace", exact: true })
       .waitFor();
     await page.getByLabel("Campus", { exact: true }).selectOption("demo-u");
-    await page
-      .getByLabel("Name", { exact: true })
-      .fill(resourceName);
+    await page.getByLabel("Name", { exact: true }).fill(resourceName);
     await page
       .getByLabel("Description", { exact: true })
       .fill("Fictional browser test only");

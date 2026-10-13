@@ -12,6 +12,7 @@ export function protectedPath(path: string) {
       "/onboarding",
       "/dashboard",
       "/settings",
+      "/notifications",
       "/study",
       "/cp",
       "/support/saved",

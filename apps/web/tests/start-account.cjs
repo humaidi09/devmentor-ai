@@ -5,6 +5,7 @@ const child = spawn(
   ["start", "--", "--hostname", "127.0.0.1", "--port", "3002"],
   {
     stdio: "inherit",
+    detached: process.platform !== "win32",
     env: {
       ...process.env,
       AI_PROVIDER: "mock",
@@ -16,5 +17,14 @@ const child = spawn(
   },
 );
 for (const signal of ["SIGTERM", "SIGINT"])
-  process.on(signal, () => child.kill(signal));
+  process.on(signal, () => {
+    if (process.platform === "win32") child.kill(signal);
+    else {
+      try {
+        process.kill(-child.pid, signal);
+      } catch {
+        /* group already exited */
+      }
+    }
+  });
 child.on("exit", (code) => process.exit(code ?? 1));

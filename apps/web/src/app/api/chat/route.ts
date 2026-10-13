@@ -1,3 +1,4 @@
+import { requestJson } from "@/lib/validation/request";
 import type { NextRequest } from "next/server";
 import { DEMO_MODE } from "@/lib/config";
 import { buildDemoReply } from "@/lib/support-engine";
@@ -5,7 +6,7 @@ import { account, dbResult, failure, json } from "@/lib/server-api";
 import { object, exact, text, choice, bool, ApiError } from "@/lib/validation";
 import { aiProvider, realAiAvailable } from "@/lib/ai/server";
 import { groundedReply } from "@/lib/ai/controller";
-import { classify } from "@/lib/safety/classifier";
+import { classify, retrievalIntent } from "@/lib/safety/classifier";
 import { resourceDto } from "@/lib/resources/grounding";
 export async function GET() {
   return json({
@@ -17,7 +18,7 @@ export async function POST(req: NextRequest) {
   try {
     if (Number(req.headers.get("content-length")) > 12000)
       throw new ApiError(413, "Message too long.");
-    const b = object(await req.json());
+    const b = object(await requestJson(req));
     exact(b, ["message", "lang", "useAi", "clarified"]);
     const message = text(b.message, 2000),
       clarified = b.clarified === undefined ? false : bool(b.clarified);
@@ -76,7 +77,7 @@ export async function POST(req: NextRequest) {
       ? dbResult(
           await db.rpc("search_close_ai_resources", {
             campus,
-            category: c.professional ? "wellbeing" : c.intent,
+            category: retrievalIntent(c),
             search_text: message,
           }),
         )

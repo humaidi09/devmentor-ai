@@ -13,7 +13,14 @@
     "prebuild": "node scripts/build-offline.cjs",
     "test:backend": "node tests/backend.cjs",
     "build:account-test": "node tests/build-account.cjs",
-    "test:account-browser": "node tests/account-browser.cjs"
+    "test:account-browser": "node tests/account-browser.cjs",
+    "test:grounding-backend": "node tests/ai-backend.cjs",
+    "test:phase5-backend": "node tests/phase5-backend.cjs",
+    "test:phase5-browser": "node tests/phase5-browser.cjs",
+    "test:client-boundary": "node tests/client-boundary.cjs",
+    "test:ai-live": "tsx tests/ai-live.ts",
+    "test:codeforces-live": "tsx tests/codeforces-live.ts",
+    "test:codeforces-live-browser": "node tests/codeforces-live-browser.cjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

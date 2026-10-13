@@ -31,7 +31,9 @@ export function ChecklistDraft({
         sessionStorage.setItem(
           "close-ai-demo-approved-steps",
           JSON.stringify([
-            ...prior,
+            ...(Array.isArray(prior)
+              ? prior.filter((x) => x && typeof x.title === "string")
+              : []),
             ...steps.map((t, i) => ({
               id: `${token}_${i}`,
               title: t,

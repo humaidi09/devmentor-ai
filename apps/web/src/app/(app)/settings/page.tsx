@@ -3,6 +3,8 @@
 import { Globe, ShieldCheck, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useAccount } from "@/lib/account";
+import { CodeforcesConnection } from "@/components/codeforces-connection";
+import { NotificationSettings } from "@/components/notification-settings";
 import { ProfileControls } from "@/components/profile-controls";
 import { usePreferences } from "@/lib/preferences";
 
@@ -86,6 +88,8 @@ export default function SettingsPage() {
     if (!ok) return;
     for (const key of Object.keys(window.localStorage))
       if (key.startsWith("close-ai-")) window.localStorage.removeItem(key);
+    for (const key of Object.keys(window.sessionStorage))
+      if (key.startsWith("close-ai-")) window.sessionStorage.removeItem(key);
     window.location.reload();
   }
 
@@ -93,6 +97,13 @@ export default function SettingsPage() {
     <div className="mx-auto max-w-2xl space-y-6">
       <PageHeader title={t("settings")} />
       <ProfileControls />
+      <NotificationSettings />
+      <section className="space-y-2">
+        <h2 className="font-bold">
+          {bn ? "সংযুক্ত সেবা" : "Connected Services"}
+        </h2>
+        <CodeforcesConnection />
+      </section>
       <Link href="/onboarding" className="block text-primary underline">
         {bn
           ? "ক্যাম্পাস ও নীরব সময়ের পছন্দ"

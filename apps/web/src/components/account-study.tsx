@@ -1,4 +1,6 @@
 "use client";
+import Link from "next/link";
+import { StudySuggestions } from "./study-suggestions";
 import { useEffect, useState } from "react";
 import { useAccount } from "@/lib/account";
 import { useLanguage } from "@/lib/i18n";
@@ -14,7 +16,12 @@ interface Study {
     status: string;
     course_id: string | null;
   }[];
-  tasks: { id: string; title: string; completed: boolean }[];
+  tasks: {
+    id: string;
+    title: string;
+    completed: boolean;
+    planned_for: string | null;
+  }[];
 }
 export function AccountStudy() {
   const { request } = useAccount();
@@ -28,6 +35,11 @@ export function AccountStudy() {
   const [deadline, setDeadline] = useState("");
   const [courseId, setCourseId] = useState("");
   const [due, setDue] = useState("");
+  const [editing, setEditing] = useState<{
+    id: string;
+    title: string;
+    local: string;
+  } | null>(null);
   const [task, setTask] = useState("");
   useEffect(() => {
     let active = true;
@@ -69,10 +81,24 @@ export function AccountStudy() {
           ? "কোর্স ও ডেডলাইন আপনার অ্যাকাউন্টের ব্যক্তিগত তথ্য।"
           : "Courses and deadlines are private to your account."}
       </p>
+      <Link href="/learn/visual-lab" className="text-sm text-primary underline">
+        {bn
+          ? "Course concept দৃশ্যমানভাবে practice"
+          : "Review course concepts visually"}
+      </Link>
       {!data && !error && (
         <p role="status">{bn ? "লোড হচ্ছে…" : "Loading study data…"}</p>
       )}
       {error && <p role="alert">{error}</p>}
+      {data && (
+        <StudySuggestions
+          deadlines={data.deadlines}
+          tasks={data.tasks}
+          onSave={(title, plannedFor) =>
+            write("study-tasks", { title, plannedFor })
+          }
+        />
+      )}
       <Card className="space-y-3 p-4">
         <h2 className="font-bold">{bn ? "কোর্স" : "Courses"}</h2>
         <form
@@ -192,6 +218,12 @@ export function AccountStudy() {
                 {new Date(d.due_at).toLocaleString(bn ? "bn-BD" : "en-GB")} —{" "}
                 {d.status}
               </p>
+              <Link
+                href={`/notifications?deadline=${d.id}`}
+                className="mr-3 text-sm text-primary underline"
+              >
+                {bn ? "Deadline reminder তৈরি" : "Set a deadline reminder"}
+              </Link>
               <Button
                 disabled={busy}
                 variant="secondary"
@@ -241,7 +273,92 @@ export function AccountStudy() {
         </form>
         <ul className="space-y-2">
           {data?.tasks.map((t) => (
-            <li key={t.id}>
+            <li key={t.id} className="space-y-2">
+              {t.planned_for && (
+                <p className="text-xs">
+                  {new Date(t.planned_for).toLocaleString(
+                    bn ? "bn-BD" : "en-GB",
+                  )}
+                </p>
+              )}
+              <Button
+                variant="secondary"
+                size="sm"
+                disabled={busy}
+                onClick={() =>
+                  setEditing({
+                    id: t.id,
+                    title: t.title,
+                    local: t.planned_for
+                      ? new Date(
+                          new Date(t.planned_for).getTime() -
+                            new Date(t.planned_for).getTimezoneOffset() * 60000,
+                        )
+                          .toISOString()
+                          .slice(0, 16)
+                      : "",
+                  })
+                }
+              >
+                {bn ? "Task সম্পাদনা / সময় বদলান" : "Edit / reschedule task"}
+              </Button>
+              {editing?.id === t.id && (
+                <form
+                  className="space-y-2"
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    if (
+                      await write(
+                        "study-tasks",
+                        {
+                          id: t.id,
+                          title: editing.title,
+                          plannedFor: editing.local
+                            ? new Date(editing.local).toISOString()
+                            : null,
+                        },
+                        "PATCH",
+                      )
+                    )
+                      setEditing(null);
+                  }}
+                >
+                  <label className="block text-sm">
+                    {bn ? "Task title" : "Edit task title"}
+                    <Input
+                      required
+                      maxLength={200}
+                      value={editing.title}
+                      onChange={(e) =>
+                        setEditing({ ...editing, title: e.target.value })
+                      }
+                    />
+                  </label>
+                  <label className="block text-sm">
+                    {bn
+                      ? "পড়ার নতুন সময় (browser timezone)"
+                      : "Reschedule time (browser timezone)"}
+                    <Input
+                      type="datetime-local"
+                      value={editing.local}
+                      onChange={(e) =>
+                        setEditing({ ...editing, local: e.target.value })
+                      }
+                    />
+                  </label>
+                  <Button disabled={busy} size="sm">
+                    {bn ? "Task পরিবর্তন সংরক্ষণ" : "Save task changes"}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setEditing(null)}
+                  >
+                    {bn ? "বাতিল" : "Cancel task edit"}
+                  </Button>
+                </form>
+              )}
               <label className="flex items-center gap-2">
                 <input
                   type="checkbox"

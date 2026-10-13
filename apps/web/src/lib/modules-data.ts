@@ -34,7 +34,12 @@ export const DEMO_DEADLINES: Deadline[] = [
 
 export const DEMO_STUDY_TASKS: StudyTask[] = [
   { id: "t1", title: "Revise binary search trees", done: false },
-  { id: "t2", title: "Practice 5 SQL JOIN queries", done: false, aiSuggested: true },
+  {
+    id: "t2",
+    title: "Practice 5 SQL JOIN queries",
+    done: false,
+    aiSuggested: true,
+  },
   { id: "t3", title: "Read OS scheduling chapter", done: true },
 ];
 
@@ -120,7 +125,13 @@ export const DEMO_SNIPPETS: Snippet[] = [
 ];
 
 // ---- CP Coach ----
-export type CPStatus = "none" | "attempted" | "solved" | "skipped";
+export type CPStatus =
+  | "none"
+  | "attempted"
+  | "solved"
+  | "skipped"
+  | "need_hint"
+  | "upsolved";
 export interface CPProblem {
   id: string;
   name: string;

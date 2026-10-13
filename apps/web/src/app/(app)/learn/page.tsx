@@ -1,5 +1,6 @@
 "use client";
 
+import { DeveloperRecommendation } from "@/components/developer-recommendation";
 import Link from "next/link";
 import { Check, Copy, Sparkles } from "lucide-react";
 import { useState } from "react";
@@ -156,6 +157,7 @@ export default function LearnPage() {
         </ol>
       </Card>
 
+      <DeveloperRecommendation path={pathway} done={done} />
       <section>
         <h2 className="mb-3 font-bold">{bn ? "স্নিপেট" : "Snippets"}</h2>
         <div className="space-y-3">

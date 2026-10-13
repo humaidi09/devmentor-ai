@@ -1,3 +1,4 @@
+import { NotificationLink } from "@/components/notification-link";
 import { AccountControls } from "@/components/account-controls";
 import { AccountStatus } from "@/components/account-status";
 import { BottomNav } from "@/components/app-shell/bottom-nav";
@@ -19,6 +20,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <span className="font-bold">{APP_NAME}</span>
           </div>
           <AccountControls />
+          <NotificationLink />
           <LanguageToggle />
         </header>
         <main

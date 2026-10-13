@@ -1,3 +1,4 @@
+import { requestJson } from "@/lib/validation/request";
 import type { NextRequest } from "next/server";
 import {
   account,
@@ -18,7 +19,7 @@ import {
 export async function POST(req: NextRequest) {
   try {
     const { db, user } = await account(req);
-    const b = object(await req.json());
+    const b = object(await requestJson(req));
     exact(b, ["title", "resourceId", "steps", "token", "confirmed"]);
     if (!Array.isArray(b.steps) || b.steps.length < 1 || b.steps.length > 6)
       throw new ApiError(400, "Invalid steps.");
