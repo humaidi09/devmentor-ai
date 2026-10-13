@@ -121,6 +121,22 @@ assert.ok(
       .getByRole("button", { name: "Show steps as text", exact: true })
       .click();
     assert.equal(await page.locator("#text-steps li").count(), 9);
+    await go("/cp/topics/backtracking");
+    await page.getByRole("link", { name: "Watch animation" }).click();
+    await page.waitForURL("**/learn/visual-lab/backtracking?from=cp&topic=backtracking");
+    await page.getByRole("img", { name: /Diagram: start/ }).waitFor();
+    await page.getByRole("button", { name: "Next step" }).click();
+    await page.getByText("A → C violates the rule", { exact: false }).waitFor();
+    await page.getByRole("button", { name: "Show steps as text" }).click();
+    assert.equal(await page.locator("#text-steps li").count(), 3);
+    await page.getByRole("button", { name: "বাংলা", exact: true }).first().click();
+    await page.getByText("A → C নিয়ম ভাঙে", { exact: false }).first().waitFor();
+    await page.getByRole("button", { name: "EN", exact: true }).first().click();
+    await page.getByRole("button", { name: "Reset" }).click();
+    await page.getByRole("button", { name: "Play", exact: true }).click();
+    await page.getByText("A → C violates the rule", { exact: false }).first().waitFor({ timeout: 5000 });
+    await page.getByRole("button", { name: "Pause", exact: true }).click();
+    console.log("PASS CP topic animation link, controls and bilingual narration");
     // Keyboard navigation and visible focus, with reduced-motion preference.
     await go("/");
     assert.equal(
@@ -181,6 +197,8 @@ assert.ok(
         "binary-search",
         "sql-inner-join",
         "normalization",
+        "backtracking",
+        "dynamic-programming",
       ].map((x) => "/learn/visual-lab/" + x),
     ];
     const accessibilityFailures = [];

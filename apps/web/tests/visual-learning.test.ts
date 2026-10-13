@@ -2,13 +2,24 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { bfs, dfs, bubbleSort, binarySearch, innerJoin, normalization } from '../src/lib/visual/generators';
 import { TOPICS } from '../src/lib/visual/topics';
+import { CP_TOPICS, VISUAL_TOPICS } from '../src/lib/cp/library';
 
-test('six topics have matching English and Bangla explanations for every frame', () => {
-  assert.equal(TOPICS.length, 6);
-  assert.equal(new Set(TOPICS.map(t => t.id)).size, 6);
+test('every CP topic has a distinct playable visual lesson with bilingual explanations', () => {
+  assert.equal(TOPICS.length, 25);
+  assert.equal(new Set(TOPICS.map(t => t.id)).size, TOPICS.length);
+  for (const topic of CP_TOPICS) {
+    const lesson = TOPICS.find((item) => item.id === VISUAL_TOPICS[topic]);
+    assert.ok(lesson, topic);
+    assert.ok(lesson.steps.length >= 3, topic);
+  }
   for (const t of TOPICS) for (const s of t.steps) {
     assert.ok(s.explanation.length > 10);
     assert.match(s.explanationBn, /[\u0980-\u09ff]/);
+    if (t.kind === 'concept') {
+      assert.ok(s.scene);
+      assert.ok(s.scene.active.every(index => index >= 0 && index < s.scene!.labels.length));
+      assert.ok(s.scene.links.every(([from, to]) => from < s.scene!.labels.length && to < s.scene!.labels.length));
+    }
   }
 });
 test('bubble sort handles duplicates, negatives, empty input and immutable earlier frames', () => {

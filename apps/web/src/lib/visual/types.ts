@@ -31,9 +31,19 @@ export interface VizStep {
   tableB?: TableData;
   result?: TableData;
   matchRows?: { a: number; b: number }[];
+
+  // narrated concept animation
+  scene?: {
+    labels: string[];
+    links: [number, number][];
+    layout: "line" | "stack" | "tree" | "graph" | "trie";
+    active: number[];
+    completed: number[];
+    result?: string;
+  };
 }
 
-export type VizKind = "array" | "graph" | "join";
+export type VizKind = "array" | "graph" | "join" | "concept";
 
 export interface VizTopic {
   id: string;

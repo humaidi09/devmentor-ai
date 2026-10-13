@@ -165,7 +165,7 @@ export default function LandingPage() {
           <div className="hero-visual relative" role="group" aria-label={bn ? "শেখার একটি উদাহরণ" : "Example learning workflow"}>
             <div className="hero-orb hero-orb-one" aria-hidden />
             <div className="hero-orb hero-orb-two" aria-hidden />
-            <div className="hero-visual-card relative rounded-[2rem] border border-white/70 p-5 shadow-xl sm:p-7">
+            <div className="hero-visual-card relative rounded-[2rem] border border-border p-5 shadow-xl sm:p-7">
               <div className="mb-6 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
                   <span className="grid h-10 w-10 place-items-center rounded-2xl bg-primary text-primary-foreground"><Sparkles className="h-5 w-5" aria-hidden /></span>
@@ -178,14 +178,14 @@ export default function LandingPage() {
                   {bn ? "উদাহরণ" : "Example"}
                 </span>
               </div>
-              <Link href="/knowledge?topic=BFS" className="preview-search group flex items-center gap-3 rounded-2xl border border-border bg-white p-4 shadow-soft">
+              <Link href="/knowledge?topic=BFS" className="preview-search group flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-soft">
                 <Search className="h-5 w-5 shrink-0 text-primary" aria-hidden />
                 <span className="min-w-0 flex-1 text-sm font-semibold sm:text-base">
                   {bn ? "ব্রেডথ-ফার্স্ট সার্চ কীভাবে কাজ করে?" : "How does breadth-first search work?"}
                 </span>
                 <ArrowRight className="h-4 w-4 shrink-0 text-primary transition-transform group-hover:translate-x-1" aria-hidden />
               </Link>
-              <div className="preview-stage mt-4 rounded-2xl border border-border/70 bg-white/75 p-4 sm:p-5">
+              <div className="preview-stage mt-4 rounded-2xl border border-border/70 bg-card/75 p-4 sm:p-5">
                 <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
                   01 / {bn ? "উৎস খুঁজুন" : "Find context"}
                 </span>
@@ -193,12 +193,12 @@ export default function LandingPage() {
                   {bn ? "গবেষণা ও কোডের মূল রেফারেন্স দেখুন" : "Explore original research and code references"}
                 </p>
                 <div className="mt-3 flex flex-wrap gap-2 text-xs text-muted-foreground">
-                  <span className="rounded-full border border-border bg-white px-2.5 py-1">{bn ? "গবেষণার তথ্য" : "Research metadata"}</span>
-                  <span className="rounded-full border border-border bg-white px-2.5 py-1">{bn ? "ওপেন-সোর্স উদাহরণ" : "Open-source examples"}</span>
+                  <span className="rounded-full border border-border bg-card px-2.5 py-1">{bn ? "গবেষণার তথ্য" : "Research metadata"}</span>
+                  <span className="rounded-full border border-border bg-card px-2.5 py-1">{bn ? "ওপেন-সোর্স উদাহরণ" : "Open-source examples"}</span>
                 </div>
               </div>
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                <Link href="/learn/visual-lab/bfs" className="preview-action group rounded-2xl border border-border bg-white/90 p-4">
+                <Link href="/learn/visual-lab/bfs" className="preview-action group rounded-2xl border border-border bg-card/90 p-4">
                   <Play className="mb-3 h-5 w-5 text-primary" aria-hidden />
                   <span className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">02 / {bn ? "বুঝুন" : "Understand"}</span>
                   <span className="mt-1 flex items-center justify-between gap-2 text-sm font-bold">
@@ -206,7 +206,7 @@ export default function LandingPage() {
                     <ArrowRight className="h-4 w-4 shrink-0 text-primary transition-transform group-hover:translate-x-1" aria-hidden />
                   </span>
                 </Link>
-                <Link href="/cp/topics/bfs" className="preview-action group rounded-2xl border border-border bg-white/90 p-4">
+                <Link href="/cp/topics/bfs" className="preview-action group rounded-2xl border border-border bg-card/90 p-4">
                   <Trophy className="mb-3 h-5 w-5 text-primary" aria-hidden />
                   <span className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">03 / {bn ? "অনুশীলন" : "Practice"}</span>
                   <span className="mt-1 flex items-center justify-between gap-2 text-sm font-bold">
@@ -237,7 +237,7 @@ export default function LandingPage() {
               </h2>
             </div>
             {demo && (
-              <span className="rounded-full border border-border bg-white/70 px-3 py-1 text-xs font-medium text-muted-foreground">
+              <span className="rounded-full border border-border bg-card/70 px-3 py-1 text-xs font-medium text-muted-foreground">
                 {bn ? "কাল্পনিক ডেমো তথ্য" : "Fictional demo content"}
               </span>
             )}
@@ -272,7 +272,7 @@ export default function LandingPage() {
           {features.map((f) => {
             const Icon = f.icon;
             return (
-              <Card key={f.title} className="feature-card border-0 bg-white/70 p-5 shadow-none">
+              <Card key={f.title} className="feature-card border-0 bg-card/70 p-5 shadow-none">
                 <span className="mb-4 grid h-10 w-10 place-items-center rounded-xl bg-primary/10 text-primary"><Icon className="h-5 w-5" aria-hidden /></span>
                 <h2 className="font-bold">{f.title}</h2>
                 <p className="mt-1 text-sm text-muted-foreground">{f.desc}</p>

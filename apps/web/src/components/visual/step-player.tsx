@@ -21,6 +21,7 @@ import type { VizStep, VizTopic } from "@/lib/visual/types";
 import { ArrayRenderer } from "./array-renderer";
 import { GraphRenderer } from "./graph-renderer";
 import { JoinRenderer } from "./join-renderer";
+import { ConceptRenderer } from "./concept-renderer";
 
 export function StepPlayer({ topic }: { topic: VizTopic }) {
   const { lang } = useLanguage();
@@ -60,6 +61,7 @@ export function StepPlayer({ topic }: { topic: VizTopic }) {
   function renderStep(s: VizStep) {
     if (topic.kind === "array") return <ArrayRenderer step={s} />;
     if (topic.kind === "graph") return <GraphRenderer step={s} />;
+    if (topic.kind === "concept") return <ConceptRenderer key={i} step={s} />;
     return <JoinRenderer step={s} />;
   }
 
@@ -74,7 +76,6 @@ export function StepPlayer({ topic }: { topic: VizTopic }) {
 
   return (
     <div className="space-y-4">
-      <ProgressControls topic={topic.id} position={i} />
       {topic.kind === "array" && (
         <form
           className="space-y-2"
@@ -137,7 +138,7 @@ export function StepPlayer({ topic }: { topic: VizTopic }) {
           )}
         </form>
       )}
-      <Card className="p-4 sm:p-6">{renderStep(step)}</Card>
+      <Card className="studio-player p-3 sm:p-6">{renderStep(step)}</Card>
 
       <Card className="p-4">
         <div className="mb-3 flex flex-wrap items-center gap-2">
@@ -264,6 +265,7 @@ export function StepPlayer({ topic }: { topic: VizTopic }) {
           </ol>
         </Card>
       )}
+      <ProgressControls topic={topic.id} position={i} />
     </div>
   );
 }

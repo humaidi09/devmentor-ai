@@ -31,8 +31,13 @@ export const TOPIC_LABELS: Record<CPTopic, string> = Object.fromEntries(
 ) as Record<CPTopic, string>;
 
 export const VISUAL_TOPICS: Partial<Record<CPTopic, string>> = {
-  bfs: "bfs", dfs: "dfs", graph: "bfs", "binary-search": "binary-search",
-  sorting: "bubble-sort", array: "bubble-sort",
+  bfs: "bfs", dfs: "dfs", "binary-search": "binary-search", sorting: "bubble-sort",
+  array: "array", string: "string", "two-pointers": "two-pointers",
+  "linked-list": "linked-list", stack: "stack", queue: "queue", hashing: "hashing",
+  recursion: "recursion", backtracking: "backtracking", tree: "tree", bst: "bst",
+  heap: "heap", graph: "graph", greedy: "greedy", "dynamic-programming": "dynamic-programming",
+  "shortest-path": "shortest-path", "minimum-spanning-tree": "minimum-spanning-tree",
+  trie: "trie", "bit-manipulation": "bit-manipulation",
 };
 
 // Approved references: metadata and links only, never copied problem statements.

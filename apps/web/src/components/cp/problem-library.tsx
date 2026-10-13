@@ -32,7 +32,7 @@ function ProblemCard({ problem, status, onStatus, busy, returnTopic }: {
   const bn = lang === "bn";
   const [hintStep, setHintStep] = useState(0);
   const visual = (returnTopic && VISUAL_TOPICS[returnTopic as CPTopic]) || problem.topics.map((topic) => VISUAL_TOPICS[topic]).find(Boolean);
-  return <Card className="space-y-3 p-4 sm:p-5">
+  return <Card className="studio-card space-y-3 p-4 sm:p-5">
     <div className="flex flex-wrap items-start justify-between gap-2">
       <div className="min-w-0"><h4 className="font-bold">{problem.title}</h4>
         <p className="mt-1 text-xs text-muted-foreground">{problem.platform === "codeforces" ? "Codeforces" : problem.platform === "codechef" ? "CodeChef" : "LeetCode"} · {problem.source === "curated" ? (bn ? "যাচাই করা লিংক" : "Curated link") : problem.source === "catalog" ? (bn ? "সংরক্ষিত metadata" : "Metadata snapshot") : (bn ? "পাবলিক API" : "Public API")} · {problem.externalId}</p>
