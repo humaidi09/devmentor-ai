@@ -1,6 +1,6 @@
 # Close AI major feature upgrade — review report
 
-Status: implemented and verified locally on 2026-10-13. GitHub and hosted deployment status must be checked against the release commit; a successful local build does not prove the hosted site has updated. Apply migration `0010_knowledge_cp.sql` before enabling account-mode saved knowledge or the extended CP progress states.
+Status: implemented, pushed to GitHub `main` and verified on the hosted demo on 2026-10-13. Release commit `1032e8f` passed all three GitHub CI jobs. `https://devmentor-ai-rho.vercel.app/api/status` reported that revision in demo mode; the homepage, Knowledge, CP Library, BFS topic and Visual Lab routes returned HTTP 200. Hosted account mode remains unavailable. Apply migration `0010_knowledge_cp.sql` before enabling account-mode saved knowledge or the extended CP progress states.
 
 ## What changed
 
@@ -31,6 +31,7 @@ Status: implemented and verified locally on 2026-10-13. GitHub and hosted deploy
 - `bash supabase/test-stack.sh`, `npm run test:backend`, `npm run test:account-browser`: passed against disposable local PostgreSQL/GoTrue/PostgREST, including cross-user RLS, saved knowledge, CP progress, CSRF and account persistence. Hosted database was not modified.
 - `npm run test:client-boundary`: passed; 62 client bundles did not contain AI/service-role bindings or configured secret values.
 - Real public metadata smoke checks locally returned Crossref papers, World Bank Bangladesh inflation values and GitHub repositories. These are availability observations, not deterministic CI tests.
+- On the hosted `rho` demo, World Bank Bangladesh inflation and GitHub repository searches returned source-backed results, and the sorting CP endpoint returned 20 problems including 18 live Codeforces metadata records. Security headers were present. This public smoke test does not validate authenticated persistence.
 
 ## Limits and demo data
 
@@ -43,6 +44,6 @@ Status: implemented and verified locally on 2026-10-13. GitHub and hosted deploy
 
 ## Recommended next work
 
-1. Verify the deployed Git revision and live demo routes. Once the intended hosted Supabase project and backup/restore plan are available, apply migration `0010`, set the account-mode environment, then repeat hosted smoke tests for saves, CP progress and data export.
+1. Restore access to the intended hosted Supabase project and confirm a backup/restore plan, apply migration `0010`, set the account-mode environment, then test hosted Auth, saved knowledge, CP progress and data export with separate test users.
 2. Add official documentation/book/video providers where their API and licensing terms permit, plus a clearer side-by-side source comparison workflow for overlapping claims.
 3. Expand curated CP coverage and Visual Lab animations topic by topic, checking source links and instructional quality. Add a durable distributed cache/quota if real traffic requires it.

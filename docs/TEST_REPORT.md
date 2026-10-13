@@ -55,3 +55,11 @@ Repository `main` at `951efe4` was the baseline. Web tests ran with Node/npm in 
 ## Not run or not proven
 
 Hosted migrations/RLS, email confirmation delivery, hosted cookies/session expiry, real campus source review, full operator Auth deletion, backup restore, external monitoring and manual screen-reader/device testing were **not run**. No real limited pilot was conducted. The public website's `/api/status` reported demo mode and no Supabase configuration before Phase 6 changes; no Phase 6 deployment is claimed by this report.
+
+## Major Knowledge/CP upgrade release — 2026-10-13
+
+The original Phase 6 table above records its earlier baseline. The later Knowledge/CP upgrade is described in [its implementation report](../MAJOR_FEATURE_UPGRADE_REPORT.md). GitHub `main` release `1032e8f` passed all three CI jobs: web build/browser checks, account/RLS integration and API pytest. Local upgrade verification also passed 47 logic tests, 24 bilingual demo routes, the focused Knowledge/CP mobile axe test, a real disposable account/database flow and a 62-bundle client secret boundary scan.
+
+Hosted smoke on `https://devmentor-ai-rho.vercel.app` returned HTTP 200 for `/`, `/knowledge`, `/cp/library`, `/cp/topics/bfs` and `/learn/visual-lab/bfs`; `/api/status` returned `mode=demo`, `supabaseConfigured=false`, `revision=1032e8f`. Public World Bank Bangladesh inflation and GitHub repository searches returned source-backed results; the sorting CP endpoint returned 20 problems, 18 from live Codeforces metadata. HTML exposed CSP, frame and content-type protection headers. The saved-knowledge account API returned `503 Account service unavailable`, as expected in demo mode.
+
+**Still blocked for hosted account rollout:** Supabase Management access returned 401 (`JWT could not be decoded`), so migration `0010`, hosted Auth and account persistence were not applied or tested. The current Vercel token cannot list the `hussain8` team (403), although its GitHub integration deployed the demo successfully. Backup/restore and real campus review gates remain open.
