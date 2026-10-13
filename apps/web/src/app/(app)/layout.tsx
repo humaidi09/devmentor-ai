@@ -1,6 +1,7 @@
 import { BottomNav } from "@/components/app-shell/bottom-nav";
 import { Sidebar } from "@/components/app-shell/sidebar";
 import { BrandMark } from "@/components/brand";
+import { AuthButton } from "@/components/auth-button";
 import { DemoBanner } from "@/components/demo-banner";
 import { LanguageToggle } from "@/components/language-toggle";
 import { APP_NAME } from "@/lib/config";
@@ -17,7 +18,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <span className="font-bold">{APP_NAME}</span>
           </div>
           <div className="hidden lg:block" />
-          <LanguageToggle />
+          <div className="flex items-center gap-2">
+            <LanguageToggle />
+            <AuthButton />
+          </div>
         </header>
         <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-24 pt-5 sm:px-6 lg:px-8 lg:pb-10">
           <div className="animate-fade-in">{children}</div>

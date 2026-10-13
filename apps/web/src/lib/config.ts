@@ -12,3 +12,6 @@ export const SUPABASE_CONFIGURED = Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
 // In demo mode the whole app works with no account and no secrets.
 export const DEMO_MODE =
   !SUPABASE_CONFIGURED || process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+
+// Real auth + DB are active only when Supabase is configured AND demo is off.
+export const AUTH_ENABLED = SUPABASE_CONFIGURED && !DEMO_MODE;

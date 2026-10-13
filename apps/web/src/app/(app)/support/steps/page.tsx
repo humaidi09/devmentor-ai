@@ -8,9 +8,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input, Select } from "@/components/ui/input";
-import { DEMO_NEXT_STEPS } from "@/lib/demo-data";
 import { useLanguage } from "@/lib/i18n";
-import type { NextStep, StepStatus } from "@/lib/types";
+import { useSteps } from "@/lib/use-steps";
+import type { StepStatus } from "@/lib/types";
 
 const STATUS_LABELS: Record<StepStatus, { en: string; bn: string }> = {
   not_started: { en: "Not started", bn: "শুরু হয়নি" },
@@ -23,24 +23,15 @@ const STATUS_LABELS: Record<StepStatus, { en: string; bn: string }> = {
 export default function StepsPage() {
   const { t, lang } = useLanguage();
   const bn = lang === "bn";
-  const [steps, setSteps] = useState<NextStep[]>(DEMO_NEXT_STEPS);
+  const { steps, add: addStep, setStatus, remove } = useSteps();
   const [draft, setDraft] = useState("");
   const [reminders, setReminders] = useState<Record<string, boolean>>({});
 
   function add() {
     const title = draft.trim();
     if (!title) return;
-    setSteps((s) => [
-      ...s,
-      { id: `s_${Date.now()}`, title, status: "not_started", source: "ai_suggestion" },
-    ]);
+    void addStep(title);
     setDraft("");
-  }
-  function setStatus(id: string, status: StepStatus) {
-    setSteps((s) => s.map((x) => (x.id === id ? { ...x, status } : x)));
-  }
-  function remove(id: string) {
-    setSteps((s) => s.filter((x) => x.id !== id));
   }
 
   return (
