@@ -8,22 +8,29 @@ import { VerificationBadge } from "@/components/verification-badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/input";
-import { DEMO_CAMPUS, DEMO_RESOURCES } from "@/lib/demo-data";
+import { useResources } from "@/lib/resources";
+import { useAccount } from "@/lib/account";
 import { localize } from "@/lib/content-bn";
 import { useLanguage } from "@/lib/i18n";
 import { formatDate } from "@/lib/utils";
 
 export default function HumanPage() {
+  const { resources, campuses } = useResources();
+  const { data } = useAccount();
+  const campusName =
+    campuses.find((c) => c.id === data?.profile.campus_id)?.name ??
+    "[Your campus]";
   const { t, lang } = useLanguage();
   const bn = lang === "bn";
-  const contacts = DEMO_RESOURCES.filter(
+  const contacts = resources.filter(
     (r) => r.verification === "verified" && r.officialContact,
   );
   const [editedDraft, setDraft] = useState<string | null>(null);
-  const draft = editedDraft ?? (bn
-      ? `প্রিয় সহায়তা দল,\n\nআমি ${localize(DEMO_CAMPUS.name, lang)}-এর একজন শিক্ষার্থী। আমি [বিষয়] নিয়ে জানতে চাই। সুবিধামতো পরবর্তী ধাপ জানালে কৃতজ্ঞ থাকব।\n\nধন্যবাদ,\n[আপনার নাম]`
-      : `Dear support team,\n\nI'm a student at ${localize(DEMO_CAMPUS.name, lang)}. I'd like to ask about [topic]. I'd be grateful if you could let me know the next steps when convenient.\n\nThank you,\n[Your name]`
-  );
+  const draft =
+    editedDraft ??
+    (bn
+      ? `প্রিয় সহায়তা দল,\n\nআমি ${localize(campusName, lang)}-এর একজন শিক্ষার্থী। আমি [বিষয়] নিয়ে জানতে চাই। সুবিধামতো পরবর্তী ধাপ জানালে কৃতজ্ঞ থাকব।\n\nধন্যবাদ,\n[আপনার নাম]`
+      : `Dear support team,\n\nI'm a student at ${localize(campusName, lang)}. I'd like to ask about [topic]. I'd be grateful if you could let me know the next steps when convenient.\n\nThank you,\n[Your name]`);
   const [copied, setCopied] = useState(false);
 
   async function copy() {
@@ -49,7 +56,10 @@ export default function HumanPage() {
 
       <div className="space-y-3">
         {contacts.map((c) => (
-          <Card key={c.id} className="p-4"><p className="mb-2 text-xs text-muted-foreground">{bn ? "নমুনা — বাস্তব যোগাযোগ নয়" : "DEMO — fictional contact"}</p>
+          <Card key={c.id} className="p-4">
+            <p className="mb-2 text-xs text-muted-foreground">
+              {bn ? "নমুনা — বাস্তব যোগাযোগ নয়" : "DEMO — fictional contact"}
+            </p>
             <div className="flex items-start justify-between gap-2">
               <h2 className="font-bold">{localize(c.name, lang)}</h2>
               <VerificationBadge state={c.verification} />
@@ -60,7 +70,10 @@ export default function HumanPage() {
             </p>
             {c.officialContact && (
               <p className="mt-1 flex items-center gap-1 text-sm">
-                <Mail className="h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-hidden />
+                <Mail
+                  className="h-3.5 w-3.5 shrink-0 text-muted-foreground"
+                  aria-hidden
+                />
                 {c.officialContact}
               </p>
             )}
@@ -83,14 +96,19 @@ export default function HumanPage() {
       </div>
 
       <Card className="mt-6 p-4">
-        <h2 className="font-bold">{bn ? "একটি বার্তা খসড়া করুন" : "Draft a message"}</h2>
+        <h2 className="font-bold">
+          {bn ? "একটি বার্তা খসড়া করুন" : "Draft a message"}
+        </h2>
         <p className="mt-1 text-sm text-muted-foreground">
           {bn
             ? "Close AI শুধু খসড়া করে দেয়। পাঠানো বা না-পাঠানো সম্পূর্ণ আপনার সিদ্ধান্ত।"
             : "Close AI only drafts. Whether and how to send it is entirely your choice."}
         </p>
-        <label htmlFor="human-draft" className="mt-3 block text-sm font-medium">{bn ? "খসড়া বার্তা" : "Draft message"}</label>
-        <Textarea id="human-draft"
+        <label htmlFor="human-draft" className="mt-3 block text-sm font-medium">
+          {bn ? "খসড়া বার্তা" : "Draft message"}
+        </label>
+        <Textarea
+          id="human-draft"
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           className="mt-3 min-h-[160px] font-mono text-xs"
@@ -99,7 +117,13 @@ export default function HumanPage() {
         <div className="mt-3">
           <Button variant="secondary" onClick={copy}>
             <Copy className="h-4 w-4" aria-hidden />
-            {copied ? (bn ? "কপি হয়েছে" : "Copied") : bn ? "কপি করুন" : "Copy draft"}
+            {copied
+              ? bn
+                ? "কপি হয়েছে"
+                : "Copied"
+              : bn
+                ? "কপি করুন"
+                : "Copy draft"}
           </Button>
         </div>
       </Card>

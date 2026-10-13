@@ -57,3 +57,47 @@ jobs:
       - name: Preserve server diagnostics
         if: failure()
         run: cat /tmp/close-ai-web.log || true
+
+  account:
+    name: Close AI Auth and RLS integration
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - run: npm ci
+        working-directory: apps/web
+      - name: Start disposable local Supabase components and apply migrations
+        run: bash supabase/test-stack.sh reset
+      - name: Start local gateway and verify database authorization
+        working-directory: apps/web
+        run: |
+          node tests/local-gateway.cjs > /tmp/close-ai-gateway.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:54321/auth/v1/health >/dev/null; then break; fi
+            sleep 1
+          done
+          npm run test:backend
+      - run: npm run build:account-test
+        working-directory: apps/web
+      - run: npx playwright install --with-deps chromium
+        working-directory: apps/web
+      - name: Verify account flows and preserved demo behavior
+        working-directory: apps/web
+        run: |
+          node tests/start-account.cjs > /tmp/close-ai-account.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:3002/auth >/dev/null; then break; fi
+            sleep 1
+          done
+          npm run test:account-browser
+          TEST_BASE_URL=http://127.0.0.1:3002 npm run test:browser
+      - name: Preserve integration diagnostics
+        if: failure()
+        run: |
+          cat /tmp/close-ai-account.log || true
+          cat /tmp/close-ai-gateway.log || true
+          docker compose -p close-ai-phase3 -f supabase/compose.test.yml ps

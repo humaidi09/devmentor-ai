@@ -1,5 +1,7 @@
 # Privacy, Safety & Ethics
 
+> Legacy DevMentor service documentation. Close AI does not call that service; follow [current setup](../apps/web/README.md) and [Phase 3 report](../PHASE_3_REPORT.md).
+
 ## What we store and why
 To personalize your plan we store: profile (name, language, timezone, level,
 goals, availability), courses, deadlines, tasks and study sessions, Codeforces

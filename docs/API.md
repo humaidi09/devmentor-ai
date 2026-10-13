@@ -1,5 +1,7 @@
 # API Reference
 
+> Legacy DevMentor service documentation. Close AI does not call that service; follow [current setup](../apps/web/README.md) and [Phase 3 report](../PHASE_3_REPORT.md).
+
 Base URL: `http://localhost:8000` (local) · interactive docs at `/docs`.
 
 **Auth:** send `Authorization: Bearer <supabase-access-token>`. In demo mode the

@@ -1,3 +1,5 @@
+import { AccountControls } from "@/components/account-controls";
+import { AccountStatus } from "@/components/account-status";
 import { BottomNav } from "@/components/app-shell/bottom-nav";
 import { Sidebar } from "@/components/app-shell/sidebar";
 import { BrandMark } from "@/components/brand";
@@ -16,10 +18,15 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <BrandMark className="h-7 w-7 text-sm" />
             <span className="font-bold">{APP_NAME}</span>
           </div>
-          <div className="hidden lg:block" />
+          <AccountControls />
           <LanguageToggle />
         </header>
-        <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-5xl flex-1 px-4 pb-24 pt-5 sm:px-6 lg:px-8 lg:pb-10">
+        <main
+          id="main-content"
+          tabIndex={-1}
+          className="mx-auto w-full max-w-5xl flex-1 px-4 pb-24 pt-5 sm:px-6 lg:px-8 lg:pb-10"
+        >
+          <AccountStatus />
           <div className="animate-fade-in">{children}</div>
         </main>
       </div>

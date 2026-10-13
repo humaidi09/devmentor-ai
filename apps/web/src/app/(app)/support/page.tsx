@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { Bot, Send, User, Users } from "lucide-react";
 import { Suspense, useEffect, useRef, useState } from "react";
 
+import { useAccount } from "@/lib/account";
 import { PageHeader } from "@/components/page-header";
 import { ResourceCard } from "@/components/resource-card";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -18,17 +19,34 @@ function ActionChip({ action }: { action: SuggestedAction }) {
   const cls =
     "rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium transition-colors hover:border-primary/40 hover:bg-muted";
   if (action.kind === "open_resource" && action.resourceId)
-    return <Link href={`/support/resources/${action.resourceId}`} className={cls}>{action.label}</Link>;
+    return (
+      <Link href={`/support/resources/${action.resourceId}`} className={cls}>
+        {action.label}
+      </Link>
+    );
   if (action.kind === "human")
-    return <Link href="/support/human" className={cls}>{action.label}</Link>;
+    return (
+      <Link href="/support/human" className={cls}>
+        {action.label}
+      </Link>
+    );
   if (action.kind === "checklist")
-    return <Link href="/support/steps" className={cls}>{action.label}</Link>;
+    return (
+      <Link href="/support/steps" className={cls}>
+        {action.label}
+      </Link>
+    );
   if (action.kind === "continue")
-    return <Link href="/support/resources" className={cls}>{action.label}</Link>;
+    return (
+      <Link href="/support/resources" className={cls}>
+        {action.label}
+      </Link>
+    );
   return <span className={cls}>{action.label}</span>;
 }
 
 function ChatInner() {
+  const { demo } = useAccount();
   const { t, lang } = useLanguage();
   const bn = lang === "bn";
   const params = useSearchParams();
@@ -48,12 +66,15 @@ function ChatInner() {
     const msg = text.trim();
     if (!msg || loading) return;
     const activeLang = langRef.current;
-    setMessages((m) => [...m, { id: `u_${Date.now()}`, role: "user", content: msg }]);
+    setMessages((m) => [
+      ...m,
+      { id: `u_${Date.now()}`, role: "user", content: msg },
+    ]);
     setInput("");
     setLoading(true);
     try {
       if (!navigator.onLine) {
-        setMessages(m => [...m, buildDemoReply(msg, activeLang)]);
+        setMessages((m) => [...m, buildDemoReply(msg, activeLang)]);
         return;
       }
       const resp = await fetch("/api/chat", {
@@ -64,7 +85,8 @@ function ChatInner() {
       });
       if (!resp.ok) throw new Error("Chat unavailable");
       const data = (await resp.json()) as ChatMessage;
-      if (data.role !== "assistant" || typeof data.content !== "string") throw new Error("Invalid chat response");
+      if (data.role !== "assistant" || typeof data.content !== "string")
+        throw new Error("Invalid chat response");
       setMessages((m) => [...m, data]);
     } catch {
       setMessages((m) => [
@@ -93,11 +115,26 @@ function ChatInner() {
   }, []);
 
   const starters = bn
-    ? ["টিউশন ফি নিয়ে চিন্তিত", "একটা কোর্সে সাহায্য দরকার", "ইন্টার্নশিপ খুঁজছি"]
-    : ["I'm worried about tuition fees", "I need help with a course", "I'm looking for an internship"];
+    ? [
+        "টিউশন ফি নিয়ে চিন্তিত",
+        "একটা কোর্সে সাহায্য দরকার",
+        "ইন্টার্নশিপ খুঁজছি",
+      ]
+    : [
+        "I'm worried about tuition fees",
+        "I need help with a course",
+        "I'm looking for an internship",
+      ];
 
   return (
     <div className="flex h-[calc(100dvh-10rem)] min-h-[440px] flex-col">
+      {!demo && (
+        <p className="mb-3 text-sm text-muted-foreground">
+          {bn
+            ? "Mock chat — শুধু কাল্পনিক DEMO রিসোর্স, কোনো live AI নয়। কথোপকথন সংরক্ষণ করা হয় না।"
+            : "Mock chat — fictional DEMO resources only. No live AI; conversations are not saved."}
+        </p>
+      )}
       <PageHeader
         title={t("support")}
         subtitle={
@@ -106,7 +143,10 @@ function ChatInner() {
             : "Describe your barrier. We'll show the source for anything we find."
         }
       >
-        <Link href="/support/human" className={buttonVariants({ variant: "secondary", size: "sm" })}>
+        <Link
+          href="/support/human"
+          className={buttonVariants({ variant: "secondary", size: "sm" })}
+        >
           <Users className="h-4 w-4" aria-hidden />
           {t("talkToHuman")}
         </Link>
@@ -121,9 +161,14 @@ function ChatInner() {
         {messages.length === 0 && (
           <div className="grid h-full place-items-center text-center">
             <div>
-              <Bot className="mx-auto mb-3 h-10 w-10 text-primary" aria-hidden />
+              <Bot
+                className="mx-auto mb-3 h-10 w-10 text-primary"
+                aria-hidden
+              />
               <p className="mb-4 text-sm text-muted-foreground">
-                {bn ? "যেকোনো কিছু জিজ্ঞেস করুন। যেমন:" : "Ask me anything. For example:"}
+                {bn
+                  ? "যেকোনো কিছু জিজ্ঞেস করুন। যেমন:"
+                  : "Ask me anything. For example:"}
               </p>
               <div className="mx-auto flex max-w-md flex-wrap justify-center gap-2">
                 {starters.map((s) => (
@@ -141,16 +186,33 @@ function ChatInner() {
         )}
 
         {messages.map((m) => (
-          <div key={m.id} className={cn("flex gap-3", m.role === "user" && "flex-row-reverse")}>
+          <div
+            key={m.id}
+            className={cn(
+              "flex gap-3",
+              m.role === "user" && "flex-row-reverse",
+            )}
+          >
             <div
               className={cn(
                 "flex h-8 w-8 shrink-0 items-center justify-center rounded-full",
-                m.role === "user" ? "bg-muted" : "bg-primary text-primary-foreground",
+                m.role === "user"
+                  ? "bg-muted"
+                  : "bg-primary text-primary-foreground",
               )}
             >
-              {m.role === "user" ? <User className="h-4 w-4" aria-hidden /> : <Bot className="h-4 w-4" aria-hidden />}
+              {m.role === "user" ? (
+                <User className="h-4 w-4" aria-hidden />
+              ) : (
+                <Bot className="h-4 w-4" aria-hidden />
+              )}
             </div>
-            <div className={cn("max-w-[85%] space-y-3", m.role === "user" && "flex flex-col items-end")}>
+            <div
+              className={cn(
+                "max-w-[85%] space-y-3",
+                m.role === "user" && "flex flex-col items-end",
+              )}
+            >
               <div
                 className={cn(
                   "rounded-lg px-4 py-2.5 text-sm",
@@ -161,7 +223,9 @@ function ChatInner() {
                       : "bg-muted",
                 )}
               >
-                <p className="whitespace-pre-wrap leading-relaxed">{m.content}</p>
+                <p className="whitespace-pre-wrap leading-relaxed">
+                  {m.content}
+                </p>
               </div>
               {m.sources && m.sources.length > 0 && (
                 <div className="w-full space-y-2">
@@ -197,7 +261,9 @@ function ChatInner() {
         <div ref={endRef} />
       </div>
 
-      <label htmlFor="support-message" className="mt-3 text-sm font-medium">{bn ? "বার্তা" : "Message"}</label>
+      <label htmlFor="support-message" className="mt-3 text-sm font-medium">
+        {bn ? "বার্তা" : "Message"}
+      </label>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -216,11 +282,21 @@ function ChatInner() {
               send(input);
             }
           }}
-          placeholder={bn ? "আপনার বাধাটা লিখুন… (Enter পাঠাতে)" : "Describe your barrier… (Enter to send)"}
+          placeholder={
+            bn
+              ? "আপনার বাধাটা লিখুন… (Enter পাঠাতে)"
+              : "Describe your barrier… (Enter to send)"
+          }
           className="min-h-[48px] flex-1"
           aria-label={bn ? "বার্তা" : "Message"}
         />
-        <Button type="submit" size="icon" className="h-12 w-12" disabled={loading} aria-label={t("send")}>
+        <Button
+          type="submit"
+          size="icon"
+          className="h-12 w-12"
+          disabled={loading}
+          aria-label={t("send")}
+        >
           <Send className="h-4 w-4" aria-hidden />
         </Button>
       </form>
@@ -235,7 +311,11 @@ function ChatInner() {
 
 export default function SupportPage() {
   return (
-    <Suspense fallback={<div className="p-4 text-sm text-muted-foreground">Loading…</div>}>
+    <Suspense
+      fallback={
+        <div className="p-4 text-sm text-muted-foreground">Loading…</div>
+      }
+    >
       <ChatInner />
     </Suspense>
   );

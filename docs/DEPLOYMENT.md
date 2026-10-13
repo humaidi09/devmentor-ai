@@ -1,5 +1,7 @@
 # Deployment
 
+> Legacy DevMentor service documentation. Close AI does not call that service; follow [current setup](../apps/web/README.md) and [Phase 3 report](../PHASE_3_REPORT.md).
+
 All services have free tiers. Target: **$0/month**.
 
 ## 0. Supabase (database + auth)

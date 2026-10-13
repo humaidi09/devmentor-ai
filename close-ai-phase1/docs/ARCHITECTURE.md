@@ -1,5 +1,7 @@
 # Architecture Recommendation
 
+> Historical Phase 1 planning. See the implemented Phase 3 [architecture](../../docs/ARCHITECTURE.md), [privacy](../../docs/PRIVACY_AND_SAFETY.md), [decisions](../../docs/DECISIONS.md) and [report](../../PHASE_3_REPORT.md).
+
 ## Decision
 For the MVP, use **Next.js + TypeScript as a single web application with server-side Route Handlers/server logic**, rather than introducing a separate FastAPI service immediately.
 

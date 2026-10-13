@@ -3,12 +3,14 @@
 import Link from "next/link";
 import { ArrowRight, Bookmark, ListChecks, MessagesSquare } from "lucide-react";
 
+import { useAccount } from "@/lib/account";
+import { useResources } from "@/lib/resources";
 import { moduleVisible, usePreferences } from "@/lib/preferences";
 import { useSavedResources } from "@/lib/saved-store";
 import { ResourceCard } from "@/components/resource-card";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { DEMO_NEXT_STEPS, DEMO_SAVED_IDS, getDemoResource } from "@/lib/demo-data";
+import { DEMO_NEXT_STEPS } from "@/lib/demo-data";
 import { localize } from "@/lib/content-bn";
 import { useLanguage } from "@/lib/i18n";
 import type { SupportResource } from "@/lib/types";
@@ -29,13 +31,17 @@ const STARTERS = {
 };
 
 export default function DashboardPage() {
+  const { demo, data } = useAccount();
+  const { resources } = useResources();
   const { preferences } = usePreferences();
   const { ids } = useSavedResources();
   const { t, lang } = useLanguage();
   const bn = lang === "bn";
   const starters = STARTERS[lang];
-  const saved = ids.map(getDemoResource).filter(Boolean) as SupportResource[];
-  const activeSteps = DEMO_NEXT_STEPS.filter(
+  const saved = ids
+    .map((id) => resources.find((r) => r.id === id))
+    .filter(Boolean) as SupportResource[];
+  const activeSteps = (demo ? DEMO_NEXT_STEPS : (data?.steps ?? [])).filter(
     (s) => s.status !== "completed" && s.status !== "not_relevant",
   );
 
@@ -43,7 +49,9 @@ export default function DashboardPage() {
     <div className="space-y-6">
       <section>
         <h1 className="text-2xl font-bold sm:text-3xl">
-          {bn ? "আজ কীসে সাহায্য দরকার?" : "What would you like help with today?"}
+          {bn
+            ? "আজ কীসে সাহায্য দরকার?"
+            : "What would you like help with today?"}
         </h1>
         <p className="mt-1 text-muted-foreground">{t("tagline")}</p>
       </section>
@@ -69,7 +77,7 @@ export default function DashboardPage() {
           </Link>
         </div>
         <div className="mt-4 flex flex-wrap gap-2">
-          {starters.map((s) => (
+          {(preferences.support ? starters : []).map((s) => (
             <Link
               key={s}
               href={`/support?q=${encodeURIComponent(s)}`}
@@ -88,7 +96,10 @@ export default function DashboardPage() {
               <ListChecks className="h-4 w-4 text-primary" aria-hidden />
               {t("nextSteps")}
             </h2>
-            <Link href="/support/steps" className="text-sm font-medium text-primary hover:underline">
+            <Link
+              href="/support/steps"
+              className="text-sm font-medium text-primary hover:underline"
+            >
               {bn ? "সব দেখুন" : "View all"}
             </Link>
           </div>
@@ -100,11 +111,18 @@ export default function DashboardPage() {
             <div className="space-y-2">
               {activeSteps.slice(0, 3).map((step) => (
                 <Card key={step.id} className="flex items-start gap-3 p-4">
-                  <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-primary" aria-hidden />
+                  <span
+                    className="mt-1 h-2 w-2 shrink-0 rounded-full bg-primary"
+                    aria-hidden
+                  />
                   <div className="min-w-0">
-                    <p className="text-sm font-medium">{localize(step.title, lang)}</p>
+                    <p className="text-sm font-medium">
+                      {localize(step.title, lang)}
+                    </p>
                     {step.detail && (
-                      <p className="mt-0.5 text-xs text-muted-foreground">{localize(step.detail, lang)}</p>
+                      <p className="mt-0.5 text-xs text-muted-foreground">
+                        {localize(step.detail, lang)}
+                      </p>
                     )}
                   </div>
                 </Card>
@@ -119,7 +137,10 @@ export default function DashboardPage() {
               <Bookmark className="h-4 w-4 text-primary" aria-hidden />
               {t("savedResources")}
             </h2>
-            <Link href="/support/saved" className="text-sm font-medium text-primary hover:underline">
+            <Link
+              href="/support/saved"
+              className="text-sm font-medium text-primary hover:underline"
+            >
               {bn ? "সব দেখুন" : "View all"}
             </Link>
           </div>
@@ -141,21 +162,37 @@ export default function DashboardPage() {
         <h2 className="mb-3 font-bold">{bn ? "মডিউল" : "Modules"}</h2>
         <div className="grid gap-3 sm:grid-cols-3">
           {[
-            { href: "/study", title: bn ? "একাডেমিক স্টাডি" : "Academic Study", desc: bn ? "কোর্স ও ডেডলাইন" : "Courses & deadlines" },
-            { href: "/learn", title: bn ? "ডেভেলপার পাথ" : "Developer Path", desc: bn ? "স্কিল ও ভিজ্যুয়াল ল্যাব" : "Skills & Visual Lab" },
-            { href: "/cp", title: bn ? "CP কোচ" : "CP Coach", desc: bn ? "প্র্যাকটিস ট্র্যাকিং" : "Practice tracking" },
-          ].filter(m => moduleVisible(m.href, preferences)).map((m) => (
-            <Link
-              key={m.href}
-              href={m.href}
-              className="block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              <Card className="h-full p-4 transition-shadow hover:shadow-lift">
-                <h3 className="text-sm font-bold">{m.title}</h3>
-                <p className="mt-0.5 text-xs text-muted-foreground">{m.desc}</p>
-              </Card>
-            </Link>
-          ))}
+            {
+              href: "/study",
+              title: bn ? "একাডেমিক স্টাডি" : "Academic Study",
+              desc: bn ? "কোর্স ও ডেডলাইন" : "Courses & deadlines",
+            },
+            {
+              href: "/learn",
+              title: bn ? "ডেভেলপার পাথ" : "Developer Path",
+              desc: bn ? "স্কিল ও ভিজ্যুয়াল ল্যাব" : "Skills & Visual Lab",
+            },
+            {
+              href: "/cp",
+              title: bn ? "CP কোচ" : "CP Coach",
+              desc: bn ? "প্র্যাকটিস ট্র্যাকিং" : "Practice tracking",
+            },
+          ]
+            .filter((m) => moduleVisible(m.href, preferences))
+            .map((m) => (
+              <Link
+                key={m.href}
+                href={m.href}
+                className="block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                <Card className="h-full p-4 transition-shadow hover:shadow-lift">
+                  <h3 className="text-sm font-bold">{m.title}</h3>
+                  <p className="mt-0.5 text-xs text-muted-foreground">
+                    {m.desc}
+                  </p>
+                </Card>
+              </Link>
+            ))}
         </div>
       </section>
     </div>
