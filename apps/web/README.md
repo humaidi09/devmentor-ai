@@ -15,7 +15,7 @@ npm ci
 npm run dev
 ```
 
-No credentials are needed. `NEXT_PUBLIC_DEMO_MODE=true` (the default) selects fictional support resources and local data. Demo chat answers DSA questions from the 77 authored topic guides, including short follow-ups, and links to their lessons; it does not call an external AI provider. In an account-enabled deployment `/demo` also provides a separate guest demo. Existing demo preferences/saves are never imported into a real account.
+No credentials are needed. `NEXT_PUBLIC_DEMO_MODE=true` (the default) selects fictional support resources and local data. Demo chat answers DSA questions from the 77 authored topic guides, including short follow-ups, and links to their lessons; it does not call an external AI provider. In account mode, a signed-in user can explicitly opt into Gemini for a DSA question when `AI_PROVIDER=gemini` and a server-only AI key are configured. Gemini receives the question and relevant authored lesson; failures fall back to the authored explanation. This requires the hosted account database, Auth and budget migration. In an account-enabled deployment `/demo` also provides a separate guest demo. Existing demo preferences/saves are never imported into a real account.
 
 ## Account setup
 

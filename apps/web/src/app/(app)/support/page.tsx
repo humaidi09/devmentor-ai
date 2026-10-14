@@ -112,7 +112,7 @@ function ChatInner() {
       }
       const resp = await fetch("/api/chat", {
         method: "POST",
-        signal: AbortSignal.timeout(15000),
+        signal: AbortSignal.timeout(25000),
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message: msg,
@@ -188,8 +188,8 @@ function ChatInner() {
             onChange={(e) => setUseAi(e.target.checked)}
           />
           {bn
-            ? "এই বার্তা ও কয়েকটি রিসোর্স Gemini-তে পাঠিয়ে AI ব্যবহার করুন"
-            : "Use AI: send this message and a few resources to Gemini"}
+            ? "এই বার্তা ও প্রাসঙ্গিক পাঠ বা রিসোর্স Gemini-তে পাঠিয়ে AI ব্যবহার করুন"
+            : "Use AI: send this message and a relevant lesson or resources to Gemini"}
         </label>
       )}
       <PageHeader
@@ -327,7 +327,11 @@ function ChatInner() {
                       ? bn
                         ? "Mock উত্তর"
                         : "Mock response"
-                      : "Gemini · validated selection"}
+                      : m.modulePath
+                        ? bn
+                          ? "Gemini · AI ব্যাখ্যা; পাঠের সাথে মিলিয়ে দেখুন"
+                          : "Gemini · AI explanation; check the lesson"
+                        : "Gemini · validated selection"}
                   {m.state === "offline" ? " · Offline" : ""}
                 </p>
               )}

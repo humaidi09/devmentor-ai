@@ -178,6 +178,27 @@ test("provider timeout/rate-limit/malformed output fail closed", async () => {
     assert.equal(reply.state, "error");
   }
 });
+test("Gemini lesson explanation receives only the question and authored lesson", async () => {
+  let captured: any;
+  const provider = new GeminiProvider("fixture", "gemini-2.5-flash", async (_url, init) => {
+    captured = JSON.parse(init!.body as string);
+    return new Response(JSON.stringify({ candidates: [{ content: { parts: [
+      { text: JSON.stringify({ answer: "Binary search halves a sorted list. For [1, 3, 5], check 3 first, then 5." }) },
+    ] } }] }));
+  });
+  const answer = await provider.explainLesson("Explain binary search", "en", "Binary search halves a sorted list.");
+  assert.match(answer, /halves a sorted list/);
+  assert.deepEqual(Object.keys(JSON.parse(captured.contents[0].parts[0].text)).sort(), ["authoredLesson", "language", "question"]);
+  assert.equal(captured.generationConfig.responseMimeType, "application/json");
+});
+test("Gemini lesson explanation rejects malformed or external-link output", async () => {
+  for (const answer of ["short", "Read https://example.com for a full explanation.", { text: "wrong field" }]) {
+    const provider = new GeminiProvider("fixture", "gemini-2.5-flash", async () =>
+      new Response(JSON.stringify({ candidates: [{ content: { parts: [{ text: JSON.stringify(typeof answer === "string" ? { answer } : answer) }] } }] })),
+    );
+    await assert.rejects(provider.explainLesson("Explain binary search", "en", "Binary search halves a sorted list."));
+  }
+});
 test("medical and urgent messages route to people without diagnosis or invented emergency numbers", async () => {
   for (const m of ["medical advice medication", "I want to kill myself"]) {
     const reply = await groundedReply(

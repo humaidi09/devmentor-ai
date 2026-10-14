@@ -30,10 +30,17 @@ async function main() {
       }),
       resources,
     );
+    const answer = await provider.explainLesson(
+      "Explain binary search with a tiny example. Fictional test.",
+      "en",
+      "Binary search checks the middle of a sorted list, then keeps only the half that can contain the target. Example: in [1, 3, 5], find 5 by checking 3, then 5.",
+    );
+    if (!answer.toLowerCase().includes("binary search")) throw Error("provider_format");
     console.log(
       JSON.stringify({
         provider: provider.name,
         validated: true,
+        lessonExplanationValidated: true,
         resourceCount: decision.resourceIds.length,
         stepCount: decision.steps.length,
       }),

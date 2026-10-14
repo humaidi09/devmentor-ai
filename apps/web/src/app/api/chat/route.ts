@@ -5,6 +5,7 @@ import { buildDemoReply } from "@/lib/support-engine";
 import { account, dbResult, failure, json } from "@/lib/server-api";
 import { object, exact, text, choice, bool, ApiError } from "@/lib/validation";
 import { aiProvider, realAiAvailable } from "@/lib/ai/server";
+import { GeminiProvider } from "@/lib/ai/gemini";
 import { groundedReply } from "@/lib/ai/controller";
 import { classify, retrievalIntent } from "@/lib/safety/classifier";
 import { resourceDto } from "@/lib/resources/grounding";
@@ -72,8 +73,28 @@ export async function POST(req: NextRequest) {
           : "en"
         : choice(b.lang, ["en", "bn"]);
     const lesson = learningReply(message, lang, contextTopicId);
-    if (lesson) return json(lesson);
     const provider = aiProvider(b.useAi === undefined ? false : bool(b.useAi));
+    if (lesson && provider instanceof GeminiProvider && lesson.modulePath) {
+      if (!dbResult(await db.rpc("consume_close_ai_budget", { service_name: "ai" })))
+        return json({
+          ...lesson,
+          content: `${lang === "bn" ? "এই ঘণ্টার AI অনুরোধের সীমা শেষ। লেখা পাঠের ব্যাখ্যা:\n" : "Hourly AI request limit reached. Here's the authored explanation:\n"}${lesson.content}`,
+        });
+      try {
+        return json({
+          ...lesson,
+          id: `ai_${crypto.randomUUID()}`,
+          content: await provider.explainLesson(message, lang, lesson.content),
+          provider: "gemini",
+        });
+      } catch {
+        return json({
+          ...lesson,
+          content: `${lang === "bn" ? "Gemini এখন উপলব্ধ নয়। লেখা পাঠের ব্যাখ্যা:\n" : "Gemini is unavailable. Here's the authored explanation:\n"}${lesson.content}`,
+        });
+      }
+    }
+    if (lesson) return json(lesson);
     if (
       provider.name === "gemini" &&
       !dbResult(await db.rpc("consume_close_ai_budget", { service_name: "ai" }))
