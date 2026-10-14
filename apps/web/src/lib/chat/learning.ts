@@ -1,5 +1,6 @@
 import guides from "../visual/dsa-guides.json";
 import patternGuides from "../visual/dsa-pattern-guides.json";
+import deepLessons from "../visual/dsa-deep-lessons.json";
 import { classify } from "../safety/classifier";
 import type { ChatMessage } from "../types";
 
@@ -11,6 +12,14 @@ type Lesson = {
   example: string;
   exampleBn: string;
   visual: string[];
+};
+type DeepLesson = {
+  explanationEn: string;
+  explanationBn: string;
+  videoStepsEn: string[];
+  videoStepsBn: string[];
+  extraExampleEn: string;
+  extraExampleBn: string;
 };
 
 const aliases: Record<string, string[]> = {
@@ -100,22 +109,32 @@ export function learningReply(
   const id = directId ?? (followUp && contextTopicId && Object.hasOwn(lessons, contextTopicId) ? contextTopicId : undefined);
   if (!id) return null;
   const lesson = lessons[id];
+  const deep = (deepLessons as Record<string, DeepLesson>)[id];
   const isSteps = /\bsteps?\b|ধাপ/i.test(message);
   const isExample = /\bexample\b|উদাহরণ/i.test(message);
   const title = lesson.title.replace(/\b\w/g, (letter) => letter.toUpperCase());
   const concept = lang === "bn" ? lesson.conceptBn : lesson.concept;
   const example = lang === "bn" ? lesson.exampleBn : lesson.example;
+  const explanation = lang === "bn" ? deep?.explanationBn : deep?.explanationEn;
+  const extraExample = lang === "bn" ? deep?.extraExampleBn : deep?.extraExampleEn;
+  const videoSteps = lang === "bn" ? deep?.videoStepsBn : deep?.videoStepsEn;
   if (isSteps) {
     return reply(
-      `${title}\n${lang === "bn" ? "ধাপে ধাপে:" : "Step by step:"} ${lesson.visual.join(" → ")}\n${concept}\n${lang === "bn" ? "উদাহরণ:" : "Example:"} ${example}`,
+      `${title}\n${lang === "bn" ? "ভিডিওর ধাপগুলো:" : "Steps from the video:"}\n${(videoSteps ?? lesson.visual).map((step, index) => `${index + 1}. ${step}`).join("\n")}\n${concept}`,
       id,
     );
   }
   if (isExample) {
+    const another = !directId && contextTopicId === id;
     return reply(
-      `${title}\n${lang === "bn" ? "উদাহরণ:" : "Example:"} ${example}\n${lang === "bn" ? "কেন:" : "Why:"} ${concept}`,
+      another
+        ? `${title}\n${lang === "bn" ? "আরেকটি উদাহরণ:" : "Another example:"} ${extraExample ?? example}`
+        : `${title}\n${lang === "bn" ? "উদাহরণ ১:" : "Example 1:"} ${example}\n${lang === "bn" ? "উদাহরণ ২:" : "Example 2:"} ${extraExample ?? example}\n${concept}`,
       id,
     );
   }
-  return reply(`${title}\n${concept}\n${lang === "bn" ? "উদাহরণ:" : "Example:"} ${example}`, id);
+  return reply(
+    `${title}\n${concept}\n${explanation ?? ""}\n${lang === "bn" ? "উদাহরণ ১:" : "Example 1:"} ${example}\n${lang === "bn" ? "উদাহরণ ২:" : "Example 2:"} ${extraExample ?? example}`,
+    id,
+  );
 }

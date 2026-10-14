@@ -1,0 +1,1696 @@
+{
+  "array": {
+    "explanationEn": "An array is a collection of elements stored in contiguous memory slots, each identified by a unique index. Because indices are numeric, you can access any element instantly without searching through the entire structure. This structure is ideal for data that needs to be retrieved or updated frequently by position.",
+    "explanationBn": "অ্যারে হলো পাশাপাশি সাজানো কিছু ডেটার সমষ্টি, যেখানে প্রতিটি ডেটার একটি নির্দিষ্ট ইনডেক্স থাকে। ইনডেক্স নম্বর দিয়ে সরাসরি যেকোনো ডেটা খুঁজে পাওয়া যায় বলে এতে সময় কম লাগে। যেসব ডেটা বারবার পজিশন অনুযায়ী প্রয়োজন হয়, সেগুলোর জন্য এটি সেরা।",
+    "videoStepsEn": [
+      "Read the value at index 0 which is 4.",
+      "Move to the next slot at index 1 to find 7.",
+      "Observe that index 2 stores the value 2.",
+      "Confirm there are four values and four indices."
+    ],
+    "videoStepsBn": [
+      "ইনডেক্স ০-এর মান ৪ পড়া হলো।",
+      "ইনডেক্স ১-এ গিয়ে ৭ পাওয়া গেল।",
+      "ইনডেক্স ২-এ ২ মানটি সংরক্ষিত আছে।",
+      "মোট চারটি মান এবং চারটি ইনডেক্স রয়েছে।"
+    ],
+    "extraExampleEn": "Consider an array [10, 20, 30]. Accessing index 0 gives 10, index 1 gives 20, and index 2 gives 30. This demonstrates how each index maps directly to its corresponding value.",
+    "extraExampleBn": "একটি অ্যারে [১০, ২০, ৩০] বিবেচনা করো। ইনডেক্স ০-এ ১০, ইনডেক্স ১-এ ২০ এবং ইনডেক্স ২-এ ৩০ পাওয়া যায়। এটি দেখায় যে প্রতিটি ইনডেক্স কীভাবে সরাসরি তার মানকে নির্দেশ করে।",
+    "whenEn": "Use arrays when you have a fixed number of items and need fast access by position.",
+    "whenBn": "যখন আপনার কাছে নির্দিষ্ট সংখ্যক ডেটা থাকে এবং পজিশন অনুযায়ী দ্রুত অ্যাক্সেস প্রয়োজন, তখন অ্যারে ব্যবহার করুন।",
+    "mistakeEn": "Beginners often forget that arrays are zero-indexed, leading to off-by-one errors; always remember the first element is at index 0.",
+    "mistakeBn": "নতুনরা প্রায়ই ভুলে যায় যে অ্যারে ০ থেকে শুরু হয়, ফলে ইনডেক্সিংয়ে ভুল হয়; মনে রাখবে প্রথম এলিমেন্ট সবসময় ০ নম্বর ইনডেক্সে থাকে।"
+  },
+  "string": {
+    "explanationEn": "A string is a sequence of characters where each character occupies a specific position. Unlike a random collection, the order of characters is fixed and meaningful. You can extract parts of a string, known as substrings, by specifying a range of indices.",
+    "explanationBn": "স্ট্রিং হলো অক্ষরের একটি ক্রম, যেখানে প্রতিটি অক্ষরের একটি নির্দিষ্ট অবস্থান থাকে। এখানে অক্ষরের সাজানো ক্রমটি অত্যন্ত গুরুত্বপূর্ণ। নির্দিষ্ট ইনডেক্স রেঞ্জ ব্যবহার করে স্ট্রিংয়ের একটি অংশ বা সাবস্ট্রিং বের করা যায়।",
+    "videoStepsEn": [
+      "Recognize that characters have specific positions.",
+      "Compare the neighboring characters A and B.",
+      "Understand that a substring stays together as a unit.",
+      "Identify that the sequence ABAC starts at index 2."
+    ],
+    "videoStepsBn": [
+      "অক্ষরগুলোর নির্দিষ্ট অবস্থান আছে তা বোঝা গেল।",
+      "পাশাপাশি থাকা A এবং B অক্ষর দুটি তুলনা করা হলো।",
+      "সাবস্ট্রিং একটি একক অংশ হিসেবে থাকে তা বোঝা গেল।",
+      "ABAC ক্রমটি ইনডেক্স ২ থেকে শুরু হয়েছে তা চিহ্নিত করা হলো।"
+    ],
+    "extraExampleEn": "In 'hello', index 0 holds 'h' and index 4 holds 'o'. The slice hello[1:4] takes positions 1, 2 and 3, giving 'ell'; the end index 4 is excluded.",
+    "extraExampleBn": "'hello'-তে ইনডেক্স ০-এ 'h' এবং ৪-এ 'o' আছে। hello[1:4] স্লাইসে ১, ২ ও ৩ নম্বর অক্ষর নেওয়া হয়, ফলে 'ell' পাওয়া যায়; শেষ সীমা ৪ বাদ যায়।",
+    "whenEn": "Use strings when you need to process or manipulate text data.",
+    "whenBn": "যখন আপনাকে টেক্সট ডেটা প্রসেস বা পরিবর্তন করতে হয়, তখন স্ট্রিং ব্যবহার করুন।",
+    "mistakeEn": "A common mistake is trying to change a single character in an immutable string; remember to create a new string instead.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো ইমিউটেবল স্ট্রিংয়ের একটি অক্ষর পরিবর্তন করার চেষ্টা করা; মনে রাখবে এর পরিবর্তে নতুন একটি স্ট্রিং তৈরি করতে হয়।"
+  },
+  "two-pointers": {
+    "explanationEn": "The two-pointer technique uses two markers to traverse a sorted structure simultaneously. By moving pointers based on the current sum or condition, you avoid checking every possible pair. This significantly improves efficiency by narrowing down the search space in each step.",
+    "explanationBn": "টু-পয়েন্টার পদ্ধতিতে দুটি মার্কার ব্যবহার করে একটি সর্টেড ডেটা স্ট্রাকচার ট্রাভার্স করা হয়। বর্তমান যোগফল বা শর্ত অনুযায়ী পয়েন্টারগুলো সরালে সব জোড়া আলাদা করে চেক করতে হয় না। এটি প্রতিটি ধাপে সার্চের পরিধি কমিয়ে কাজকে অনেক দ্রুত করে।",
+    "videoStepsEn": [
+      "Add 1 and 8 to get 9, which is less than the target 10.",
+      "Move the left pointer to 2, then 2 plus 8 equals 10.",
+      "The pair is found without using nested loops.",
+      "The final answer is the pair (2, 8)."
+    ],
+    "videoStepsBn": [
+      "১ এবং ৮ যোগ করে ৯ পাওয়া গেল, যা লক্ষ্য ১০-এর চেয়ে কম।",
+      "বাম পয়েন্টারটি ২-এ সরানো হলো, এরপর ২ যোগ ৮ সমান ১০।",
+      "নেস্টেড লুপ ছাড়াই জোড়াটি খুঁজে পাওয়া গেল।",
+      "চূড়ান্ত উত্তর হলো (২, ৮) জোড়াটি।"
+    ],
+    "extraExampleEn": "Given [2, 5, 7, 10] and target 12, start with 2 and 10. Their sum is 12, which matches the target. The pointers successfully identify the pair (2, 10) in one step.",
+    "extraExampleBn": "[২, ৫, ৭, ১০] এবং লক্ষ্য ১২ হলে, ২ এবং ১০ দিয়ে শুরু করো। এদের যোগফল ১২, যা লক্ষ্যের সাথে মিলে যায়। পয়েন্টারগুলো এক ধাপেই (২, ১০) জোড়াটি খুঁজে পেল।",
+    "whenEn": "Use this when searching for pairs in a sorted array to optimize performance.",
+    "whenBn": "সর্টেড অ্যারেতে জোড়া খোঁজার সময় পারফরম্যান্স অপ্টিমাইজ করতে এটি ব্যবহার করুন।",
+    "mistakeEn": "A common mistake is moving both pointers in the same direction; ensure they move toward each other or based on the logic required.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো দুটি পয়েন্টারকে একই দিকে সরানো; নিশ্চিত করো যে তারা একে অপরের দিকে অথবা প্রয়োজনীয় লজিক অনুযায়ী নড়ছে।"
+  },
+  "linked-list": {
+    "explanationEn": "A linked list consists of nodes where each node contains data and a reference to the next node. Unlike arrays, nodes are not stored in contiguous memory, allowing for dynamic size changes. You navigate the list by following the pointers from the head until you reach the end.",
+    "explanationBn": "লিঙ্কড লিস্ট হলো নোডের সমষ্টি, যেখানে প্রতিটি নোডে ডেটা এবং পরের নোডের ঠিকানা থাকে। অ্যারের মতো এগুলো পাশাপাশি মেমোরিতে থাকে না, তাই সাইজ পরিবর্তন করা সহজ। হেড থেকে শুরু করে পয়েন্টার অনুসরণ করে শেষ পর্যন্ত যেতে হয়।",
+    "videoStepsEn": [
+      "The head pointer points to the first node 1.",
+      "Follow the next pointer to reach node 3.",
+      "Follow the next pointer again to reach node 5.",
+      "The last node's next pointer points to null."
+    ],
+    "videoStepsBn": [
+      "হেড পয়েন্টারটি প্রথম নোড ১-কে নির্দেশ করে।",
+      "নেক্সট পয়েন্টার অনুসরণ করে ৩ নম্বর নোডে যাওয়া হলো।",
+      "আবার নেক্সট পয়েন্টার অনুসরণ করে ৫ নম্বর নোডে যাওয়া হলো।",
+      "শেষ নোডের নেক্সট পয়েন্টারটি নাল (null)-কে নির্দেশ করে।"
+    ],
+    "extraExampleEn": "A list with head pointing to 10, then 20, then null. Starting at head, you read 10, follow the link to 20, and then find the end at null.",
+    "extraExampleBn": "একটি লিস্ট যেখানে হেড ১০-কে, তারপর ২০-কে এবং শেষে নাল-কে নির্দেশ করে। হেড থেকে শুরু করে ১০ পড়ো, লিঙ্ক অনুসরণ করে ২০-এ যাও এবং শেষে নাল খুঁজে পাও।",
+    "whenEn": "Use linked lists when you need frequent insertions or deletions without shifting elements.",
+    "whenBn": "যখন এলিমেন্ট না সরিয়ে বারবার ইনসার্ট বা ডিলিট করার প্রয়োজন হয়, তখন লিঙ্কড লিস্ট ব্যবহার করুন।",
+    "mistakeEn": "A common mistake is losing the reference to the rest of the list when deleting a node; always save the next node's address first.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো নোড ডিলিট করার সময় লিস্টের বাকি অংশের রেফারেন্স হারিয়ে ফেলা; সবসময় আগে পরের নোডের ঠিকানা সেভ করে রাখবে।"
+  },
+  "stack": {
+    "explanationEn": "A stack is a linear data structure that follows the Last-In, First-Out principle. You can only add or remove items from the top of the stack. This ensures that the most recently added element is always the first one to be processed.",
+    "explanationBn": "স্ট্যাক হলো একটি লিনিয়ার ডেটা স্ট্রাকচার যা Last-In, First-Out নীতি অনুসরণ করে। এখানে শুধুমাত্র ওপরের দিক থেকে ডেটা যোগ বা বিয়োগ করা যায়। ফলে সবশেষে যোগ করা উপাদানটিই সবার আগে বের হয়।",
+    "videoStepsEn": [
+      "Push A onto an empty stack.",
+      "Push B on top of A.",
+      "Push C on top of B.",
+      "Pop C first because it was the last one added."
+    ],
+    "videoStepsBn": [
+      "একটি খালি স্ট্যাকে A পুশ করা হলো।",
+      "A-এর ওপরে B পুশ করা হলো।",
+      "B-এর ওপরে C পুশ করা হলো।",
+      "সবার শেষে ঢোকা C-কে সবার আগে পপ করা হলো।"
+    ],
+    "extraExampleEn": "Push 10, then push 20, then pop. The stack first contains 10, then 10 and 20, and finally, 20 is removed, leaving 10.",
+    "extraExampleBn": "প্রথমে ১০ পুশ করো, তারপর ২০ পুশ করো, এরপর পপ করো। স্ট্যাকে প্রথমে ১০ থাকে, তারপর ১০ ও ২০ থাকে, এবং শেষে ২০ বের হয়ে গেলে ১০ অবশিষ্ট থাকে।",
+    "whenEn": "Use a stack when you need to reverse an order or track nested operations like undo buttons.",
+    "whenBn": "যখন কোনো ক্রম উল্টাতে হয় বা আনডু বাটনের মতো নেস্টেড অপারেশন ট্র্যাক করতে হয়, তখন স্ট্যাক ব্যবহার করুন।",
+    "mistakeEn": "Trying to access elements from the bottom of the stack; remember you can only interact with the top.",
+    "mistakeBn": "স্ট্যাকের নিচ থেকে উপাদান অ্যাক্সেস করার চেষ্টা করা; মনে রাখবেন আপনি শুধুমাত্র ওপরের উপাদানের সাথেই কাজ করতে পারবেন।"
+  },
+  "queue": {
+    "explanationEn": "A queue is a linear structure that follows the First-In, First-Out principle. Elements are added at the back and removed from the front. This is ideal for managing tasks that must be processed in the exact order they arrived.",
+    "explanationBn": "কিউ হলো একটি লিনিয়ার স্ট্রাকচার যা First-In, First-Out নীতি মেনে চলে। এখানে পেছনের দিক থেকে উপাদান যোগ করা হয় এবং সামনের দিক থেকে বের করা হয়। যে ক্রমে কাজ আসে, সেই ক্রমে সম্পন্ন করার জন্য এটি সেরা।",
+    "videoStepsEn": [
+      "Enqueue A into the queue.",
+      "Enqueue B at the back of the queue.",
+      "Enqueue C at the back.",
+      "Dequeue A from the front first."
+    ],
+    "videoStepsBn": [
+      "কিউতে A এনকিউ করা হলো।",
+      "কিউয়ের পেছনে B এনকিউ করা হলো।",
+      "পেছনে C এনকিউ করা হলো।",
+      "সবার আগে আসা A-কে সামনে থেকে ডিকিউ করা হলো।"
+    ],
+    "extraExampleEn": "Enqueue 5, then 3, then dequeue. The queue holds 5, then 5 and 3, and after dequeue, 5 is removed, leaving 3.",
+    "extraExampleBn": "প্রথমে ৫ এনকিউ করো, তারপর ৩ এনকিউ করো, এরপর ডিকিউ করো। কিউতে প্রথমে ৫ থাকে, তারপর ৫ ও ৩ থাকে, এবং ডিকিউ করার পর ৫ বের হয়ে গেলে ৩ অবশিষ্ট থাকে।",
+    "whenEn": "Use a queue for scheduling tasks, such as printer jobs or customer service lines.",
+    "whenBn": "প্রিন্টার জব বা কাস্টমার সার্ভিস লাইনের মতো কাজের শিডিউলিংয়ের জন্য কিউ ব্যবহার করুন।",
+    "mistakeEn": "Removing from the wrong end; always remember that the first item in is the first item out.",
+    "mistakeBn": "ভুল দিক থেকে উপাদান বের করা; সবসময় মনে রাখবেন যে সবার আগে আসা উপাদানটিই সবার আগে বের হবে।"
+  },
+  "hashing": {
+    "explanationEn": "A hash map uses a hash function to choose a bucket for each key. To find a stored value, hash the same key again and inspect its bucket instead of scanning every item. Different keys can land in one bucket, so the implementation must handle collisions; lookups are usually fast on average.",
+    "explanationBn": "হ্যাশ ম্যাপ প্রতিটি key-এর জন্য hash function দিয়ে একটি bucket বেছে নেয়। পরে সেই key খুঁজতে একই hash হিসাব করে bucket-এ যাওয়া হয়; সব মান ঘুরতে হয় না। দুটি key একই bucket-এ পড়তে পারে—এটি collision, যা সামলাতে হয়। তাই lookup সাধারণত গড়ে দ্রুত।",
+    "videoStepsEn": [
+      "Hash the key Ada to a specific bucket.",
+      "Sam is hashed to a different bucket.",
+      "Perform a lookup for Ada directly.",
+      "Retrieve Ada's value which is 90."
+    ],
+    "videoStepsBn": [
+      "Ada কি-টিকে একটি নির্দিষ্ট বাকেটে হ্যাশ করা হলো।",
+      "Sam-কে অন্য একটি বাকেটে হ্যাশ করা হলো।",
+      "সরাসরি Ada-এর জন্য লুকআপ করা হলো।",
+      "Ada-এর মান ৯০ খুঁজে পাওয়া গেল।"
+    ],
+    "extraExampleEn": "Store 'Bob' → 50 and 'Ana' → 70 in a map. Looking up 'Bob' hashes that key to its bucket, checks the stored key and returns 50. Even if both keys share a bucket, the key comparison keeps their values distinct.",
+    "extraExampleBn": "ম্যাপে 'Bob' → ৫০ এবং 'Ana' → ৭০ রাখো। 'Bob' খুঁজলে তার hash অনুযায়ী bucket-এ গিয়ে key মিলিয়ে ৫০ ফেরত পাওয়া যায়। একই bucket হলেও key তুলনা করে দুই মান আলাদা রাখা হয়।",
+    "whenEn": "Use a hash map when you need fast access to data based on a unique identifier.",
+    "whenBn": "যখন ইউনিক আইডেন্টিফায়ারের ভিত্তিতে দ্রুত ডেটা অ্যাক্সেস করার প্রয়োজন হয়, তখন হ্যাশ ম্যাপ ব্যবহার করুন।",
+    "mistakeEn": "Assuming keys are always sorted; hash maps do not maintain any specific order of keys.",
+    "mistakeBn": "কিগুলো সবসময় সাজানো থাকে বলে ধরে নেওয়া; হ্যাশ ম্যাপ কি-এর কোনো নির্দিষ্ট ক্রম বজায় রাখে না।"
+  },
+  "bubble-sort": {
+    "explanationEn": "Bubble sort repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order. This process continues until the entire list is sorted. It is simple but inefficient for large datasets.",
+    "explanationBn": "বাবল সর্ট বারবার তালিকার পাশাপাশি দুটি উপাদান তুলনা করে এবং ভুল ক্রমে থাকলে অদলবদল করে। পুরো তালিকা সাজানো না হওয়া পর্যন্ত এই প্রক্রিয়া চলতে থাকে। এটি সহজ হলেও বড় ডেটাসেটের জন্য ধীরগতির।",
+    "videoStepsEn": [
+      "Compare 7 and 3, then swap them.",
+      "Compare 7 and 5, then swap them.",
+      "Compare 7 and 1, then swap them.",
+      "Repeat the passes until the list is sorted."
+    ],
+    "videoStepsBn": [
+      "৭ ও ৩ তুলনা করে অদলবদল করা হলো।",
+      "৭ ও ৫ তুলনা করে অদলবদল করা হলো।",
+      "৭ ও ১ তুলনা করে অদলবদল করা হলো।",
+      "তালিকা সর্ট না হওয়া পর্যন্ত এই পাসগুলো পুনরাবৃত্তি করা হলো।"
+    ],
+    "extraExampleEn": "Sort [3, 1]. Compare 3 and 1, swap them to get [1, 3], and the list is now sorted.",
+    "extraExampleBn": "[৩, ১] সর্ট করো। ৩ ও ১ তুলনা করে অদলবদল করলে [১, ৩] পাওয়া যায় এবং তালিকাটি সর্ট হয়ে যায়।",
+    "whenEn": "Use bubble sort only for educational purposes or very small, nearly sorted lists.",
+    "whenBn": "বাবল সর্ট শুধুমাত্র শেখার উদ্দেশ্যে বা খুব ছোট, প্রায় সাজানো তালিকার ক্ষেত্রে ব্যবহার করুন।",
+    "mistakeEn": "Forgetting to stop the algorithm once the list is sorted; always check if any swaps occurred.",
+    "mistakeBn": "তালিকা সর্ট হয়ে যাওয়ার পরও অ্যালগরিদম চালানো; সবসময় চেক করুন কোনো অদলবদল হয়েছে কি না।"
+  },
+  "binary-search": {
+    "explanationEn": "Binary search finds an item in a sorted array by repeatedly halving the search space. By comparing the target to the middle element, you can discard the half where the target cannot exist. This process continues until the target is found or the range is empty. It is highly efficient because it eliminates half of the remaining elements in every step.",
+    "explanationBn": "বাইনারি সার্চ একটি সাজানো অ্যারেতে বারবার সার্চ এরিয়া অর্ধেক করে মান খুঁজে বের করে। টার্গেট মানটিকে মাঝের উপাদানের সাথে তুলনা করে আপনি সেই অর্ধেক অংশ বাদ দিতে পারেন যেখানে টার্গেটটি থাকার সম্ভাবনা নেই। এই প্রক্রিয়াটি চলতে থাকে যতক্ষণ না টার্গেট পাওয়া যায় বা রেঞ্জ খালি হয়ে যায়। এটি অত্যন্ত কার্যকর কারণ প্রতি ধাপে এটি অর্ধেক উপাদান বাদ দিয়ে দেয়।",
+    "videoStepsEn": [
+      "The middle value is 7 at index 3; target 11 must be to its right.",
+      "Discard the left half and search only the right sub-array.",
+      "Identify the new middle as 11 and confirm it matches the target.",
+      "The search completes in 2 steps instead of checking all 7 elements."
+    ],
+    "videoStepsBn": [
+      "ইনডেক্স ৩-এ মাঝের মান ৭; লক্ষ্য ১১ তার ডান দিকে থাকতে পারে।",
+      "বাম অর্ধেক বাদ দাও এবং শুধুমাত্র ডান সাব-অ্যারেতে সার্চ করো।",
+      "নতুন মাঝের মান ১১ শনাক্ত করো এবং নিশ্চিত করো যে এটি টার্গেটের সাথে মিলেছে।",
+      "পুরো ৭টি উপাদান চেক না করে মাত্র ২ ধাপে সার্চ সম্পন্ন হয়।"
+    ],
+    "extraExampleEn": "Search for 2 in [2, 4, 6]. First, the middle is 4; since 2 is less than 4, discard the right half. Now the range is [2], which matches the target. The result is found at index 0.",
+    "extraExampleBn": "[২, ৪, ৬] অ্যারেতে ২ খোঁজো। প্রথমে মাঝের মান ৪; যেহেতু ২, ৪-এর চেয়ে ছোট, তাই ডান অর্ধেক বাদ দাও। এখন রেঞ্জ হলো [২], যা টার্গেটের সাথে মিলে যায়। ফলাফল ইনডেক্স ০-তে পাওয়া গেল।",
+    "whenEn": "Use this when you have a large, sorted dataset and need to find a specific value quickly.",
+    "whenBn": "যখন আপনার কাছে একটি বড় এবং সাজানো ডেটাসেট থাকে এবং দ্রুত কোনো মান খুঁজতে হয়, তখন এটি ব্যবহার করুন।",
+    "mistakeEn": "A common mistake is calculating the middle index incorrectly, leading to infinite loops; always ensure your range boundaries update properly.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো মাঝের ইনডেক্স ভুলভাবে গণনা করা, যা ইনফিনিট লুপ তৈরি করতে পারে; সবসময় নিশ্চিত করুন যে আপনার রেঞ্জ বাউন্ডারিগুলো সঠিকভাবে আপডেট হচ্ছে।"
+  },
+  "recursion": {
+    "explanationEn": "Recursion solves a complex problem by breaking it into smaller, identical sub-problems. Each function call works on a smaller input until it reaches a base case, which provides a direct answer. Once the base case is hit, the results bubble back up to solve the original problem. This approach is useful for tasks that naturally repeat in structure.",
+    "explanationBn": "রিকারশন একটি জটিল সমস্যাকে ছোট এবং একই ধরনের সাব-প্রবলেমে ভেঙে সমাধান করে। প্রতিটি ফাংশন কল ছোট ইনপুটে কাজ করে যতক্ষণ না এটি একটি বেস কেসে পৌঁছায়, যা সরাসরি উত্তর দেয়। বেস কেসে পৌঁছানোর পর, ফলাফলগুলো উপরের দিকে ফিরে আসে এবং মূল সমস্যা সমাধান করে। এই পদ্ধতিটি এমন কাজের জন্য উপযোগী যার গঠন প্রাকৃতিকভাবেই পুনরাবৃত্তিমূলক।",
+    "videoStepsEn": [
+      "Initiate the process by calling the function f(4).",
+      "Split the problem into smaller, manageable function calls.",
+      "Continue calling until the base cases are reached.",
+      "Combine the returned values to calculate the final result f(4)=3."
+    ],
+    "videoStepsBn": [
+      "f(4) ফাংশন কল করার মাধ্যমে প্রক্রিয়াটি শুরু করো।",
+      "সমস্যাটিকে ছোট এবং পরিচালনাযোগ্য ফাংশন কলে বিভক্ত করো।",
+      "বেস কেসে না পৌঁছানো পর্যন্ত কল করা চালিয়ে যাও।",
+      "ফিরে আসা মানগুলো একত্রিত করে চূড়ান্ত ফলাফল f(4)=3 গণনা করো।"
+    ],
+    "extraExampleEn": "Calculate factorial of 2: f(2) calls f(1), which returns 1. Then f(2) multiplies 2 by 1 to get 2. The final result is 2.",
+    "extraExampleBn": "২-এর ফ্যাক্টোরিয়াল গণনা করো: f(2) কল করে f(1)-কে, যা ১ রিটার্ন করে। তারপর f(2) ২-কে ১ দিয়ে গুণ করে ২ পায়। চূড়ান্ত ফলাফল হলো ২।",
+    "whenEn": "Use recursion when a problem can be defined by its own smaller instances, like tree traversals or sorting.",
+    "whenBn": "যখন কোনো সমস্যাকে তার নিজস্ব ছোট সংস্করণ দিয়ে সংজ্ঞায়িত করা যায়, যেমন ট্রি ট্রাভার্সাল বা সর্টিং, তখন রিকারশন ব্যবহার করুন।",
+    "mistakeEn": "Forgetting the base case causes a stack overflow; always define a clear stopping condition.",
+    "mistakeBn": "বেস কেস দিতে ভুলে গেলে স্ট্যাক ওভারফ্লো হয়; সবসময় একটি স্পষ্ট থামার শর্ত নির্ধারণ করুন।"
+  },
+  "backtracking": {
+    "explanationEn": "Backtracking is a systematic way to explore all possible solutions by building them step-by-step. If a path leads to a dead end, the algorithm undoes the last choice and tries a different path. This is essentially a depth-first search through a decision tree. It is effective for puzzles or constraint-satisfaction problems.",
+    "explanationBn": "ব্যাকট্র্যাকিং হলো ধাপে ধাপে সমাধান তৈরি করে সম্ভাব্য সব পথ খোঁজার একটি পদ্ধতি। যদি কোনো পথ ডেড এন্ডে পৌঁছায়, তবে অ্যালগরিদমটি শেষ সিদ্ধান্তটি বাতিল করে অন্য পথ চেষ্টা করে। এটি মূলত একটি ডিসিশন ট্রির মধ্য দিয়ে ডেপথ-ফার্স্ট সার্চ। এটি পাজল বা কনস্ট্রেইন্ট-স্যাটিসফ্যাকশন সমস্যার জন্য কার্যকর।",
+    "videoStepsEn": [
+      "Begin the search process with an empty choice set.",
+      "Make a decision to include A in the current path.",
+      "Attempt to include B as an alternative choice.",
+      "Undo the choice of A to explore the B branch independently."
+    ],
+    "videoStepsBn": [
+      "একটি খালি চয়েস সেট দিয়ে সার্চ প্রক্রিয়া শুরু করো।",
+      "বর্তমান পথে A অন্তর্ভুক্ত করার সিদ্ধান্ত নাও।",
+      "বিকল্প হিসেবে B অন্তর্ভুক্ত করার চেষ্টা করো।",
+      "B শাখাটি স্বাধীনভাবে এক্সপ্লোর করতে A-এর সিদ্ধান্তটি বাতিল করো।"
+    ],
+    "extraExampleEn": "Try to pick numbers from [1, 2] that sum to 2. Pick 1, then pick 2 (sum 3, fail). Undo 2, try nothing else. Pick 2 (sum 2, success).",
+    "extraExampleBn": "[১, ২] থেকে এমন সংখ্যা বেছে নাও যাদের যোগফল ২। ১ নাও, তারপর ২ নাও (যোগফল ৩, ব্যর্থ)। ২ বাতিল করো, অন্য কিছু চেষ্টা করো। ২ নাও (যোগফল ২, সফল)।",
+    "whenEn": "Use this when you need to find all possible configurations or a valid path in a search space.",
+    "whenBn": "যখন আপনার সব সম্ভাব্য কনফিগারেশন বা সার্চ স্পেসে একটি বৈধ পথ খোঁজার প্রয়োজন হয়, তখন এটি ব্যবহার করুন।",
+    "mistakeEn": "Failing to undo the state correctly leads to incorrect results; always reset the state before trying the next branch.",
+    "mistakeBn": "স্টেট সঠিকভাবে আনডু করতে ব্যর্থ হলে ভুল ফলাফল আসে; পরবর্তী শাখা চেষ্টা করার আগে সবসময় স্টেট রিসেট করুন।"
+  },
+  "tree": {
+    "explanationEn": "A tree represents a hierarchy: one root leads to children, and each non-root node has one parent. A tree has no cycle, so there is one route from the root to each node. It is useful for folders and organizational relationships; fast search requires an additional ordering rule, such as a balanced search tree.",
+    "explanationBn": "ট্রি একটি স্তরভিত্তিক কাঠামো: root থেকে child-এ যাওয়া যায় এবং root ছাড়া প্রতিটি node-এর একটি parent থাকে। cycle নেই, তাই root থেকে কোনো node-এ যাওয়ার একটি পথ থাকে। ফোল্ডার বা সম্পর্ক সাজাতে এটি ভালো; দ্রুত খোঁজার জন্য আলাদা সাজানোর নিয়ম, যেমন balanced search tree, দরকার।",
+    "videoStepsEn": [
+      "Set the root node of the tree structure to 8.",
+      "Define 3 and 10 as the direct children of the root.",
+      "Connect 1 and 6 as children of the node 3.",
+      "Establish a connection from node 10 to node 14."
+    ],
+    "videoStepsBn": [
+      "ট্রি স্ট্রাকচারের রুট নোড ৮ হিসেবে সেট করো।",
+      "৩ এবং ১০-কে রুটের সরাসরি চাইল্ড হিসেবে নির্ধারণ করো।",
+      "১ এবং ৬-কে ৩ নোডের চাইল্ড হিসেবে সংযুক্ত করো।",
+      "১০ নোড থেকে ১৪ নোডের সাথে সংযোগ স্থাপন করো।"
+    ],
+    "extraExampleEn": "Create a tree with root 5. Add 2 as a left child and 7 as a right child. Now 5 is the parent of 2 and 7.",
+    "extraExampleBn": "৫ রুট দিয়ে একটি ট্রি তৈরি করো। ২-কে বাম চাইল্ড এবং ৭-কে ডান চাইল্ড হিসেবে যোগ করো। এখন ৫ হলো ২ এবং ৭-এর প্যারেন্ট।",
+    "whenEn": "Use a tree when the data has parent-child relationships, such as folders, menus or expression structure.",
+    "whenBn": "ফোল্ডার, মেনু বা expression-এর মতো parent-child সম্পর্ক থাকলে ট্রি ব্যবহার করো।",
+    "mistakeEn": "Creating a cycle by connecting a child back to an ancestor breaks the tree structure; always ensure nodes only point downwards.",
+    "mistakeBn": "কোনো চাইল্ডকে তার পূর্বপুরুষের সাথে সংযুক্ত করে সাইকেল তৈরি করলে ট্রি স্ট্রাকচার ভেঙে যায়; সবসময় নিশ্চিত করুন নোডগুলো যেন শুধু নিচের দিকে নির্দেশ করে।"
+  },
+  "bst": {
+    "explanationEn": "In a binary search tree, every value in a node's left subtree is smaller and every value in its right subtree is larger. Compare the target at each node and follow only the possible subtree. Search time depends on the tree's height: a balanced tree is fast, while a skewed tree can degrade to a linear scan.",
+    "explanationBn": "BST-তে কোনো node-এর পুরো বাম subtree-র মান ছোট এবং পুরো ডান subtree-র মান বড়। লক্ষ্য মানের সঙ্গে node তুলনা করে শুধু সম্ভাব্য subtree-তে যাও। গতি ট্রির উচ্চতার ওপর নির্ভর করে: balanced হলে দ্রুত, একদিকে হেলে গেলে সাধারণ তালিকার মতো ধীর হতে পারে।",
+    "videoStepsEn": [
+      "Compare 6 with root 8 to see it is smaller.",
+      "Move left from 8 to the node 3.",
+      "Compare 6 with 3 and move right since 6 is larger.",
+      "Locate 6 successfully after traversing three nodes."
+    ],
+    "videoStepsBn": [
+      "৬-এর সাথে ৮ তুলনা করে দেখা যায় এটি ছোট।",
+      "৮ থেকে বামে ৩ নোডে যাওয়া হয়।",
+      "৬-এর সাথে ৩ তুলনা করে ডানে যাওয়া হয় কারণ ৬ বড়।",
+      "তিনটি নোড পার হওয়ার পর ৬ খুঁজে পাওয়া যায়।"
+    ],
+    "extraExampleEn": "Search for 14 in a tree with root 10, left child 5, and right child 15. Compare 14 with 10 to move right, then compare 14 with 15 to move left. The target 14 is found as the left child of 15.",
+    "extraExampleBn": "১০ রুট, ৫ বাম চাইল্ড এবং ১৫ ডান চাইল্ড বিশিষ্ট ট্রিতে ১৪ খুঁজুন। ১৪-এর সাথে ১০ তুলনা করে ডানে যান, তারপর ১৪-এর সাথে ১৫ তুলনা করে বামে যান। ১৫-এর বাম চাইল্ড হিসেবে ১৪ পাওয়া যায়।",
+    "whenEn": "Use a BST for ordered lookup when the tree is kept reasonably balanced; an unbalanced tree can be slow.",
+    "whenBn": "ক্রম বজায় রেখে খুঁজতে BST কাজে লাগে, তবে ট্রি যথেষ্ট balanced রাখতে হয়; হেলে গেলে খোঁজা ধীর হয়।",
+    "mistakeEn": "Forgetting to update the root pointer when the tree structure changes; always track the current node carefully.",
+    "mistakeBn": "ট্রি পরিবর্তনের সময় রুট পয়েন্টার আপডেট করতে ভুলে যাওয়া; সবসময় বর্তমান নোডটি সাবধানে ট্র্যাক করুন।"
+  },
+  "heap": {
+    "explanationEn": "A min heap is a complete binary tree where the parent is always smaller than its children. The smallest element is guaranteed to be at the root, making it ideal for priority queues. When the root is removed, the last element moves to the top and 'bubbles down' to restore the heap property.",
+    "explanationBn": "Min heap হলো একটি সম্পূর্ণ বাইনারি ট্রি যেখানে প্যারেন্ট সবসময় চাইল্ডের চেয়ে ছোট হয়। সবচেয়ে ছোট মানটি সবসময় রুটে থাকে, যা প্রায়োরিটি কিউয়ের জন্য আদর্শ। রুট সরিয়ে নিলে শেষের এলিমেন্টটি উপরে উঠে আসে এবং হিপ প্রপার্টি ঠিক করতে নিচে নেমে যায়।",
+    "videoStepsEn": [
+      "Identify 2 as the minimum value at the root.",
+      "Remove 2 and move the last element 8 to the root.",
+      "Swap 8 with its smaller child 4 to maintain order.",
+      "Confirm the heap order is restored with 4 at the top."
+    ],
+    "videoStepsBn": [
+      "রুটে থাকা ২-কে সর্বনিম্ন মান হিসেবে চিহ্নিত করা হয়।",
+      "২ সরিয়ে শেষের এলিমেন্ট ৮-কে রুটে আনা হয়।",
+      "৮-কে তার ছোট চাইল্ড ৪-এর সাথে অদলবদল করা হয়।",
+      "৪ উপরে রেখে হিপ অর্ডার পুনরুদ্ধার নিশ্চিত করা হয়।"
+    ],
+    "extraExampleEn": "Given a heap [3, 5, 9, 7], remove the root 3. Move 7 to the root, then compare 7 with its children 5 and 9. Swap 7 with 5 to restore the min heap property, resulting in [5, 7, 9].",
+    "extraExampleBn": "[৩, ৫, ৯, ৭] হিপ থেকে রুট ৩ সরিয়ে ফেলুন। ৭-কে রুটে আনুন, তারপর ৭-এর সাথে ৫ ও ৯ তুলনা করুন। হিপ প্রপার্টি ঠিক করতে ৭ ও ৫ অদলবদল করুন, ফলে [৫, ৭, ৯] পাওয়া যাবে।",
+    "whenEn": "Use this when you need to repeatedly access the smallest item in a collection.",
+    "whenBn": "যখন বারবার কালেকশনের সবচেয়ে ছোট আইটেমটি পাওয়ার প্রয়োজন হয় তখন এটি ব্যবহার করুন।",
+    "mistakeEn": "Swapping with the wrong child during the bubble-down process; always compare with the smaller of the two children.",
+    "mistakeBn": "বাবল-ডাউন করার সময় ভুল চাইল্ডের সাথে অদলবদল করা; সবসময় ছোট চাইল্ডটির সাথে তুলনা করুন।"
+  },
+  "graph": {
+    "explanationEn": "A graph consists of vertices connected by edges that define relationships or paths. Unlike trees, graphs can have cycles and multiple paths between the same two points. Navigating a graph requires tracking visited nodes to avoid infinite loops.",
+    "explanationBn": "গ্রাফে কিছু বিন্দু বা vertex থাকে যা edge দিয়ে যুক্ত থাকে, যা সম্পর্ক বা পথ নির্দেশ করে। ট্রির মতো নয়, গ্রাফে সাইকেল থাকতে পারে এবং একই পয়েন্টের মধ্যে একাধিক পথ থাকতে পারে। গ্রাফে চলার সময় ইনফিনিট লুপ এড়াতে ভিজিট করা নোডগুলো ট্র্যাক করতে হয়।",
+    "videoStepsEn": [
+      "Begin the traversal at vertex A.",
+      "Identify that A connects to both B and C.",
+      "Observe that B connects to D and E.",
+      "Follow an edge from the current path to reach F."
+    ],
+    "videoStepsBn": [
+      "A vertex থেকে ট্রাভার্সাল শুরু করুন।",
+      "চিহ্নিত করুন যে A থেকে B এবং C যুক্ত আছে।",
+      "লক্ষ্য করুন যে B থেকে D এবং E যুক্ত আছে।",
+      "বর্তমান পথ থেকে একটি edge ধরে F-এ পৌঁছান।"
+    ],
+    "extraExampleEn": "In a graph with edges (1-2), (2-3), and (1-3), start at 1. Move to 2, then follow the edge from 2 to 3. This confirms a path exists from 1 to 3 through 2.",
+    "extraExampleBn": "(১-২), (২-৩), এবং (১-৩) এজ বিশিষ্ট গ্রাফে ১ থেকে শুরু করুন। ২-এ যান, তারপর ২ থেকে ৩-এর এজে যান। এটি নিশ্চিত করে যে ২ হয়ে ১ থেকে ৩-এ যাওয়ার পথ আছে।",
+    "whenEn": "Use this when modeling networks, social connections, or complex dependencies.",
+    "whenBn": "নেটওয়ার্ক, সামাজিক যোগাযোগ বা জটিল ডিপেন্ডেন্সি মডেল করার সময় এটি ব্যবহার করুন।",
+    "mistakeEn": "Failing to mark nodes as visited, which leads to redundant processing or infinite cycles.",
+    "mistakeBn": "নোড ভিজিট করা হয়েছে তা মার্ক করতে ভুলে যাওয়া, যা অহেতুক প্রসেসিং বা ইনফিনিট লুপ তৈরি করে।"
+  },
+  "bfs": {
+    "explanationEn": "Breadth-First Search explores a graph layer by layer, starting from the source. It uses a queue to store nodes, ensuring that all neighbors at the current distance are visited before moving further away. This method is ideal for finding the shortest path in an unweighted graph.",
+    "explanationBn": "Breadth-First Search সোর্স থেকে শুরু করে লেয়ার বাই লেয়ার গ্রাফ এক্সপ্লোর করে। এটি কিউ ব্যবহার করে নোডগুলো জমা রাখে, যাতে দূরের নোডে যাওয়ার আগে বর্তমান দূরত্বের সব প্রতিবেশী ভিজিট করা হয়। আনওয়েটেড গ্রাফে শর্টেস্ট পাথ খোঁজার জন্য এটি সেরা।",
+    "videoStepsEn": [
+      "Initialize the queue with the starting node A.",
+      "Add neighbors B and C to the queue.",
+      "Visit the next level nodes D and E.",
+      "Complete the traversal by visiting F at the final level."
+    ],
+    "videoStepsBn": [
+      "শুরুতে A নোড দিয়ে কিউ ইনিশিয়ালাইজ করুন।",
+      "প্রতিবেশী B এবং C-কে কিউতে যোগ করুন।",
+      "পরের লেভেলের নোড D এবং E ভিজিট করুন।",
+      "শেষ লেভেলে F ভিজিট করে ট্রাভার্সাল সম্পন্ন করুন।"
+    ],
+    "extraExampleEn": "For a graph where A connects to B, B connects to C, and A connects to C, start at A. The queue adds B and C at the same level. Both are visited before any deeper nodes are processed.",
+    "extraExampleBn": "এমন গ্রাফে যেখানে A থেকে B, B থেকে C, এবং A থেকে C যুক্ত, A থেকে শুরু করুন। কিউতে একই লেভেলে B এবং C যোগ হবে। গভীরের কোনো নোড প্রসেস করার আগেই এই দুটি ভিজিট হবে।",
+    "whenEn": "Use this when you need to find the shortest path in an unweighted network.",
+    "whenBn": "যখন আনওয়েটেড নেটওয়ার্কে শর্টেস্ট পাথ খোঁজার প্রয়োজন হয় তখন এটি ব্যবহার করুন।",
+    "mistakeEn": "Adding nodes to the queue without checking if they were already visited, causing unnecessary work.",
+    "mistakeBn": "নোড আগে ভিজিট করা হয়েছে কি না তা চেক না করেই কিউতে যোগ করা, যা অহেতুক কাজ বাড়ায়।"
+  },
+  "dfs": {
+    "explanationEn": "Depth-first search explores a graph by traversing as far as possible along each branch before backtracking. It uses a stack or recursion to keep track of the path. This method is effective for finding paths or detecting cycles in a graph.",
+    "explanationBn": "DFS গ্রাফের প্রতিটি শাখায় যতদূর সম্ভব এগিয়ে গিয়ে তারপর ব্যাকট্র্যাক করে। এটি পাথ ট্র্যাক করার জন্য স্ট্যাক বা রিকার্সন ব্যবহার করে। গ্রাফে পাথ খোঁজা বা সাইকেল শনাক্ত করার জন্য এটি কার্যকর।",
+    "videoStepsEn": [
+      "Start by entering node A.",
+      "Follow the branch leading to node B.",
+      "Go deep into the path until reaching node D.",
+      "Backtrack from D to explore the branch starting at node C."
+    ],
+    "videoStepsBn": [
+      "প্রথমে A নোডে প্রবেশ করো।",
+      "B নোডের দিকে যাওয়া শাখাটি অনুসরণ করো।",
+      "D নোডে পৌঁছানো পর্যন্ত গভীর পথে এগিয়ে যাও।",
+      "D থেকে ব্যাকট্র্যাক করে C নোডের শাখাটি অন্বেষণ করো।"
+    ],
+    "extraExampleEn": "Consider a tree with root 1, children 2 and 3, and 2 has child 4. DFS visits 1, then 2, then 4, then backtracks to 3. The final order is 1-2-4-3.",
+    "extraExampleBn": "একটি ট্রি চিন্তা করো যার রুট ১, চাইল্ড ২ ও ৩, এবং ২-এর চাইল্ড ৪। DFS প্রথমে ১, তারপর ২, তারপর ৪ ভিজিট করবে এবং শেষে ৩-এ যাবে। চূড়ান্ত ক্রম হবে ১-২-৪-৩।",
+    "whenEn": "Use this when you need to visit every node or find a path in a maze.",
+    "whenBn": "যখন প্রতিটি নোড ভিজিট করা বা গোলকধাঁধায় পথ খোঁজার প্রয়োজন হয় তখন এটি ব্যবহার করো।",
+    "mistakeEn": "Forgetting to mark nodes as visited, which leads to infinite loops in graphs with cycles.",
+    "mistakeBn": "নোড ভিজিট করা হয়েছে কিনা তা মার্ক করতে ভুলে যাওয়া, যা সাইকেলযুক্ত গ্রাফে ইনফিনিট লুপ তৈরি করে।"
+  },
+  "greedy": {
+    "explanationEn": "Greedy algorithms make the locally optimal choice at each step with the hope of finding a global optimum. This approach works when the problem exhibits the greedy choice property, meaning a local optimum leads to a global one. It is efficient because it never reconsiders previous decisions.",
+    "explanationBn": "গ্রিডি অ্যালগরিদম প্রতিটি ধাপে স্থানীয়ভাবে সেরা সিদ্ধান্ত নেয়, এই আশায় যে এটি গ্লোবাল অপ্টিমাম দেবে। যখন সমস্যাটিতে গ্রিডি চয়েস প্রপার্টি থাকে, তখন এটি কাজ করে। এটি আগের সিদ্ধান্তগুলো পুনরায় বিবেচনা করে না বলে বেশ দ্রুত।",
+    "videoStepsEn": [
+      "Take interval A because it ends earliest at 3.",
+      "Skip interval B because it overlaps with A.",
+      "Take interval C because it begins at 3.",
+      "Take interval D because it begins at 4."
+    ],
+    "videoStepsBn": [
+      "A ইন্টারভালটি নাও কারণ এটি ৩-এ শেষ হয়।",
+      "B ইন্টারভালটি বাদ দাও কারণ এটি A-এর সাথে ওভারল্যাপ করে।",
+      "C ইন্টারভালটি নাও কারণ এটি ৩ থেকে শুরু হয়।",
+      "D ইন্টারভালটি নাও কারণ এটি ৪ থেকে শুরু হয়।"
+    ],
+    "extraExampleEn": "Given coins 1, 3, 4 and target 6. Greedy takes 4, then 1, then 1, totaling 3 coins. The optimal is 3+3=2 coins, showing greedy fails here.",
+    "extraExampleBn": "ধরা যাক কয়েন ১, ৩, ৪ এবং টার্গেট ৬। গ্রিডি প্রথমে ৪, তারপর ১, তারপর ১ নেবে, মোট ৩টি কয়েন। কিন্তু অপ্টিমাল হলো ৩+৩=২টি কয়েন, যা দেখায় গ্রিডি এখানে কাজ করে না।",
+    "whenEn": "Use this for optimization problems where local choices lead to a global solution.",
+    "whenBn": "অপ্টিমাইজেশন সমস্যার জন্য এটি ব্যবহার করো যেখানে স্থানীয় সিদ্ধান্ত গ্লোবাল সমাধানে পৌঁছায়।",
+    "mistakeEn": "Assuming greedy always works for every problem; always verify if the greedy choice property holds.",
+    "mistakeBn": "সব সমস্যায় গ্রিডি কাজ করবে এমনটা ধরে নেওয়া; সবসময় যাচাই করো যে গ্রিডি চয়েস প্রপার্টি বিদ্যমান কিনা।"
+  },
+  "dynamic-programming": {
+    "explanationEn": "Dynamic programming solves complex problems by breaking them down into simpler subproblems. It stores the results of these subproblems in a table to avoid redundant calculations. This is essential for problems with overlapping subproblems and optimal substructure.",
+    "explanationBn": "ডাইনামিক প্রোগ্রামিং জটিল সমস্যাকে ছোট ছোট সাবপ্রবলেমে ভাগ করে সমাধান করে। এটি বারবার গণনা এড়াতে সাবপ্রবলেমের ফলাফল একটি টেবিলে সংরক্ষণ করে। ওভারল্যাপিং সাবপ্রবলেম এবং অপ্টিমাল সাবস্ট্রাকচারের ক্ষেত্রে এটি অপরিহার্য।",
+    "videoStepsEn": [
+      "Calculate ways(2) as 1+1=2.",
+      "Calculate ways(3) as 2+1=3.",
+      "Calculate ways(4) as 3+2=5.",
+      "Calculate ways(5) as 5+3=8."
+    ],
+    "videoStepsBn": [
+      "ways(2) গণনা করো ১+১=২।",
+      "ways(3) গণনা করো ২+১=৩।",
+      "ways(4) গণনা করো ৩+২=৫।",
+      "ways(5) গণনা করো ৫+৩=৮।"
+    ],
+    "extraExampleEn": "For Fibonacci sequence F(0)=0, F(1)=1, F(2)=F(1)+F(0)=1. F(3)=F(2)+F(1)=1+1=2. This reuses previous values to find F(3).",
+    "extraExampleBn": "ফিবোনাচ্চি সিকোয়েন্সের জন্য F(0)=0, F(1)=1, F(2)=F(1)+F(0)=1। F(3)=F(2)+F(1)=1+1=2। এটি F(3) বের করতে আগের মানগুলো পুনরায় ব্যবহার করে।",
+    "whenEn": "Use this when you see the same subproblems being solved repeatedly.",
+    "whenBn": "যখন দেখবে একই সাবপ্রবলেম বারবার সমাধান করা হচ্ছে, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "Recomputing subproblems instead of using the stored table, which defeats the purpose of DP.",
+    "mistakeBn": "স্টোর করা টেবিল ব্যবহার না করে সাবপ্রবলেমগুলো পুনরায় গণনা করা, যা ডিপি-এর মূল উদ্দেশ্য নষ্ট করে।"
+  },
+  "shortest-path": {
+    "explanationEn": "Shortest path algorithms iteratively update the minimum distance from a source node to all other nodes. By relaxing edges, the algorithm gradually improves the distance estimates. This process continues until no further improvements can be made.",
+    "explanationBn": "শর্টেস্ট পাথ অ্যালগরিদম সোর্স নোড থেকে অন্য সব নোডের সর্বনিম্ন দূরত্ব বারবার আপডেট করে। এজ রিলাক্সেশনের মাধ্যমে এটি দূরত্বের হিসাব উন্নত করে। যতক্ষণ পর্যন্ত আর উন্নতি সম্ভব নয়, ততক্ষণ এই প্রক্রিয়া চলতে থাকে।",
+    "videoStepsEn": [
+      "Set the initial distance to A as 0.",
+      "Relax edges A to B and A to C to update their distances.",
+      "Use the path B to D to improve the distance to D to 4.",
+      "Confirm the shortest path A to B to D costs 4."
+    ],
+    "videoStepsBn": [
+      "A-এর প্রাথমিক দূরত্ব ০ সেট করো।",
+      "A থেকে B এবং A থেকে C এজ রিলাক্স করে তাদের দূরত্ব আপডেট করো।",
+      "B থেকে D পাথ ব্যবহার করে D-এর দূরত্ব ৪-এ উন্নত করো।",
+      "নিশ্চিত করো যে A থেকে B হয়ে D-এর শর্টেস্ট পাথ খরচ ৪।"
+    ],
+    "extraExampleEn": "Nodes A, B, C. A to B is 5, B to C is 2, A to C is 10. Relaxing A to C via B gives 5+2=7, which is better than 10.",
+    "extraExampleBn": "নোড A, B, C। A থেকে B হলো ৫, B থেকে C হলো ২, A থেকে C হলো ১০। B হয়ে A থেকে C রিলাক্স করলে ৫+২=৭ পাওয়া যায়, যা ১০-এর চেয়ে ভালো।",
+    "whenEn": "Use this for navigation systems or network routing to find the cheapest path.",
+    "whenBn": "নেভিগেশন সিস্টেম বা নেটওয়ার্ক রাউটিংয়ে সবচেয়ে কম খরচের পথ খুঁজতে এটি ব্যবহার করো।",
+    "mistakeEn": "Failing to update the distance when a shorter path is found during relaxation.",
+    "mistakeBn": "রিলাক্সেশনের সময় ছোট পাথ পাওয়া গেলে দূরত্ব আপডেট করতে ব্যর্থ হওয়া।"
+  },
+  "minimum-spanning-tree": {
+    "explanationEn": "A Minimum Spanning Tree connects all vertices in a graph with the minimum possible total edge weight. It ensures no cycles are formed, meaning every node is reachable without redundant paths. This method works by greedily selecting the smallest available edges that do not create a loop. It is essential that the graph is connected to form a single spanning tree.",
+    "explanationBn": "একটি Minimum Spanning Tree গ্রাফের সব vertex-কে সর্বনিম্ন মোট খরচে যুক্ত করে। এটি নিশ্চিত করে যে কোনো cycle তৈরি হবে না, অর্থাৎ কোনো অপ্রয়োজনীয় পথ ছাড়াই সব নোডে পৌঁছানো সম্ভব। এই পদ্ধতিতে সবচেয়ে ছোট edge-গুলো বেছে নেওয়া হয় যা লুপ তৈরি করে না। গ্রাফটি সংযুক্ত থাকা জরুরি যাতে একটি পূর্ণাঙ্গ spanning tree তৈরি হয়।",
+    "videoStepsEn": [
+      "Select the cheapest edge A–B with weight 1.",
+      "Add edge B–D with weight 2 to the structure.",
+      "Include edge A–C with weight 3.",
+      "Add edges 4 and 5, but skip edge 6 because it creates a cycle."
+    ],
+    "videoStepsBn": [
+      "সবচেয়ে কম খরচের edge A–B (১) নির্বাচন করো।",
+      "কাঠামোতে B–D (২) edge-টি যুক্ত করো।",
+      "A–C (৩) edge-টি অন্তর্ভুক্ত করো।",
+      "৪ ও ৫ নম্বর edge যুক্ত করো, কিন্তু ৬ নম্বর edge-টি বাদ দাও কারণ এটি cycle তৈরি করে।"
+    ],
+    "extraExampleEn": "Consider nodes X, Y, Z with edges X-Y(5), Y-Z(2), and X-Z(8). First, pick Y-Z(2) as the smallest. Then, pick X-Y(5) to connect X. The total cost is 7, and no cycle is formed.",
+    "extraExampleBn": "X, Y, Z নোড এবং X-Y(৫), Y-Z(২), X-Z(৮) edge-গুলো বিবেচনা করো। প্রথমে সবচেয়ে ছোট Y-Z(২) বেছে নাও। এরপর X-কে যুক্ত করতে X-Y(৫) নাও। মোট খরচ ৭ এবং কোনো cycle তৈরি হয়নি।",
+    "whenEn": "Use this when you need to connect all points in a network with the lowest possible infrastructure cost.",
+    "whenBn": "যখন কোনো নেটওয়ার্কের সব পয়েন্টকে সর্বনিম্ন খরচে যুক্ত করার প্রয়োজন হয়, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "A common mistake is forgetting to check for cycles, which results in a graph rather than a tree; always verify that the two nodes of an edge are not already connected.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো cycle চেক করতে ভুলে যাওয়া, যার ফলে এটি tree না হয়ে সাধারণ গ্রাফ হয়ে যায়; সবসময় নিশ্চিত করো যে edge-এর দুটি নোড আগে থেকেই সংযুক্ত কি না।"
+  },
+  "trie": {
+    "explanationEn": "A Trie is a tree-like data structure that stores strings by sharing common prefixes. Each node represents a character, and paths from the root form complete words. This structure is highly efficient for prefix-based searches and autocomplete features. It works by branching only when characters differ between words.",
+    "explanationBn": "Trie হলো একটি ট্রি-সদৃশ ডেটা স্ট্রাকচার যা সাধারণ prefix শেয়ার করে শব্দ জমা রাখে। প্রতিটি নোড একটি অক্ষর নির্দেশ করে এবং রুট থেকে পথগুলো পূর্ণ শব্দ তৈরি করে। এটি prefix-ভিত্তিক সার্চ এবং অটো-কমপ্লিট ফিচারের জন্য অত্যন্ত কার্যকর। শব্দগুলোর অক্ষর আলাদা হলেই কেবল এটি নতুন শাখা তৈরি করে।",
+    "videoStepsEn": [
+      "Insert the character c into the root.",
+      "Store cat and car by sharing the common prefix ca.",
+      "Create a branch to t to complete the word cat.",
+      "Create a branch to r to complete the word car."
+    ],
+    "videoStepsBn": [
+      "রুটে c অক্ষরটি ইনসার্ট করো।",
+      "সাধারণ prefix ca শেয়ার করে cat এবং car জমা করো।",
+      "cat শব্দটি পূর্ণ করতে t-এর দিকে একটি শাখা তৈরি করো।",
+      "car শব্দটি পূর্ণ করতে r-এর দিকে একটি শাখা তৈরি করো।"
+    ],
+    "extraExampleEn": "Insert 'dog' and 'dot'. Both share 'd' and 'o'. After 'o', the trie branches into 'g' for 'dog' and 't' for 'dot'.",
+    "extraExampleBn": "'dog' এবং 'dot' ইনসার্ট করো। উভয়ই 'd' এবং 'o' শেয়ার করে। 'o'-এর পর trie-টি 'dog'-এর জন্য 'g' এবং 'dot'-এর জন্য 't'-তে ভাগ হয়ে যায়।",
+    "whenEn": "Use this when you need to perform fast prefix lookups or store a large dictionary of words.",
+    "whenBn": "যখন দ্রুত prefix লুকআপ করতে হয় বা শব্দের বিশাল ডিকশনারি জমা রাখতে হয়, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "Beginners often create separate nodes for identical prefixes; ensure you traverse existing nodes before creating new ones.",
+    "mistakeBn": "নতুনরা প্রায়ই একই prefix-এর জন্য আলাদা নোড তৈরি করে; নতুন নোড তৈরির আগে নিশ্চিত করো যে বিদ্যমান নোডগুলো দিয়ে কাজ চালানো যায় কি না।"
+  },
+  "bit-manipulation": {
+    "explanationEn": "Bit manipulation involves performing operations directly on the binary representation of numbers. By using bitwise operators like AND, OR, and XOR, you can toggle, set, or clear specific bits. This is extremely fast because it operates at the hardware level. It is useful for memory optimization and low-level data processing.",
+    "explanationBn": "Bit manipulation হলো সরাসরি সংখ্যার binary রূপের ওপর অপারেশন চালানো। AND, OR এবং XOR-এর মতো bitwise অপারেটর ব্যবহার করে তুমি নির্দিষ্ট bit পরিবর্তন বা চেক করতে পারো। এটি হার্ডওয়্যার লেভেলে কাজ করে বলে অত্যন্ত দ্রুত। মেমোরি অপ্টিমাইজেশন এবং লো-লেভেল ডেটা প্রসেসিংয়ের জন্য এটি খুব কার্যকর।",
+    "videoStepsEn": [
+      "Represent 5 as 0101 and 3 as 0011 in binary.",
+      "Perform AND on the rightmost bits: 1 AND 1 results in 1.",
+      "Perform AND on the next bits: 0 AND 0 results in 0.",
+      "Combine all bit results: 0101 & 0011 = 0001."
+    ],
+    "videoStepsBn": [
+      "৫-কে binary-তে 0101 এবং ৩-কে 0011 হিসেবে লেখো।",
+      "সবচেয়ে ডানদিকের bit-গুলোর ওপর AND করো: 1 AND 1 সমান 1।",
+      "পরের bit-গুলোর ওপর AND করো: 0 AND 0 সমান 0।",
+      "সব bit-এর ফল মেলাও: 0101 & 0011 = 0001।"
+    ],
+    "extraExampleEn": "Calculate 6 AND 2. 6 is 0110 and 2 is 0010. Comparing bits, the second bit from the right is 1 AND 1, resulting in 0010, which is 2.",
+    "extraExampleBn": "6 AND 2 হিসাব করো। ৬ হলো 0110 এবং ২ হলো 0010। bit-গুলো তুলনা করলে, ডানদিক থেকে দ্বিতীয় bit-টি 1 AND 1, যার ফলাফল 0010, অর্থাৎ ২।",
+    "whenEn": "Use this when you need to perform high-performance calculations or manage flags in a compact way.",
+    "whenBn": "যখন উচ্চ-ক্ষমতাসম্পন্ন ক্যালকুলেশন করতে হয় বা কম জায়গায় ফ্ল্যাগ ম্যানেজ করতে হয়, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "A common mistake is confusing bitwise operators with logical operators; always remember that bitwise operators work on every bit individually.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো bitwise অপারেটরকে লজিক্যাল অপারেটরের সাথে গুলিয়ে ফেলা; সবসময় মনে রাখবে যে bitwise অপারেটর প্রতিটি bit-এর ওপর আলাদাভাবে কাজ করে।"
+  },
+  "advanced-patterns": {
+    "explanationEn": "Advanced patterns like the two-pointer technique optimize search problems by reducing the number of comparisons. Instead of checking every possible pair, you move pointers based on the current sum or condition. This approach works best on sorted data where the direction of movement is predictable. It significantly lowers time complexity compared to brute force.",
+    "explanationBn": "Two-pointer কৌশলের মতো অ্যাডভান্সড প্যাটার্নগুলো তুলনার সংখ্যা কমিয়ে সার্চ সমস্যা অপ্টিমাইজ করে। সব জোড়া চেক না করে, বর্তমান যোগফল বা শর্ত অনুযায়ী পয়েন্টারগুলো সরাতে হয়। সাজানো ডেটার ক্ষেত্রে এটি সবচেয়ে ভালো কাজ করে যেখানে মুভমেন্টের দিক অনুমান করা যায়। এটি ব্রুট ফোর্সের তুলনায় সময় অনেক বাঁচায়।",
+    "videoStepsEn": [
+      "Place pointers at both ends of the sorted array.",
+      "If the sum is too small, move the left pointer forward.",
+      "Calculate 2 + 8 to get a sum of 10.",
+      "Skip unnecessary pairs that do not meet the criteria."
+    ],
+    "videoStepsBn": [
+      "সাজানো array-এর দুই প্রান্তে দুটি পয়েন্টার রাখো।",
+      "যদি যোগফল খুব ছোট হয়, তবে বামদিকের পয়েন্টারটি সামনে বাড়াও।",
+      "2 + 8 যোগ করে ১০ পাও।",
+      "যেসব জোড়া শর্ত পূরণ করে না, সেগুলো এড়িয়ে যাও।"
+    ],
+    "extraExampleEn": "Given [1, 3, 5, 7] and target 8. Start with 1+7=8. Since 8 equals the target, we found the pair. No further checks are needed.",
+    "extraExampleBn": "[1, 3, 5, 7] এবং টার্গেট ৮ দেওয়া আছে। 1+7=8 দিয়ে শুরু করো। যেহেতু ৮ টার্গেট সমান, আমরা জোড়াটি পেয়ে গেছি। আর কোনো চেক করার প্রয়োজন নেই।",
+    "whenEn": "Use this when searching for pairs or subarrays in a sorted collection to avoid nested loops.",
+    "whenBn": "যখন কোনো সাজানো কালেকশনে জোড়া বা subarray খুঁজতে হয় এবং nested লুপ এড়াতে চাও, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "A common mistake is moving pointers incorrectly when the array is not sorted; ensure the data is ordered before applying this pattern.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো array সাজানো না থাকলে ভুলভাবে পয়েন্টার সরানো; এই প্যাটার্ন ব্যবহারের আগে নিশ্চিত করো যে ডেটা সাজানো আছে।"
+  },
+  "range-structures": {
+    "explanationEn": "Range structures allow you to answer queries about segments of an array efficiently by precomputing summaries. By storing cumulative data, you avoid recalculating the sum of elements repeatedly for every request. This approach is highly effective when the underlying data is static and you need to perform many range-based operations quickly.",
+    "explanationBn": "Range structures ব্যবহার করে কোনো অ্যারের নির্দিষ্ট অংশের হিসাব দ্রুত বের করা যায়। আগে থেকে সারাংশ বা সামারি তৈরি করে রাখলে বারবার যোগফল বের করার প্রয়োজন হয় না। যখন ডেটা পরিবর্তন হয় না এবং অনেকগুলো কুয়েরি থাকে, তখন এই পদ্ধতি খুব কার্যকর।",
+    "videoStepsEn": [
+      "Build summaries once for the entire array.",
+      "Calculate prefix totals as 2, 5, 10, 11.",
+      "Query the sum from index 1 to 2.",
+      "Compute prefix[3] minus prefix[1] to get 10 minus 2 equals 8."
+    ],
+    "videoStepsBn": [
+      "পুরো অ্যারের জন্য একবার সামারি তৈরি করো।",
+      "Prefix totals হিসেবে ২, ৫, ১০, ১১ বের করো।",
+      "ইনডেক্স ১ থেকে ২ পর্যন্ত যোগফল কুয়েরি করো।",
+      "Prefix[৩] থেকে Prefix[১] বিয়োগ করে ১০ মাইনাস ২ সমান ৮ পাও।"
+    ],
+    "extraExampleEn": "For [4, 1, 6], build a prefix array with a zero sentinel: [0, 4, 5, 11]. The sum from index 1 through 2 is prefix[3] − prefix[1] = 11 − 4 = 7. Each repeated range query now uses two stored totals.",
+    "extraExampleBn": "[৪, ১, ৬]-এর জন্য শুরুতে ০ রেখে prefix array বানাও: [০, ৪, ৫, ১১]। ইনডেক্স ১ থেকে ২ পর্যন্ত যোগফল prefix[3] − prefix[1] = ১১ − ৪ = ৭। এরপর প্রতিটি range query-তে দুটি রাখা যোগফলই যথেষ্ট।",
+    "whenEn": "Use this when you have a static array and need to perform many range sum queries.",
+    "whenBn": "যখন অ্যারেটি স্থির থাকে এবং অনেকগুলো রেঞ্জ সাম কুয়েরি করার প্রয়োজন হয়, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "A common mistake is using 1-based indexing for prefix arrays while the input array is 0-based; always align your indices carefully.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো ইনপুট অ্যারে ০-ভিত্তিক হলেও প্রিফিক্স অ্যারে ১-ভিত্তিক ব্যবহার করা; সবসময় ইনডেক্সগুলো সাবধানে মিলিয়ে নাও।"
+  },
+  "pattern-prefix-sum": {
+    "explanationEn": "Prefix sum is a technique where you store the cumulative sum of elements up to each index. This allows you to find the sum of any subarray by subtracting the prefix sum at the start from the prefix sum at the end. It transforms an O(N) summation task into an O(1) subtraction task.",
+    "explanationBn": "Prefix sum হলো এমন একটি কৌশল যেখানে প্রতিটি ইনডেক্স পর্যন্ত যোগফল জমা রাখা হয়। এর ফলে যেকোনো অংশের যোগফল বের করতে শেষ ইনডেক্সের যোগফল থেকে শুরুর আগের ইনডেক্সের যোগফল বিয়োগ করলেই হয়। এটি O(N) সময়ের কাজকে O(1) সময়ে নামিয়ে আনে।",
+    "videoStepsEn": [
+      "Set prefix[1] to 2.",
+      "Set prefix[2] to 2 plus 3 which is 5.",
+      "Set prefix[3] to 5 plus 5 which is 10.",
+      "Calculate sum from 1 to 2 by subtracting 10 minus 2 to get 8."
+    ],
+    "videoStepsBn": [
+      "Prefix[১]-এর মান ২ সেট করো।",
+      "Prefix[২]-এর মান ২ যোগ ৩ সমান ৫ সেট করো।",
+      "Prefix[৩]-এর মান ৫ যোগ ৫ সমান ১০ সেট করো।",
+      "১ থেকে ২ পর্যন্ত যোগফল পেতে ১০ থেকে ২ বিয়োগ করে ৮ পাও।"
+    ],
+    "extraExampleEn": "For array [1, 4, 2], prefix sums are [1, 5, 7]. To find the sum of index 1 to 2, subtract prefix[0] from prefix[2], which is 7 minus 1, resulting in 6.",
+    "extraExampleBn": "অ্যারে [১, ৪, ২]-এর জন্য Prefix sum হলো [১, ৫, ৭]। ইনডেক্স ১ থেকে ২ পর্যন্ত যোগফল পেতে Prefix[২] থেকে Prefix[০] বিয়োগ করো, অর্থাৎ ৭ মাইনাস ১ সমান ৬।",
+    "whenEn": "Use this when you need to calculate multiple range sums on a fixed array.",
+    "whenBn": "যখন একটি স্থির অ্যারেতে বারবার রেঞ্জ সাম বের করার প্রয়োজন হয়, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "Forgetting to handle the case where the range starts at index 0, which requires checking if the subtraction index is valid.",
+    "mistakeBn": "রেঞ্জ যদি ০ ইনডেক্স থেকে শুরু হয় তবে বিয়োগের সময় ইনডেক্স চেক করতে ভুলে যাওয়া একটি সাধারণ ভুল।"
+  },
+  "pattern-sliding-window": {
+    "explanationEn": "The sliding window technique maintains a running sum of a fixed-size subarray as it moves across the array. Instead of re-summing all elements, you subtract the element leaving the window and add the new element entering it. This keeps the operation efficient by reusing previous calculations.",
+    "explanationBn": "Sliding window কৌশলটি অ্যারের ওপর দিয়ে যাওয়ার সময় একটি নির্দিষ্ট দৈর্ঘ্যের অংশের চলমান যোগফল বজায় রাখে। নতুন করে সব যোগ না করে, উইন্ডো থেকে বেরিয়ে যাওয়া মানটি বিয়োগ করো এবং নতুন আসা মানটি যোগ করো। এটি পুরোনো হিসাব কাজে লাগিয়ে কাজটিকে দ্রুত করে।",
+    "videoStepsEn": [
+      "Calculate the first window sum as 2 plus 3 equals 5.",
+      "Drop 2 and add 5 to get 8.",
+      "Drop 3 and add 1 to get 6.",
+      "The resulting window sums are 5, 8, and 6."
+    ],
+    "videoStepsBn": [
+      "প্রথম উইন্ডোর যোগফল ২ যোগ ৩ সমান ৫ বের করো।",
+      "২ বাদ দাও এবং ৫ যোগ করে ৮ পাও।",
+      "৩ বাদ দাও এবং ১ যোগ করে ৬ পাও।",
+      "ফলাফল হিসেবে উইন্ডো সামগুলো হলো ৫, ৮ এবং ৬।"
+    ],
+    "extraExampleEn": "For array [1, 2, 3] with window size 2, the first sum is 1 plus 2 equals 3. Then drop 1 and add 3 to get 4. The window sums are 3 and 4.",
+    "extraExampleBn": "অ্যারে [১, ২, ৩]-এর জন্য উইন্ডো সাইজ ২ হলে, প্রথম যোগফল ১ যোগ ২ সমান ৩। এরপর ১ বাদ দিয়ে ৩ যোগ করলে ৪ পাওয়া যায়। উইন্ডো সামগুলো হলো ৩ এবং ৪।",
+    "whenEn": "Use this when you need to find sums or patterns in contiguous subarrays of a fixed length.",
+    "whenBn": "যখন নির্দিষ্ট দৈর্ঘ্যের পাশাপাশি থাকা সাব-অ্যারেগুলোর যোগফল বা প্যাটার্ন খোঁজার প্রয়োজন হয়, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "Failing to update the window boundaries correctly, which leads to accessing indices outside the array range.",
+    "mistakeBn": "উইন্ডোর সীমানা সঠিকভাবে আপডেট করতে ব্যর্থ হওয়া, যার ফলে অ্যারের সীমানার বাইরের ইনডেক্স অ্যাক্সেস হতে পারে।"
+  },
+  "pattern-kadane": {
+    "explanationEn": "Kadane's algorithm finds the maximum sum subarray by iterating through the array and deciding at each step whether to extend the existing subarray or start a new one. It works by keeping track of the current maximum sum ending at the current position and the global maximum found so far. This is an optimal way to solve the maximum subarray problem in linear time.",
+    "explanationBn": "Kadane's algorithm অ্যারের মধ্য দিয়ে যাওয়ার সময় প্রতিটি ধাপে সিদ্ধান্ত নেয় যে আগের সাব-অ্যারেটি বাড়াবে নাকি নতুন করে শুরু করবে। এটি বর্তমান ইনডেক্স পর্যন্ত সর্বোচ্চ যোগফল এবং এখন পর্যন্ত পাওয়া গ্লোবাল সর্বোচ্চ যোগফল ট্র্যাক করে। লিনিয়ার সময়ে সর্বোচ্চ সাব-অ্যারে সমস্যা সমাধানের এটিই সেরা উপায়।",
+    "videoStepsEn": [
+      "Set current sum to -2 and best sum to -2.",
+      "Restart at 3, updating best sum to 3.",
+      "Extend the subarray by adding -1 to 3 to get 2.",
+      "Extend the subarray by adding 4 to 2 to get 6."
+    ],
+    "videoStepsBn": [
+      "Current sum -২ এবং Best sum -২ সেট করো।",
+      "৩ থেকে নতুন করে শুরু করো এবং Best sum ৩ আপডেট করো।",
+      "৩-এর সাথে -১ যোগ করে সাব-অ্যারেটি বাড়াও, যোগফল ২।",
+      "২-এর সাথে ৪ যোগ করে সাব-অ্যারেটি বাড়াও, যোগফল ৬।"
+    ],
+    "extraExampleEn": "For array [1, -2, 3], start with 1. At -2, current is -1, so reset to 3. The maximum subarray is [3] with sum 3.",
+    "extraExampleBn": "অ্যারে [১, -২, ৩]-এর জন্য, ১ দিয়ে শুরু করো। -২-এ এসে কারেন্ট সাম -১ হয়, তাই ৩ থেকে নতুন করে শুরু করো। সর্বোচ্চ সাব-অ্যারে হলো [৩] যার যোগফল ৩।",
+    "whenEn": "Use this when you need to find the contiguous subarray with the largest sum in an array containing negative numbers.",
+    "whenBn": "যখন ঋণাত্মক সংখ্যাসহ কোনো অ্যারেতে সবচেয়ে বড় যোগফলের সাব-অ্যারেটি খোঁজার প্রয়োজন হয়, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "Resetting the current sum to 0 instead of the current element when starting a new subarray, which fails if all numbers are negative.",
+    "mistakeBn": "নতুন সাব-অ্যারে শুরু করার সময় কারেন্ট সাম ০-তে রিসেট করা একটি ভুল; যদি সব সংখ্যা ঋণাত্মক হয় তবে এটি কাজ করবে না।"
+  },
+  "pattern-subarray": {
+    "explanationEn": "A subarray is a contiguous segment of an array where elements must appear in their original relative order without gaps. By selecting a starting index and extending to adjacent elements, you maintain the property of contiguity. This method works because it preserves the physical sequence of the data structure. It is essential that you do not skip any elements between the start and end indices.",
+    "explanationBn": "Subarray হলো একটি অ্যারের অবিচ্ছিন্ন অংশ যেখানে উপাদানগুলো তাদের মূল ক্রম বজায় রাখে। একটি শুরুর ইনডেক্স বেছে নিয়ে পাশের উপাদানগুলো যোগ করলে অখণ্ডতা বজায় থাকে। এই পদ্ধতিটি কাজ করে কারণ এটি ডেটা স্ট্রাকচারের মূল ক্রম রক্ষা করে। মনে রাখতে হবে, শুরুর এবং শেষের ইনডেক্সের মাঝে কোনো উপাদান বাদ দেওয়া যাবে না।",
+    "videoStepsEn": [
+      "Select the starting point at index 1.",
+      "Extend the selection only to an immediate neighbor.",
+      "Confirm that [7, 2, 9] is a contiguous segment.",
+      "Verify that [4, 2] is not a valid subarray."
+    ],
+    "videoStepsBn": [
+      "ইনডেক্স ১ থেকে শুরু করো।",
+      "শুধুমাত্র পাশের উপাদানের দিকে প্রসারিত করো।",
+      "[৭, ২, ৯] একটি অবিচ্ছিন্ন অংশ তা নিশ্চিত করো।",
+      "[৪, ২] যে একটি বৈধ subarray নয় তা যাচাই করো।"
+    ],
+    "extraExampleEn": "Consider the array [1, 5, 3]. A subarray starting at index 0 and ending at index 1 is [1, 5]. This is valid because 1 and 5 are adjacent. The result is [1, 5].",
+    "extraExampleBn": "[১, ৫, ৩] অ্যারেটি বিবেচনা করো। ইনডেক্স ০ থেকে ১ পর্যন্ত subarray হলো [১, ৫]। এটি বৈধ কারণ ১ এবং ৫ পাশাপাশি অবস্থিত। ফলাফল হলো [১, ৫]।",
+    "whenEn": "Use this when you need to process a specific continuous range of data.",
+    "whenBn": "যখন ডেটার একটি নির্দিষ্ট অবিচ্ছিন্ন অংশ নিয়ে কাজ করার প্রয়োজন হয় তখন এটি ব্যবহার করো।",
+    "mistakeEn": "A common mistake is picking non-adjacent elements; always ensure indices are sequential.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো পাশাপাশি নেই এমন উপাদান বেছে নেওয়া; সবসময় নিশ্চিত করো যে ইনডেক্সগুলো ক্রমিক।"
+  },
+  "pattern-kmp": {
+    "explanationEn": "KMP pattern matching optimizes searching by avoiding redundant comparisons after a mismatch occurs. It uses a precomputed table to identify the longest prefix that is also a suffix, allowing the search to skip unnecessary steps. This method works by shifting the pattern based on known information rather than restarting from the beginning. It requires a preprocessing step to build the failure function table.",
+    "explanationBn": "KMP প্যাটার্ন ম্যাচিং মিল না পাওয়ার পর অপ্রয়োজনীয় তুলনা এড়িয়ে সার্চ অপ্টিমাইজ করে। এটি একটি টেবিল ব্যবহার করে সবচেয়ে বড় prefix খুঁজে বের করে যা suffix-ও বটে, ফলে সার্চে বাড়তি ধাপ এড়িয়ে যাওয়া যায়। এই পদ্ধতিটি শুরু থেকে পুনরায় না খুঁজে জানা তথ্যের ভিত্তিতে প্যাটার্ন সরিয়ে কাজ করে। এর জন্য আগে একটি ফেইলুর ফাংশন টেবিল তৈরি করতে হয়।",
+    "videoStepsEn": [
+      "The sequence ABA matches, but B mismatches C.",
+      "Reuse the matched prefix A and shift the pattern by 2 positions.",
+      "The pattern ABAC now matches starting at index 2.",
+      "Skip repeated comparisons by using the shift logic."
+    ],
+    "videoStepsBn": [
+      "ABA মিলেছে, কিন্তু B এবং C মেলেনি।",
+      "আগের মেলা prefix A ব্যবহার করে প্যাটার্নটি ২ ঘর সরিয়ে দাও।",
+      "এখন ইনডেক্স ২ থেকে ABAC প্যাটার্নটি মিলে যায়।",
+      "শিফট লজিক ব্যবহার করে বারবার তুলনা করা এড়িয়ে চলো।"
+    ],
+    "extraExampleEn": "Search for 'AA' in 'AAA'. First, 'AA' matches at index 0. Upon shifting, the second 'A' matches the start of the pattern, allowing us to find 'AA' again at index 1.",
+    "extraExampleBn": "'AAA'-এর মধ্যে 'AA' খোঁজো। প্রথমে ইনডেক্স ০-তে 'AA' মিলে যায়। প্যাটার্ন সরানোর পর, দ্বিতীয় 'A' প্যাটার্নের শুরুর সাথে মিলে যায়, ফলে ইনডেক্স ১-এ আবার 'AA' পাওয়া যায়।",
+    "whenEn": "Use this when searching for a pattern in a long string to improve efficiency.",
+    "whenBn": "দক্ষতা বাড়াতে বড় কোনো স্ট্রিংয়ে প্যাটার্ন খোঁজার সময় এটি ব্যবহার করো।",
+    "mistakeEn": "A common mistake is resetting the search pointer to the beginning after a mismatch; always use the shift table.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো মিল না পেলে সার্চ পয়েন্টারকে শুরুতে ফিরিয়ে নেওয়া; সবসময় শিফট টেবিল ব্যবহার করো।"
+  },
+  "pattern-anagram": {
+    "explanationEn": "Anagrams are words that contain the exact same characters with identical frequencies. By counting the occurrences of each character in both strings, you can determine if they are anagrams. This method works because the total count of each character is an invariant property of anagrams. It requires a frequency map or array to store the counts for comparison.",
+    "explanationBn": "Anagram হলো এমন শব্দ যাতে একই অক্ষরগুলো সমান সংখ্যকবার থাকে। উভয় স্ট্রিংয়ের প্রতিটি অক্ষরের সংখ্যা গুনে তুমি বুঝতে পারবে তারা anagram কি না। এই পদ্ধতিটি কাজ করে কারণ প্রতিটি অক্ষরের মোট সংখ্যা anagram-এর একটি অপরিবর্তনীয় বৈশিষ্ট্য। তুলনার জন্য প্রতিটি অক্ষরের সংখ্যা জমা রাখতে একটি ফ্রিকোয়েন্সি ম্যাপ বা অ্যারে প্রয়োজন।",
+    "videoStepsEn": [
+      "Count the occurrences of L and I.",
+      "Count the occurrences of S and I.",
+      "Compare the counts to see if both letter counts match.",
+      "Conclude that LISTEN and SILENT are anagrams."
+    ],
+    "videoStepsBn": [
+      "L এবং I-এর সংখ্যা গণনা করো।",
+      "S এবং I-এর সংখ্যা গণনা করো।",
+      "উভয় অক্ষরের সংখ্যা মিলে কি না তা তুলনা করো।",
+      "সিদ্ধান্ত নাও যে LISTEN এবং SILENT হলো anagram।"
+    ],
+    "extraExampleEn": "Check 'cat' and 'act'. 'c' appears once in both, 'a' appears once in both, and 't' appears once in both. Since all counts match, they are anagrams.",
+    "extraExampleBn": "'cat' এবং 'act' পরীক্ষা করো। 'c' উভয়টিতে একবার আছে, 'a' একবার আছে, এবং 't' একবার আছে। যেহেতু সব সংখ্যা মিলে যায়, তাই তারা anagram।",
+    "whenEn": "Use this when you need to verify if two strings are rearrangements of each other.",
+    "whenBn": "যখন দুটি স্ট্রিং একে অপরের পুনর্বিন্যাস কি না তা যাচাই করার প্রয়োজন হয় তখন এটি ব্যবহার করো।",
+    "mistakeEn": "A common mistake is ignoring case sensitivity; ensure all characters are normalized to the same case.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো অক্ষরের ছোট-বড় হাতের পার্থক্য উপেক্ষা করা; নিশ্চিত করো সব অক্ষর একই কেসে আছে।"
+  },
+  "pattern-palindrome": {
+    "explanationEn": "A palindrome is a sequence that reads the same forwards and backwards. By using two pointers, one at the start and one at the end, you compare characters while moving towards the center. This method works because a palindrome must have symmetric characters at equal distances from the center. The process stops when the pointers meet or cross, confirming the symmetry.",
+    "explanationBn": "Palindrome হলো এমন একটি ক্রম যা সামনে বা পেছন থেকে পড়লে একই শোনায়। দুটি পয়েন্টার ব্যবহার করে, একটি শুরুতে এবং একটি শেষে, তুমি মাঝখানের দিকে এগিয়ে যাওয়ার সময় অক্ষরগুলো তুলনা করো। এই পদ্ধতিটি কাজ করে কারণ palindrome-এর ক্ষেত্রে কেন্দ্র থেকে সমান দূরত্বে থাকা অক্ষরগুলো একই হতে হয়। পয়েন্টারগুলো মিলিত হলে বা একে অপরকে অতিক্রম করলে প্রক্রিয়াটি শেষ হয়, যা প্রতিসাম্য নিশ্চিত করে।",
+    "videoStepsEn": [
+      "Check if the first and last R match.",
+      "Check if the second and second-to-last A match.",
+      "Check if the third and third-to-last C match.",
+      "Confirm the pointers meet, indicating a palindrome."
+    ],
+    "videoStepsBn": [
+      "প্রথম এবং শেষ R মিলে কি না দেখো।",
+      "দ্বিতীয় এবং শেষ থেকে দ্বিতীয় A মিলে কি না দেখো।",
+      "তৃতীয় এবং শেষ থেকে তৃতীয় C মিলে কি না দেখো।",
+      "পয়েন্টারগুলো মিলিত হওয়া নিশ্চিত করো, যা palindrome নির্দেশ করে।"
+    ],
+    "extraExampleEn": "Check 'aba'. Pointer 1 at 'a', pointer 2 at 'a'. They match. Move pointers to the middle 'b'. Since they meet at 'b', it is a palindrome.",
+    "extraExampleBn": "'aba' পরীক্ষা করো। পয়েন্টার ১ 'a'-তে, পয়েন্টার ২ 'a'-তে। তারা মিলে যায়। পয়েন্টারগুলো মাঝখানের 'b'-তে সরিয়ে নাও। যেহেতু তারা 'b'-তে মিলিত হয়, এটি একটি palindrome।",
+    "whenEn": "Use this when checking for symmetry in strings or arrays.",
+    "whenBn": "স্ট্রিং বা অ্যারেতে প্রতিসাম্য বা symmetry যাচাই করার সময় এটি ব্যবহার করো।",
+    "mistakeEn": "A common mistake is stopping the loop too early; ensure the pointers fully meet at the center.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো লুপ খুব তাড়াতাড়ি বন্ধ করে দেওয়া; নিশ্চিত করো পয়েন্টারগুলো পুরোপুরি কেন্দ্রে মিলিত হয়েছে।"
+  },
+  "pattern-hash-map": {
+    "explanationEn": "A hash map stores key-value pairs. It hashes a key to choose a bucket, then checks keys in that bucket to return the matching value. This gives fast average lookup, but collisions mean a bucket can contain more than one key. Updating an existing key replaces its associated value.",
+    "explanationBn": "হ্যাশ ম্যাপ key ও value-এর জোড়া রাখে। key hash করে bucket বেছে নেয়, তারপর ওই bucket-এ key মিলিয়ে মান ফেরায়। সাধারণত lookup দ্রুত, তবে collision হলে এক bucket-এ একাধিক key থাকতে পারে। আগের key-তে নতুন মান দিলে সেই মান বদলে যায়।",
+    "videoStepsEn": [
+      "Insert Ada with value 90 into the map.",
+      "Insert Lin with value 82 into the map.",
+      "Look up the key Ada in the map.",
+      "Return the value 90 associated with Ada."
+    ],
+    "videoStepsBn": [
+      "Map-এ Ada-এর মান ৯০ ইনসার্ট করো।",
+      "Map-এ Lin-এর মান ৮২ ইনসার্ট করো।",
+      "Map থেকে Ada key-টি খুঁজে বের করো।",
+      "Ada-এর সাথে যুক্ত মান ৯০ রিটার্ন করো।"
+    ],
+    "extraExampleEn": "Input: {'ID1': 'Blue', 'ID2': 'Red'}. Step 1: Store 'Blue' at 'ID1'. Step 2: Store 'Red' at 'ID2'. Step 3: Access 'ID1' to get 'Blue'. The result is 'Blue'.",
+    "extraExampleBn": "Input: {'ID1': 'Blue', 'ID2': 'Red'}। ধাপ ১: 'ID1'-এ 'Blue' জমা করো। ধাপ ২: 'ID2'-এ 'Red' জমা করো। ধাপ ৩: 'ID1' অ্যাক্সেস করে 'Blue' পাও। ফলাফল হলো 'Blue'।",
+    "whenEn": "Use this when you need to retrieve specific values quickly using a unique label.",
+    "whenBn": "যখন কোনো অনন্য লেবেল ব্যবহার করে দ্রুত নির্দিষ্ট মান খুঁজে পাওয়ার প্রয়োজন হয়, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "Trying to use a mutable object as a key; always use immutable types like strings or numbers.",
+    "mistakeBn": "Mutable অবজেক্টকে key হিসেবে ব্যবহার করার চেষ্টা করা; সবসময় string বা number-এর মতো immutable টাইপ ব্যবহার করো।"
+  },
+  "pattern-frequency-map": {
+    "explanationEn": "A frequency map tracks how often each element appears in a collection. You iterate through the input, using each element as a key and incrementing its associated count value. This transforms a raw list into a summary of occurrences. It is essential for tasks like finding the most common item.",
+    "explanationBn": "Frequency map একটি তালিকায় প্রতিটি উপাদান কতবার আছে তা ট্র্যাক করে। ইনপুট ঘোরার সময় প্রতিটি উপাদানকে key হিসেবে ব্যবহার করে তার মান ১ করে বাড়াতে হয়। এটি একটি সাধারণ তালিকাকে ঘটনার সারসংক্ষেপে রূপান্তর করে। সবচেয়ে বেশিবার আসা উপাদান খোঁজার জন্য এটি অপরিহার্য।",
+    "videoStepsEn": [
+      "Read 2 and set its count to 1.",
+      "Read 2 again and update its count to 2.",
+      "Read 3 and set its count to 1.",
+      "Read 2 again and update its count to 3."
+    ],
+    "videoStepsBn": [
+      "২ পড়ো এবং এর count ১ করো।",
+      "আবার ২ পড়ো এবং এর count ২ করো।",
+      "৩ পড়ো এবং এর count ১ করো।",
+      "আবার ২ পড়ো এবং এর count ৩ করো।"
+    ],
+    "extraExampleEn": "Input: [5, 5, 1]. Step 1: Count 5 is 1. Step 2: Count 5 becomes 2. Step 3: Count 1 is 1. Result: {5: 2, 1: 1}.",
+    "extraExampleBn": "Input: [5, 5, 1]। ধাপ ১: ৫-এর count ১। ধাপ ২: ৫-এর count ২ হয়। ধাপ ৩: ১-এর count ১। ফলাফল: {৫: ২, ১: ১}।",
+    "whenEn": "Use this when you need to count occurrences of items in a dataset.",
+    "whenBn": "যখন ডেটাসেটে কোনো আইটেম কতবার আছে তা গোনার প্রয়োজন হয়, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "Forgetting to initialize the count to 0 before incrementing; always check if the key exists first.",
+    "mistakeBn": "মান বাড়ানোর আগে count ০ দিয়ে শুরু করতে ভুলে যাওয়া; সবসময় আগে চেক করো key-টি আছে কি না।"
+  },
+  "pattern-distinct": {
+    "explanationEn": "A set is a collection that automatically ignores duplicate entries. When you insert a value, the set checks if it already exists; if it does, the operation is ignored. This makes it perfect for filtering unique items from a list. The final size of the set represents the count of distinct elements.",
+    "explanationBn": "Set এমন একটি কালেকশন যা স্বয়ংক্রিয়ভাবে ডুপ্লিকেট মান বাদ দেয়। কোনো মান ইনসার্ট করার সময় set চেক করে সেটি আগে আছে কি না; থাকলে তা উপেক্ষা করে। তাই তালিকা থেকে অনন্য আইটেম ফিল্টার করতে এটি সেরা। Set-এর চূড়ান্ত আকারই হলো ভিন্ন উপাদানের সংখ্যা।",
+    "videoStepsEn": [
+      "Insert 2 into the set.",
+      "Attempt to insert 2 again, which adds nothing.",
+      "Insert 3 into the set.",
+      "Calculate the set size as 3."
+    ],
+    "videoStepsBn": [
+      "Set-এ ২ ইনসার্ট করো।",
+      "আবার ২ ইনসার্ট করার চেষ্টা করো, যা কিছুই যোগ করবে না।",
+      "Set-এ ৩ ইনসার্ট করো।",
+      "Set-এর সাইজ ৩ হিসেবে গণনা করো।"
+    ],
+    "extraExampleEn": "Input: [7, 8, 7]. Step 1: Insert 7. Step 2: Insert 8. Step 3: Insert 7, which is ignored. Result: {7, 8} with size 2.",
+    "extraExampleBn": "Input: [৭, ৮, ৭]। ধাপ ১: ৭ ইনসার্ট করো। ধাপ ২: ৮ ইনসার্ট করো। ধাপ ৩: ৭ ইনসার্ট করো, যা উপেক্ষা করা হবে। ফলাফল: {৭, ৮} যার সাইজ ২।",
+    "whenEn": "Use this when you only care about the presence of unique items, not their frequency.",
+    "whenBn": "যখন তোমার শুধু অনন্য আইটেমের উপস্থিতি প্রয়োজন, তাদের সংখ্যা নয়, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "Assuming the set maintains the original order of elements; sets are typically unordered.",
+    "mistakeBn": "Set উপাদানের মূল ক্রম বজায় রাখে বলে ধরে নেওয়া; set সাধারণত অগোছালো থাকে।"
+  },
+  "pattern-group-anagrams": {
+    "explanationEn": "Anagrams contain the same characters in different orders. By sorting the characters of a word alphabetically, you create a 'signature' that is identical for all anagrams. Using this signature as a key in a map allows you to group related words together. This method efficiently categorizes words without comparing every word to every other word.",
+    "explanationBn": "Anagram-এ একই অক্ষর ভিন্ন ক্রমে থাকে। একটি শব্দের অক্ষরগুলোকে বর্ণানুক্রমে সাজালে একটি 'signature' তৈরি হয়, যা সব anagram-এর জন্য একই। এই signature-কে map-এর key হিসেবে ব্যবহার করলে সম্পর্কিত শব্দগুলোকে এক দলে আনা যায়। এটি প্রতিটি শব্দকে অন্য সব শব্দের সাথে তুলনা না করেই কার্যকরভাবে ক্যাটাগরি করে।",
+    "videoStepsEn": [
+      "Sort eat to create signature aet.",
+      "Recognize tea has the same signature aet.",
+      "Group eat and tea together.",
+      "Process tan to form a different group."
+    ],
+    "videoStepsBn": [
+      "Signature aet তৈরির জন্য eat সর্ট করো।",
+      "বোঝো যে tea-এরও একই signature aet আছে।",
+      "eat এবং tea-কে একসাথে গ্রুপ করো।",
+      "আরেকটি গ্রুপ তৈরির জন্য tan প্রসেস করো।"
+    ],
+    "extraExampleEn": "Input: ['cat', 'act']. Step 1: Sort 'cat' to 'act'. Step 2: Sort 'act' to 'act'. Step 3: Both share 'act', so group them. Result: {'act': ['cat', 'act']}.",
+    "extraExampleBn": "Input: ['cat', 'act']। ধাপ ১: 'cat' সর্ট করে 'act' করো। ধাপ ২: 'act' সর্ট করে 'act' করো। ধাপ ৩: দুটিরই 'act' থাকায় গ্রুপ করো। ফলাফল: {'act': ['cat', 'act']}।",
+    "whenEn": "Use this when you need to cluster words that share the exact same character counts.",
+    "whenBn": "যখন একই অক্ষরের শব্দগুলোকে গুচ্ছবদ্ধ করার প্রয়োজন হয়, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "Comparing words directly instead of using the sorted signature; always use the signature as the key.",
+    "mistakeBn": "সর্ট করা signature ব্যবহার না করে সরাসরি শব্দ তুলনা করা; সবসময় signature-কে key হিসেবে ব্যবহার করো।"
+  },
+  "pattern-two-sum": {
+    "explanationEn": "The Two Sum pattern uses a hash map to store numbers as you iterate through an array. For every number, you calculate its complement by subtracting it from the target. If the complement exists in the map, you have found the pair. This approach is efficient because map lookups occur in constant time.",
+    "explanationBn": "Two Sum প্যাটার্নে একটি hash map ব্যবহার করে সংখ্যাগুলো জমা রাখা হয়। প্রতিটি সংখ্যার জন্য লক্ষ্য থেকে সেটি বিয়োগ করে দরকারি complement বের করা হয়। যদি সেই complement ম্যাপে থাকে, তবে জোড়াটি পাওয়া গেল। ম্যাপে দ্রুত খোঁজা যায় বলে এটি বেশ কার্যকর।",
+    "videoStepsEn": [
+      "Set target to 9 and identify 7 is needed after seeing 2.",
+      "Check the seen map to see if 7 exists.",
+      "Confirm that 2 plus 7 equals the target 9.",
+      "Return the indices 0 and 1 as the final answer."
+    ],
+    "videoStepsBn": [
+      "লক্ষ্য ৯ সেট করো এবং ২ দেখার পর ৭ দরকার তা চিহ্নিত করো।",
+      "seen map-এ ৭ আছে কি না তা পরীক্ষা করো।",
+      "নিশ্চিত করো যে ২ এবং ৭ যোগ করলে লক্ষ্য ৯ হয়।",
+      "ফলাফল হিসেবে ০ এবং ১ ইনডেক্স দুটি ফেরত দাও।"
+    ],
+    "extraExampleEn": "Target 6 with input [1, 5, 3]. First, store 1 in the map. Next, seeing 5, you find 6-5=1 exists in the map, so return indices 0 and 1.",
+    "extraExampleBn": "লক্ষ্য ৬ এবং ইনপুট [১, ৫, ৩]। প্রথমে ১ ম্যাপে রাখো। এরপর ৫ দেখলে, ৬-৫=১ ম্যাপে পাওয়া যায়, তাই ০ ও ১ ইনডেক্স ফেরত দাও।",
+    "whenEn": "Use this when you need to find two numbers that sum to a specific target in an unsorted array.",
+    "whenBn": "যখন একটি অগোছালো অ্যারেতে দুটি সংখ্যার যোগফল একটি নির্দিষ্ট লক্ষ্যমাত্রার সমান হতে হয়, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "A common mistake is adding the current number to the map before checking for the complement, which might incorrectly pair a number with itself.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো complement খোঁজার আগেই বর্তমান সংখ্যাটি ম্যাপে যোগ করা, যা ভুলবশত একই সংখ্যাকে নিজের সাথে জোড়া তৈরি করতে পারে।"
+  },
+  "pattern-monotonic-stack": {
+    "explanationEn": "A monotonic stack maintains elements in a strictly increasing or decreasing order. When a new element arrives, you pop elements from the stack that violate this order. This ensures that the stack always represents a specific relationship, like the next greater element. It is ideal for problems involving relative order.",
+    "explanationBn": "Monotonic stack উপাদানগুলোকে একটি নির্দিষ্ট ক্রমে সাজিয়ে রাখে। নতুন কোনো মান এলে, স্ট্যাক থেকে সেই মানগুলো সরিয়ে ফেলা হয় যা এই ক্রম নষ্ট করে। এটি নিশ্চিত করে যে স্ট্যাকটি সবসময় একটি নির্দিষ্ট সম্পর্ক বজায় রাখে। ক্রম সংক্রান্ত সমস্যার জন্য এটি আদর্শ।",
+    "videoStepsEn": [
+      "Push the value 2 onto the stack.",
+      "Since 5 is greater than 2, pop 2 and push 5.",
+      "Push 3 onto the stack below 5.",
+      "The values in the stack remain in decreasing order."
+    ],
+    "videoStepsBn": [
+      "২ মানটি স্ট্যাকে পুশ করো।",
+      "যেহেতু ৫, ২-এর চেয়ে বড়, তাই ২ পপ করে ৫ পুশ করো।",
+      "৫-এর নিচে ৩ পুশ করো।",
+      "স্ট্যাকের মানগুলো ছোট থেকে বড় ক্রমে সাজানো থাকে।"
+    ],
+    "extraExampleEn": "Input [4, 2, 5]. Push 4. Since 2 is smaller, push 2. Since 5 is larger, pop 2 and 4, then push 5. The stack now contains [5].",
+    "extraExampleBn": "ইনপুট [৪, ২, ৫]। ৪ পুশ করো। ২ ছোট হওয়ায় ২ পুশ করো। ৫ বড় হওয়ায় ২ ও ৪ পপ করে ৫ পুশ করো। এখন স্ট্যাকে শুধু [৫] আছে।",
+    "whenEn": "Use this when you need to find the next element that is larger or smaller than the current one.",
+    "whenBn": "যখন বর্তমান উপাদানের চেয়ে বড় বা ছোট পরবর্তী উপাদান খুঁজে বের করার প্রয়োজন হয়, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "Forgetting to handle the remaining elements in the stack after the loop finishes is a common error.",
+    "mistakeBn": "লুপ শেষ হওয়ার পর স্ট্যাকে অবশিষ্ট থাকা উপাদানগুলো প্রসেস করতে ভুলে যাওয়া একটি সাধারণ ভুল।"
+  },
+  "pattern-balanced-brackets": {
+    "explanationEn": "Balanced brackets require that every opening bracket has a corresponding closing bracket in the correct order. By using a stack, you push opening brackets and pop them when a matching closing bracket appears. If the stack is empty at the end, the string is balanced.",
+    "explanationBn": "Balanced bracket নিশ্চিত করে যে প্রতিটি খোলার জন্য একটি সঠিক বন্ধ bracket আছে। স্ট্যাক ব্যবহার করে, খোলা bracket পুশ করা হয় এবং মিল পাওয়া গেলে পপ করা হয়। শেষে স্ট্যাক খালি থাকলে সেটি balanced।",
+    "videoStepsEn": [
+      "Identify the opening { and push it onto the stack.",
+      "Identify the opening [ and push it onto the stack.",
+      "Identify the closing ] and pop the matching [ from the stack.",
+      "Identify the closing } and confirm the stack is empty."
+    ],
+    "videoStepsBn": [
+      "খোলা { চিহ্নিত করো এবং স্ট্যাকে পুশ করো।",
+      "খোলা [ চিহ্নিত করো এবং স্ট্যাকে পুশ করো।",
+      "বন্ধ ] চিহ্নিত করো এবং স্ট্যাক থেকে [ পপ করো।",
+      "বন্ধ } চিহ্নিত করো এবং নিশ্চিত করো স্ট্যাক খালি।"
+    ],
+    "extraExampleEn": "Input (()). Push (, push (. Pop ( for ), pop ( for ). Stack is empty, so it is balanced.",
+    "extraExampleBn": "ইনপুট (())। ( পুশ করো, আবার ( পুশ করো। ) এর জন্য ( পপ করো, আবার ) এর জন্য ( পপ করো। স্ট্যাক খালি, তাই এটি balanced।",
+    "whenEn": "Use this for parsing expressions or verifying syntax where nested structures must be closed correctly.",
+    "whenBn": "এক্সপ্রেশন পার্সিং বা সিনট্যাক্স যাচাই করার সময় যেখানে নেস্টেড স্ট্রাকচার সঠিকভাবে বন্ধ হওয়া জরুরি, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "A common mistake is trying to pop from an empty stack, which causes a runtime error when a closing bracket appears without an opener.",
+    "mistakeBn": "খালি স্ট্যাক থেকে পপ করার চেষ্টা করা একটি সাধারণ ভুল, যা কোনো খোলা bracket ছাড়াই বন্ধ bracket এলে রানটাইম এরর ঘটায়।"
+  },
+  "pattern-next-greater": {
+    "explanationEn": "This pattern identifies the first element to the right that is larger than the current element. You iterate through the array and use a stack to keep track of indices whose next greater element has not been found. When a larger element is found, you pop the index and record the result.",
+    "explanationBn": "এই প্যাটার্নটি ডানদিকের প্রথম বড় উপাদানটি খুঁজে বের করে। অ্যারেতে ঘোরার সময় স্ট্যাক ব্যবহার করে সেই ইনডেক্সগুলো রাখা হয় যাদের পরের বড় মান এখনো পাওয়া যায়নি। বড় মান পেলে ইনডেক্সটি পপ করে ফলাফল রেকর্ড করা হয়।",
+    "videoStepsEn": [
+      "The value 2 waits in the stack for a greater value.",
+      "Since 1 is smaller than 2, keep both in the stack.",
+      "The value 3 is greater, so pop 1 and 2 from the stack.",
+      "Record that 3 is the next greater for both 2 and 1."
+    ],
+    "videoStepsBn": [
+      "২ মানটি স্ট্যাকে বড় মানের অপেক্ষায় থাকে।",
+      "যেহেতু ১, ২-এর চেয়ে ছোট, তাই উভয়কেই স্ট্যাকে রাখো।",
+      "৩ বড় হওয়ায় স্ট্যাক থেকে ১ ও ২ পপ করো।",
+      "রেকর্ড করো যে ২ ও ১ উভয়ের জন্যই ৩ হলো পরের বড় মান।"
+    ],
+    "extraExampleEn": "For [5, 3, 4], 3 waits on the stack until 4 arrives, so its next greater value is 4. The 5 has no greater value to its right, so its answer is -1. The 4 also has no later greater value, giving -1.",
+    "extraExampleBn": "[৫, ৩, ৪]-এ ৩ stack-এ অপেক্ষা করে; ৪ এলে ৩-এর পরের বড় মান ৪ পাওয়া যায়। ৫-এর ডানে বড় মান নেই, তাই উত্তর -১। ৪-এর পরেও বড় মান নেই, তাই তার উত্তরও -১।",
+    "whenEn": "Use this when you need to find the first future value that exceeds the current value.",
+    "whenBn": "যখন বর্তমান মানের চেয়ে বড় প্রথম ভবিষ্যৎ মান খুঁজে বের করার প্রয়োজন হয়, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "A common mistake is failing to handle elements that never find a greater value, leaving them in the stack indefinitely.",
+    "mistakeBn": "যেসব উপাদানের জন্য বড় মান পাওয়া যায় না, তাদের হ্যান্ডেল করতে ভুলে যাওয়া একটি সাধারণ ভুল, যা স্ট্যাকে তাদের চিরকাল রেখে দেয়।"
+  },
+  "pattern-min-stack": {
+    "explanationEn": "A Min Stack tracks the current minimum value at every level of the stack. By storing a pair of (value, current_min) for each entry, we ensure that the minimum is always accessible in constant time. When a new value is pushed, we compare it with the current minimum to update the record for that level. This approach avoids re-scanning the stack when the top element is removed.",
+    "explanationBn": "একটি Min Stack প্রতিটি স্তরে বর্তমান সর্বনিম্ন মান ট্র্যাক করে। প্রতিটি এন্ট্রির জন্য (মান, বর্তমান_সর্বনিম্ন) জোড়া সংরক্ষণ করলে আমরা সবসময় ধ্রুবক সময়ে সর্বনিম্ন মান পেতে পারি। নতুন মান push করার সময় বর্তমান সর্বনিম্ন মানের সাথে তুলনা করে নতুন রেকর্ড তৈরি করা হয়। এতে স্ট্যাক থেকে মান সরানোর সময় পুনরায় স্ক্যান করার প্রয়োজন হয় না।",
+    "videoStepsEn": [
+      "Push 5 and set the current minimum to 5.",
+      "Push 2 and update the current minimum to 2.",
+      "Push 4 and keep the current minimum as 2.",
+      "Pop 4 and the current minimum remains 2."
+    ],
+    "videoStepsBn": [
+      "৫ push করো এবং বর্তমান সর্বনিম্ন ৫ সেট করো।",
+      "২ push করো এবং বর্তমান সর্বনিম্ন ২ আপডেট করো।",
+      "৪ push করো এবং বর্তমান সর্বনিম্ন ২ বজায় রাখো।",
+      "৪ pop করো এবং বর্তমান সর্বনিম্ন ২-ই থাকে।"
+    ],
+    "extraExampleEn": "Push 7, then 3, then 9. After pushing 7, min is 7. After pushing 3, min becomes 3. After pushing 9, min stays 3.",
+    "extraExampleBn": "৭, তারপর ৩, তারপর ৯ push করো। ৭ push করার পর সর্বনিম্ন ৭। ৩ push করার পর সর্বনিম্ন ৩ হয়। ৯ push করার পর সর্বনিম্ন ৩-ই থাকে।",
+    "whenEn": "Use this when you need to retrieve the minimum element of a stack in O(1) time.",
+    "whenBn": "যখন O(1) সময়ে স্ট্যাকের সর্বনিম্ন মান পাওয়ার প্রয়োজন হয় তখন এটি ব্যবহার করো।",
+    "mistakeEn": "Forgetting to update the minimum when pushing a smaller value; always compare the new value with the previous minimum.",
+    "mistakeBn": "ছোট মান push করার সময় সর্বনিম্ন মান আপডেট করতে ভুলে যাওয়া; সবসময় নতুন মানটিকে আগের সর্বনিম্ন মানের সাথে তুলনা করো।"
+  },
+  "pattern-window-maximum": {
+    "explanationEn": "The sliding window maximum problem uses a deque to store indices of potential maximums in decreasing order. As the window slides, we remove indices that fall out of the window range from the front. We also remove smaller elements from the back before adding a new element to maintain the decreasing property. This ensures the front of the deque always holds the maximum for the current window.",
+    "explanationBn": "স্লাইডিং উইন্ডো ম্যাক্সিমাম সমস্যায় একটি deque ব্যবহার করে সম্ভাব্য সর্বোচ্চ মানের ইনডেক্সগুলো ছোট থেকে বড় ক্রমে রাখা হয়। উইন্ডো সরার সাথে সাথে সীমার বাইরের ইনডেক্সগুলো সামনে থেকে বাদ দেওয়া হয়। নতুন মান যোগ করার আগে ছোট মানগুলো পেছন থেকে সরিয়ে ফেলা হয় যাতে ক্রমটি বজায় থাকে। এতে deque-এর সামনের মানটি সবসময় বর্তমান উইন্ডোর সর্বোচ্চ হয়।",
+    "videoStepsEn": [
+      "Analyze window [2,3] and identify 3 as the maximum.",
+      "Slide the window and discard the value 2.",
+      "Analyze window [5,1] and identify 5 as the maximum.",
+      "Collect the results 3, 5, and 5 for the windows."
+    ],
+    "videoStepsBn": [
+      "উইন্ডো [২,৩] বিশ্লেষণ করো এবং ৩-কে সর্বোচ্চ হিসেবে চিহ্নিত করো।",
+      "উইন্ডো সরাও এবং ২ মানটি বাদ দাও।",
+      "উইন্ডো [৫,১] বিশ্লেষণ করো এবং ৫-কে সর্বোচ্চ হিসেবে চিহ্নিত করো।",
+      "উইন্ডোগুলোর জন্য ৩, ৫ এবং ৫ ফলাফলগুলো সংগ্রহ করো।"
+    ],
+    "extraExampleEn": "For array [4, 2, 6] with window size 2. Window [4, 2] has max 4. Window [2, 6] has max 6. Results are 4 and 6.",
+    "extraExampleBn": "অ্যারে [৪, ২, ৬] এবং উইন্ডো সাইজ ২-এর জন্য। উইন্ডো [৪, ২]-এর সর্বোচ্চ ৪। উইন্ডো [২, ৬]-এর সর্বোচ্চ ৬। ফলাফল ৪ এবং ৬।",
+    "whenEn": "Use this when you need to find the maximum in every contiguous subarray of a fixed size.",
+    "whenBn": "যখন একটি নির্দিষ্ট সাইজের প্রতিটি সাব-অ্যারের সর্বোচ্চ মান বের করার প্রয়োজন হয় তখন এটি ব্যবহার করো।",
+    "mistakeEn": "Adding all elements to the deque without removing smaller ones; always maintain the decreasing order to keep the maximum at the front.",
+    "mistakeBn": "ছোট মানগুলো না সরিয়েই সব এলিমেন্ট deque-তে যোগ করা; সর্বোচ্চ মান সামনে রাখতে সবসময় ছোট থেকে বড় ক্রম বজায় রাখো।"
+  },
+  "pattern-first-negative": {
+    "explanationEn": "To find the first negative number in each window, we store the indices of all negative numbers in a queue. As the window slides, we check if the index at the front of the queue is still within the current window boundaries. If it is not, we remove it. The front of the queue then points to the first negative number for that window.",
+    "explanationBn": "প্রতিটি উইন্ডোতে প্রথম ঋণাত্মক সংখ্যা খুঁজে পেতে আমরা সব ঋণাত্মক সংখ্যার ইনডেক্স একটি কিউতে রাখি। উইন্ডো সরার সময় আমরা চেক করি কিউয়ের সামনের ইনডেক্সটি বর্তমান উইন্ডোর সীমার মধ্যে আছে কি না। না থাকলে সেটি সরিয়ে ফেলি। কিউয়ের সামনের ইনডেক্সটি তখন ওই উইন্ডোর প্রথম ঋণাত্মক সংখ্যা নির্দেশ করে।",
+    "videoStepsEn": [
+      "Analyze window [-2,3] and identify -2 as the first negative.",
+      "Slide the window and remove -2 as it leaves the range.",
+      "Update the first negative to -5 as it enters the window.",
+      "Record the first negative for each window position."
+    ],
+    "videoStepsBn": [
+      "উইন্ডো [-২,৩] বিশ্লেষণ করো এবং -২-কে প্রথম ঋণাত্মক হিসেবে চিহ্নিত করো।",
+      "উইন্ডো সরাও এবং -২ সীমার বাইরে চলে যাওয়ায় তা বাদ দাও।",
+      "প্রথম ঋণাত্মক মান -৫ আপডেট করো কারণ এটি উইন্ডোতে প্রবেশ করেছে।",
+      "প্রতিটি উইন্ডো পজিশনের জন্য প্রথম ঋণাত্মক মান রেকর্ড করো।"
+    ],
+    "extraExampleEn": "Array [1, -3, -4, 2] with window size 2. Window [1, -3] has -3. Window [-3, -4] has -3. Window [-4, 2] has -4.",
+    "extraExampleBn": "অ্যারে [১, -৩, -৪, ২] এবং উইন্ডো সাইজ ২। উইন্ডো [১, -৩]-এ -৩। উইন্ডো [-৩, -৪]-এ -৩। উইন্ডো [-৪, ২]-এ -৪।",
+    "whenEn": "Use this when you need to track the first occurrence of a specific condition within a sliding window.",
+    "whenBn": "যখন স্লাইডিং উইন্ডোর মধ্যে কোনো নির্দিষ্ট শর্তের প্রথম উপস্থিতি ট্র্যাক করার প্রয়োজন হয় তখন এটি ব্যবহার করো।",
+    "mistakeEn": "Failing to remove indices that are out of the window; always validate the index against the current window start.",
+    "mistakeBn": "উইন্ডোর বাইরের ইনডেক্সগুলো সরাতে ভুলে যাওয়া; সবসময় বর্তমান উইন্ডোর শুরুর সাথে ইনডেক্সটি যাচাই করো।"
+  },
+  "pattern-deque": {
+    "explanationEn": "A deque (double-ended queue) allows efficient insertion and deletion at both ends. This structure is ideal for maintaining a collection of candidates where we need to discard elements that are no longer useful. By removing elements from the back that are smaller than the current element, we keep the deque optimized for operations like finding maximums.",
+    "explanationBn": "একটি deque (double-ended queue) উভয় প্রান্তে কার্যকরভাবে ইনসার্ট ও ডিলিট করতে দেয়। এই কাঠামোটি এমন সব candidate রাখার জন্য আদর্শ যেখানে অপ্রয়োজনীয় এলিমেন্ট বাদ দেওয়া প্রয়োজন। বর্তমান এলিমেন্টের চেয়ে ছোট এলিমেন্টগুলোকে পেছন থেকে সরিয়ে আমরা deque-কে সর্বোচ্চ মান খোঁজার মতো অপারেশনের জন্য অপ্টিমাইজড রাখি।",
+    "videoStepsEn": [
+      "Push 2 onto the back of the deque.",
+      "Push 3 onto the back of the deque.",
+      "Push 1 onto the front of the deque.",
+      "Pop 3 from the back of the deque."
+    ],
+    "videoStepsBn": [
+      "deque-এর পেছনে ২ push করো।",
+      "deque-এর পেছনে ৩ push করো।",
+      "deque-এর সামনে ১ push করো।",
+      "deque-এর পেছন থেকে ৩ pop করো।"
+    ],
+    "extraExampleEn": "Start with empty deque. Push 10 at back, push 5 at back, pop 10 from front. Deque now contains [5].",
+    "extraExampleBn": "খালি deque দিয়ে শুরু করো। পেছনে ১০ push করো, পেছনে ৫ push করো, সামনে থেকে ১০ pop করো। deque-তে এখন [৫] আছে।",
+    "whenEn": "Use this when you need to maintain a dynamic set of elements where both ends are frequently accessed.",
+    "whenBn": "যখন এলিমেন্টের এমন একটি ডাইনামিক সেট বজায় রাখতে হয় যেখানে উভয় প্রান্ত ঘনঘন ব্যবহার করা হয় তখন এটি ব্যবহার করো।",
+    "mistakeEn": "Confusing push/pop operations between front and back; always track which end you are modifying.",
+    "mistakeBn": "সামনে এবং পেছনের push/pop অপারেশন গুলিয়ে ফেলা; সবসময় খেয়াল রাখো কোন প্রান্তটি পরিবর্তন করছো।"
+  },
+  "pattern-design-queue": {
+    "explanationEn": "A queue follows the First-In-First-Out principle using two pointers to track the start and end. The tail pointer marks where new elements are added, while the head pointer tracks the oldest element for removal. By incrementing these pointers, you efficiently manage data without shifting elements in memory.",
+    "explanationBn": "একটি queue ফার্স্ট-ইন-ফার্স্ট-আউট নীতি মেনে চলে এবং দুটি pointer ব্যবহার করে শুরু ও শেষ ট্র্যাক করে। tail pointer নতুন উপাদান যোগ করার জায়গা নির্দেশ করে, আর head pointer পুরনো উপাদান সরানোর জন্য ব্যবহৃত হয়। এই pointer-গুলো বাড়িয়ে মেমোরিতে উপাদান না সরিয়েই ডেটা ম্যানেজ করা যায়।",
+    "videoStepsEn": [
+      "Initialize both head and tail pointers at node A.",
+      "Advance the tail pointer to node B.",
+      "Advance the tail pointer to node C.",
+      "Advance the head pointer forward after a dequeue operation."
+    ],
+    "videoStepsBn": [
+      "head এবং tail pointer দুটোকেই A নোডে সেট করো।",
+      "tail pointer-কে B নোডে এগিয়ে নাও।",
+      "tail pointer-কে C নোডে এগিয়ে নাও।",
+      "dequeue করার পর head pointer-কে সামনে এগিয়ে নাও।"
+    ],
+    "extraExampleEn": "Enqueue 10 then 20. The tail moves to 20. Dequeue once, the head moves to 20.",
+    "extraExampleBn": "প্রথমে ১০ এবং পরে ২০ enqueue করো। tail ২০-এ চলে যাবে। একবার dequeue করলে head ২০-এ চলে আসবে।",
+    "whenEn": "Use this when you need to process items in the exact order they arrived.",
+    "whenBn": "যখন কোনো ডেটা যে ক্রমে এসেছে সেই ক্রমেই প্রসেস করার প্রয়োজন হয়, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "Forgetting to update the head pointer after removal, which leads to stale data access.",
+    "mistakeBn": "উপাদান সরানোর পর head pointer আপডেট করতে ভুলে যাওয়া, যার ফলে পুরনো ডেটা অ্যাক্সেস হতে পারে।"
+  },
+  "pattern-fast-slow": {
+    "explanationEn": "The fast and slow pointer technique uses two references moving at different speeds to traverse a data structure. The slow pointer moves one step at a time, while the fast pointer moves two steps. This difference in speed allows you to find the middle or detect patterns in a single pass.",
+    "explanationBn": "ফাস্ট ও স্লো পয়েন্টার পদ্ধতিতে দুটি রেফারেন্স ভিন্ন গতিতে ডেটা স্ট্রাকচার অতিক্রম করে। স্লো পয়েন্টার এক ধাপ এবং ফাস্ট পয়েন্টার দুই ধাপ করে এগোয়। এই গতির পার্থক্যের কারণে একবারে পুরো স্ট্রাকচার ঘুরে মাঝখানের অবস্থান বা প্যাটার্ন খুঁজে পাওয়া যায়।",
+    "videoStepsEn": [
+      "Set both fast and slow pointers to the first node 1.",
+      "Move slow by 1 node and fast by 2 nodes.",
+      "Slow pointer reaches 3 while fast pointer reaches 5.",
+      "Stop the slow pointer at the middle node 3."
+    ],
+    "videoStepsBn": [
+      "fast এবং slow pointer দুটোকেই প্রথম নোড ১-এ সেট করো।",
+      "slow pointer ১ node এবং fast pointer ২ node এগোয়।",
+      "slow pointer ৩-এ এবং fast pointer ৫-এ পৌঁছাবে।",
+      "মাঝখানের নোড ৩-এ slow pointer থামিয়ে দাও।"
+    ],
+    "extraExampleEn": "In list 10→20→30→40, slow moves to 20 while fast moves to 30. Then slow moves to 30 while fast reaches the end.",
+    "extraExampleBn": "১০→২০→৩০→৪০ তালিকায়, slow ২০-এ এবং fast ৩০-এ যাবে। এরপর slow ৩০-এ যাবে এবং fast শেষে পৌঁছাবে।",
+    "whenEn": "Use this to find the middle of a linked list or detect cycles efficiently.",
+    "whenBn": "লিঙ্কড লিস্টের মাঝখানের অংশ খুঁজে বের করতে বা cycle শনাক্ত করতে এটি ব্যবহার করো।",
+    "mistakeEn": "Not checking if the fast pointer or its next node is null, which causes runtime errors.",
+    "mistakeBn": "fast pointer বা তার পরের নোড null কি না তা চেক না করা, যা রানটাইম এরর তৈরি করে।"
+  },
+  "pattern-reverse-list": {
+    "explanationEn": "Reversing a linked list involves changing the direction of the next pointers for every node. You maintain a reference to the previous node and update the current node's next pointer to point backward. This process continues until the entire list is reoriented.",
+    "explanationBn": "একটি লিঙ্কড লিস্ট রিভার্স করার মানে হলো প্রতিটি নোডের next pointer-এর দিক বদলে দেওয়া। আগের নোডের রেফারেন্স ধরে রেখে current নোডের next pointer-কে পেছনের দিকে ঘুরিয়ে দিতে হয়। পুরো লিস্ট উল্টে না যাওয়া পর্যন্ত এই প্রক্রিয়া চলতে থাকে।",
+    "videoStepsEn": [
+      "Detach node 1 from its next node and point it to null.",
+      "Redirect node 2's next pointer to point to node 1.",
+      "Redirect node 3's next pointer to point to node 2.",
+      "Set the new head of the list to node 3."
+    ],
+    "videoStepsBn": [
+      "১ নম্বর নোডকে তার পরের নোড থেকে বিচ্ছিন্ন করে null-এর দিকে নির্দেশ করো।",
+      "২ নম্বর নোডের next pointer-কে ১ নম্বর নোডের দিকে ঘুরিয়ে দাও।",
+      "৩ নম্বর নোডের next pointer-কে ২ নম্বর নোডের দিকে ঘুরিয়ে দাও।",
+      "লিস্টের নতুন head হিসেবে ৩ নম্বর নোডকে সেট করো।"
+    ],
+    "extraExampleEn": "For 5→10, redirect 5 to null, then redirect 10 to 5. The list is now 10→5.",
+    "extraExampleBn": "৫→১০ এর জন্য, ৫-কে null-এর দিকে এবং ১০-কে ৫-এর দিকে ঘুরিয়ে দাও। এখন লিস্টটি ১০→৫।",
+    "whenEn": "Use this when you need to process a linked list in reverse order.",
+    "whenBn": "যখন কোনো লিঙ্কড লিস্ট উল্টো দিক থেকে প্রসেস করার প্রয়োজন হয়, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "Losing the reference to the next node before updating the current pointer, which breaks the list.",
+    "mistakeBn": "current pointer আপডেট করার আগে পরের নোডের রেফারেন্স হারিয়ে ফেলা, যা পুরো লিস্ট ভেঙে দেয়।"
+  },
+  "pattern-cycle-detection": {
+    "explanationEn": "Cycle detection identifies if a linked list loops back on itself by using two pointers moving at different speeds. If the fast pointer eventually catches up to the slow pointer, a cycle exists. If the fast pointer reaches the end, the list is linear.",
+    "explanationBn": "সাইকেল ডিটেকশন পদ্ধতিতে দুটি ভিন্ন গতির পয়েন্টার ব্যবহার করে দেখা হয় লিঙ্কড লিস্টে কোনো লুপ আছে কি না। যদি fast pointer একসময় slow pointer-কে ধরে ফেলে, তবে cycle আছে। যদি fast pointer শেষে পৌঁছে যায়, তবে লিস্টটি লিনিয়ার।",
+    "videoStepsEn": [
+      "Initialize both slow and fast pointers at node 1.",
+      "Move slow to 2 and fast to 3.",
+      "Fast pointer wraps around the cycle.",
+      "The pointers eventually meet at the same node."
+    ],
+    "videoStepsBn": [
+      "slow এবং fast pointer দুটোকেই ১ নম্বর নোডে সেট করো।",
+      "slow-কে ২-এ এবং fast-কে ৩-এ নাও।",
+      "fast pointer সাইকেলের ভেতর দিয়ে ঘুরে আসবে।",
+      "পয়েন্টার দুটো একসময় একই নোডে মিলিত হবে।"
+    ],
+    "extraExampleEn": "In the cycle 1 → 2 → 1, start both pointers at 1. After one round, slow is at 2 and fast is at 1; after the next round both are at 1. Their meeting shows that the list contains a cycle.",
+    "extraExampleBn": "১ → ২ → ১ চক্রে দুই pointer-ই ১ থেকে শুরু করে। এক ধাপ পরে slow থাকে ২-এ, fast থাকে ১-এ; পরের ধাপে দুজনই ১-এ মিলে যায়। এই মিলন দেখায় যে তালিকায় cycle আছে।",
+    "whenEn": "Use this to prevent infinite loops when traversing potentially circular data structures.",
+    "whenBn": "সম্ভাব্য বৃত্তাকার ডেটা স্ট্রাকচার অতিক্রম করার সময় ইনফিনিট লুপ এড়াতে এটি ব্যবহার করো।",
+    "mistakeEn": "Moving fast twice without first checking that the next node exists can crash on an acyclic list; check for null before each fast move.",
+    "mistakeBn": "fast pointer-কে দুই ঘর সরানোর আগে পরের node আছে কি না না দেখলে cycle-হীন তালিকায় error হবে; প্রতিবার null পরীক্ষা করো।"
+  },
+  "pattern-merge-lists": {
+    "explanationEn": "Merging sorted lists involves comparing the current head nodes of two lists and selecting the smaller value to append to the result. By repeatedly picking the minimum, you maintain the sorted order in the new list. This method works efficiently because it only requires a single pass through both input lists. It is essential that both input lists are already sorted for this approach to function correctly.",
+    "explanationBn": "দুটি সাজানো তালিকার মাথা তুলনা করে ছোট মানটি নতুন তালিকায় যুক্ত করাই হলো মার্জ করার মূল কৌশল। বারবার ছোট মানটি বেছে নিলে নতুন তালিকায় সাজানো ক্রম বজায় থাকে। এই পদ্ধতিটি কার্যকর কারণ এতে উভয় তালিকার ওপর দিয়ে মাত্র একবার গেলেই চলে। এই কৌশলটি কাজ করার জন্য ইনপুট তালিকা দুটি আগে থেকেই সাজানো থাকা জরুরি।",
+    "videoStepsEn": [
+      "Compare the head values 1 and 2.",
+      "Select 1, then compare the next value 3 with 2.",
+      "Select 2, then compare 3 with 4.",
+      "The final merged list is 1→2→3→4→5→6."
+    ],
+    "videoStepsBn": [
+      "১ এবং ২ মান দুটির তুলনা করো।",
+      "১ বেছে নাও, তারপর ৩ এবং ২-এর তুলনা করো।",
+      "২ বেছে নাও, তারপর ৩ এবং ৪-এর তুলনা করো।",
+      "চূড়ান্ত মার্জ করা তালিকাটি হলো ১→২→৩→৪→৫→৬।"
+    ],
+    "extraExampleEn": "Merge list 1→5 and 2→6. First, compare 1 and 2, picking 1. Next, compare 5 and 2, picking 2. Finally, compare 5 and 6, picking 5 then 6, resulting in 1→2→5→6.",
+    "extraExampleBn": "১→৫ এবং ২→৬ তালিকা দুটি মার্জ করো। প্রথমে ১ ও ২ তুলনা করে ১ নাও। এরপর ৫ ও ২ তুলনা করে ২ নাও। সবশেষে ৫ ও ৬ তুলনা করে ৫ এবং ৬ নাও, ফলে ফলাফল হবে ১→২→৫→৬।",
+    "whenEn": "Use this when you need to combine two already sorted sequences into one sorted sequence.",
+    "whenBn": "যখন দুটি সাজানো সিকোয়েন্সকে একটি সাজানো সিকোয়েন্সে রূপান্তর করতে হয়, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "A common mistake is forgetting to handle the remaining elements when one list is exhausted; always append the rest of the non-empty list.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো একটি তালিকা শেষ হয়ে গেলে বাকি উপাদানগুলো যোগ করতে ভুলে যাওয়া; সবসময় অবশিষ্ট তালিকাটি ফলাফলের শেষে জুড়ে দাও।"
+  },
+  "pattern-list-pointers": {
+    "explanationEn": "Linked list pointer techniques rely on maintaining temporary references to nodes before modifying their next pointers. This prevents losing access to the rest of the list when a link is broken. By carefully updating these pointers, you can traverse or manipulate the structure safely. Always ensure you have a reference to the next node before overwriting a pointer.",
+    "explanationBn": "লিংকড লিস্টের পয়েন্টার টেকনিকগুলো মূলত নোডের next পয়েন্টার বদলানোর আগে একটি অস্থায়ী রেফারেন্স ধরে রাখার ওপর নির্ভর করে। এটি নিশ্চিত করে যে লিংক ভেঙে গেলেও তালিকার বাকি অংশ হারিয়ে না যায়। পয়েন্টারগুলো সতর্কতার সাথে আপডেট করলে কাঠামোটি নিরাপদে পরিবর্তন করা যায়। পয়েন্টার ওভাররাইট করার আগে সবসময় পরের নোডের রেফারেন্সটি সংরক্ষণ করো।",
+    "videoStepsEn": [
+      "Set the current pointer to node 1.",
+      "Move the current pointer to the next node 2.",
+      "Advance the pointer to node 3.",
+      "Stop the traversal at the last node 4."
+    ],
+    "videoStepsBn": [
+      "কারেন্ট পয়েন্টারটিকে ১ নম্বর নোডে সেট করো।",
+      "কারেন্ট পয়েন্টারটিকে পরের নোড ২-এ সরিয়ে নাও।",
+      "পয়েন্টারটিকে ৩ নম্বর নোডে এগিয়ে নাও।",
+      "সবশেষে ৪ নম্বর নোডে ট্রাভার্সাল থামাও।"
+    ],
+    "extraExampleEn": "To traverse 10→20→30, start at 10. Move to 20, then move to 30. Stop at 30 as it is the last node.",
+    "extraExampleBn": "১০→২০→৩০ ট্রাভার্স করতে, ১০ থেকে শুরু করো। ২০-এ যাও, তারপর ৩০-এ যাও। ৩০-এ থামো কারণ এটিই শেষ নোড।",
+    "whenEn": "Use this when you need to iterate through or reverse a linked list without losing data.",
+    "whenBn": "যখন ডেটা না হারিয়ে লিংকড লিস্ট ট্রাভার্স বা রিভার্স করতে হয়, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "A common mistake is updating the current pointer before saving the next node, which causes a memory leak or lost list; always save the next node first.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো পরের নোডটি সেভ করার আগেই কারেন্ট পয়েন্টার আপডেট করা, যা মেমোরি লিক বা তালিকা হারানোর কারণ হতে পারে; সবসময় আগে পরের নোডটি সেভ করো।"
+  },
+  "pattern-tree-traversal": {
+    "explanationEn": "Binary tree traversal involves visiting every node in a tree systematically based on a specific order. Preorder, inorder, and postorder define the sequence in which the root and subtrees are processed. This method works by recursively visiting children until all nodes are accounted for. It is essential to define the base case to stop the recursion at null nodes.",
+    "explanationBn": "বাইনারি ট্রি ট্রাভার্সাল হলো একটি নির্দিষ্ট নিয়ম মেনে ট্রির প্রতিটি নোড পরিদর্শন করা। Preorder, inorder এবং postorder নির্ধারণ করে কোন ক্রমে রুট এবং সাবট্রিগুলো প্রসেস হবে। এই পদ্ধতিটি রিকার্সিভলি চাইল্ড নোডগুলো পরিদর্শন করে কাজ করে। রিকার্সন থামানোর জন্য null নোডে বেস কেস নির্ধারণ করা জরুরি।",
+    "videoStepsEn": [
+      "Start the in-order traversal at the leftmost node 1.",
+      "Visit node 3 after processing the left subtree.",
+      "Visit node 6.",
+      "Finally, visit the root node 8."
+    ],
+    "videoStepsBn": [
+      "সবচেয়ে বামের নোড ১ থেকে ইন-অর্ডার ট্রাভার্সাল শুরু করো।",
+      "বাম সাবট্রি প্রসেস করার পর ৩ নম্বর নোডটি ভিজিট করো।",
+      "৬ নম্বর নোডটি ভিজিট করো।",
+      "সবশেষে রুট নোড ৮ ভিজিট করো।"
+    ],
+    "extraExampleEn": "For a tree with root 5, left child 2, and right child 7, the inorder traversal visits 2, then 5, then 7. This follows the left-root-right pattern.",
+    "extraExampleBn": "৫ রুট, ২ বাম চাইল্ড এবং ৭ ডান চাইল্ড বিশিষ্ট ট্রির ক্ষেত্রে, ইন-অর্ডার ট্রাভার্সাল ২, তারপর ৫, তারপর ৭ ভিজিট করবে। এটি left-root-right প্যাটার্ন অনুসরণ করে।",
+    "whenEn": "Use this when you need to search, print, or copy all nodes in a tree structure.",
+    "whenBn": "যখন ট্রির সব নোড সার্চ, প্রিন্ট বা কপি করার প্রয়োজন হয়, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "A common mistake is confusing the order of operations; always remember that inorder is left-root-right, while preorder is root-left-right.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো অপারেশনের ক্রম গুলিয়ে ফেলা; সবসময় মনে রেখো যে inorder হলো left-root-right, আর preorder হলো root-left-right।"
+  },
+  "pattern-lca": {
+    "explanationEn": "The Lowest Common Ancestor (LCA) is the deepest node in a tree that serves as an ancestor to two specified target nodes. The method works by tracing paths from the root to both targets and identifying the last node where the paths diverge. This is effective for hierarchical data where relationships are defined by parent-child links. You must ensure the tree is rooted to define ancestry correctly.",
+    "explanationBn": "Lowest Common Ancestor (LCA) হলো ট্রির সেই গভীরতম নোড যা দুটি নির্দিষ্ট টার্গেট নোডের ancestor হিসেবে কাজ করে। রুট থেকে টার্গেট নোড পর্যন্ত পথ খুঁজে এবং যেখানে পথগুলো আলাদা হয় তার আগের নোডটি চিহ্নিত করে এই পদ্ধতি কাজ করে। এটি সেই সব হায়ারার্কিকাল ডেটার জন্য কার্যকর যেখানে সম্পর্কগুলো parent-child লিংকের মাধ্যমে নির্ধারিত হয়। ancestor সঠিকভাবে সংজ্ঞায়িত করতে ট্রি-এর রুট থাকা জরুরি।",
+    "videoStepsEn": [
+      "Find the ancestor path for nodes 1 and 6.",
+      "Observe that the path from 1 reaches node 3.",
+      "Observe that the path from 6 also reaches node 3.",
+      "Identify node 3 as the lowest common ancestor."
+    ],
+    "videoStepsBn": [
+      "১ এবং ৬ নোডের জন্য ancestor পাথ খুঁজে বের করো।",
+      "লক্ষ্য করো যে ১ থেকে আসা পাথটি ৩ নম্বর নোডে পৌঁছায়।",
+      "লক্ষ্য করো যে ৬ থেকে আসা পাথটিও ৩ নম্বর নোডে পৌঁছায়।",
+      "৩ নম্বর নোডটিকে lowest common ancestor হিসেবে চিহ্নিত করো।"
+    ],
+    "extraExampleEn": "In a tree where 4 and 5 are children of 2, and 2 is a child of 1, the LCA of 4 and 5 is 2. The paths are 1-2-4 and 1-2-5, diverging at 2.",
+    "extraExampleBn": "একটি ট্রিতে ৪ ও ৫ যদি ২-এর চাইল্ড হয় এবং ২ যদি ১-এর চাইল্ড হয়, তবে ৪ ও ৫-এর LCA হলো ২। পাথগুলো হলো ১-২-৪ এবং ১-২-৫, যা ২-এ এসে আলাদা হয়েছে।",
+    "whenEn": "Use this when you need to find the relationship or meeting point between two nodes in a tree.",
+    "whenBn": "যখন ট্রির দুটি নোডের মধ্যে সম্পর্ক বা মিলনস্থল খুঁজে বের করার প্রয়োজন হয়, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "A common mistake is assuming the LCA must be one of the target nodes; it can be a parent or grandparent node instead.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো এটা ভাবা যে LCA অবশ্যই টার্গেট নোডগুলোর একটি হতে হবে; এটি আসলে তাদের parent বা grandparent নোডও হতে পারে।"
+  },
+  "pattern-tree-construction": {
+    "explanationEn": "Tree construction uses traversal sequences like Preorder and Inorder to determine the structure of a binary tree. The first element of Preorder always identifies the root, while Inorder helps split the remaining elements into left and right subtrees. By recursively applying this logic to sub-segments, you can uniquely reconstruct the original tree. This method requires that the tree contains no duplicate values.",
+    "explanationBn": "Tree construction-এ Preorder ও Inorder traversal ব্যবহার করে binary tree-এর গঠন বের করা হয়। Preorder-এর প্রথম মানটি সবসময় root হয়, আর Inorder ব্যবহার করে বাকি মানগুলোকে বাম ও ডান subtree-তে ভাগ করা হয়। এভাবে বারবার ছোট অংশে এই নিয়ম প্রয়োগ করলে মূল tree-টি পাওয়া যায়। এই পদ্ধতির জন্য tree-তে কোনো duplicate মান থাকা যাবে না।",
+    "videoStepsEn": [
+      "Identify 8 as the root node.",
+      "Place 3 to the left and 10 to the right of 8.",
+      "Attach 1 and 6 as children of 3.",
+      "Attach 14 as the right child of 10."
+    ],
+    "videoStepsBn": [
+      "৮-কে root node হিসেবে চিহ্নিত করো।",
+      "৮-এর বামে ৩ এবং ডানে ১০ বসাও।",
+      "৩-এর child হিসেবে ১ এবং ৬ যুক্ত করো।",
+      "১০-এর ডান child হিসেবে ১৪ যুক্ত করো।"
+    ],
+    "extraExampleEn": "Given Preorder [5, 2] and Inorder [2, 5], 5 is the root. Since 2 appears before 5 in Inorder, 2 becomes the left child of 5. The final tree has 5 as root and 2 as its left child.",
+    "extraExampleBn": "Preorder [৫, ২] এবং Inorder [২, ৫] দেওয়া থাকলে, ৫ হলো root। Inorder-এ ২ সংখ্যাটি ৫-এর আগে থাকায়, ২ হবে ৫-এর বাম child। চূড়ান্ত tree-তে ৫ root এবং ২ তার বাম child হিসেবে থাকবে।",
+    "whenEn": "Use this when you need to rebuild a tree structure from traversal logs.",
+    "whenBn": "যখন traversal log থেকে tree-এর গঠন পুনরায় তৈরি করতে হয়, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "Confusing the root position in Preorder; always remember the root is the first element, not the last.",
+    "mistakeBn": "Preorder-এ root-এর অবস্থান নিয়ে বিভ্রান্ত হওয়া; মনে রাখবে root সবসময় প্রথম উপাদান, শেষটি নয়।"
+  },
+  "pattern-divide-conquer": {
+    "explanationEn": "Divide and Conquer breaks a complex problem into smaller, identical sub-problems that are easier to solve. Once these sub-problems are solved independently, their results are merged to form the final answer. This approach is highly efficient for sorting and searching tasks. It relies on the base case being simple enough to solve directly.",
+    "explanationBn": "Divide and Conquer একটি জটিল সমস্যাকে ছোট ও একই ধরনের উপ-সমস্যায় ভাগ করে, যা সমাধান করা সহজ। ছোট অংশগুলো স্বাধীনভাবে সমাধান করার পর, সেগুলোর ফলাফল একত্রিত করে মূল উত্তর পাওয়া যায়। sorting বা searching-এর ক্ষেত্রে এই পদ্ধতি খুব কার্যকর। এটি তখনই কাজ করে যখন base case-টি সরাসরি সমাধান করার মতো সহজ হয়।",
+    "videoStepsEn": [
+      "Start with an array of four values.",
+      "Split the array into two halves.",
+      "Solve the tiny parts individually.",
+      "Combine the sorted halves into one result."
+    ],
+    "videoStepsBn": [
+      "চারটি মান নিয়ে একটি array শুরু করো।",
+      "Array-টিকে দুই ভাগে ভাগ করো।",
+      "ছোট অংশগুলোকে আলাদাভাবে সমাধান করো।",
+      "সাজানো অংশগুলোকে মিলিয়ে একটি চূড়ান্ত ফলাফল তৈরি করো।"
+    ],
+    "extraExampleEn": "To sort [3, 1], split it into [3] and [1]. Since both are single elements, they are already sorted. Merging them results in [1, 3].",
+    "extraExampleBn": "[৩, ১] সাজাতে, এটিকে [৩] এবং [১]-এ ভাগ করো। যেহেতু দুটিই একক উপাদান, তাই তারা আগেই সাজানো। এদের মেলালে ফলাফল হয় [১, ৩]।",
+    "whenEn": "Use this when a problem can be split into independent, smaller versions of itself.",
+    "whenBn": "যখন কোনো সমস্যাকে তার নিজেরই ছোট ও স্বাধীন অংশে ভাগ করা যায়, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "Forgetting to handle the base case, which leads to infinite recursion; always define a stopping condition.",
+    "mistakeBn": "Base case হ্যান্ডেল করতে ভুলে যাওয়া, যার ফলে infinite recursion হয়; সবসময় একটি থামার শর্ত নির্ধারণ করো।"
+  },
+  "pattern-tree-recursion": {
+    "explanationEn": "Tree recursion processes a node by first recursively solving its children and then using those results to compute the current node's value. This pattern is ideal for problems like calculating tree height, depth, or path sums. The process flows from the leaves upward to the root. It requires a clear base case, usually returning a value for null nodes.",
+    "explanationBn": "Tree recursion-এ একটি নোড প্রসেস করার সময় প্রথমে তার child-দের recursively সমাধান করা হয় এবং সেই ফলাফল ব্যবহার করে বর্তমান নোডের মান বের করা হয়। tree-এর উচ্চতা, গভীরতা বা path sum বের করার জন্য এই পদ্ধতি আদর্শ। প্রক্রিয়াটি leaf থেকে root-এর দিকে যায়। এর জন্য একটি স্পষ্ট base case প্রয়োজন, যা সাধারণত null নোডের জন্য মান রিটার্ন করে।",
+    "videoStepsEn": [
+      "Solve the root by processing its children.",
+      "Recurse down to the left and right subtrees.",
+      "Leaves return base answers to their parents.",
+      "Combine child values to calculate the parent node."
+    ],
+    "videoStepsBn": [
+      "Child-দের প্রসেস করে root-এর সমাধান বের করো।",
+      "বাম ও ডান subtree-তে recursion চালাও।",
+      "Leaf-গুলো তাদের parent-কে base answer ফেরত দেয়।",
+      "Child-এর মানগুলো মিলিয়ে parent নোডের হিসাব করো।"
+    ],
+    "extraExampleEn": "To count nodes in a tree with root 1 and children 2 and 3, the function returns 1 + count(2) + count(3). Since count(2) and count(3) are 1, the total is 1 + 1 + 1 = 3.",
+    "extraExampleBn": "১ root এবং ২ ও ৩ child বিশিষ্ট tree-তে নোড গুনতে, function-টি ১ + count(২) + count(৩) রিটার্ন করে। যেহেতু count(২) এবং count(৩) হলো ১, তাই মোট মান ১ + ১ + ১ = ৩।",
+    "whenEn": "Use this when the answer for a node depends on the answers from its children.",
+    "whenBn": "যখন কোনো নোডের উত্তর তার child-দের উত্তরের ওপর নির্ভর করে, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "Ignoring the return value from recursive calls; always capture and use the results from child nodes.",
+    "mistakeBn": "Recursive call থেকে আসা return value উপেক্ষা করা; সবসময় child নোড থেকে পাওয়া ফলাফল সংগ্রহ করে ব্যবহার করো।"
+  },
+  "pattern-memoization": {
+    "explanationEn": "Memoization optimizes recursive functions by storing the results of expensive function calls in a table or map. When the same input occurs again, the function retrieves the stored result instead of recomputing it. This significantly reduces time complexity for problems with overlapping sub-problems. It is essential to clear or manage the cache correctly to avoid stale data.",
+    "explanationBn": "Memoization ব্যয়বহুল function call-এর ফলাফল একটি table বা map-এ জমা রেখে recursive function-কে অপ্টিমাইজ করে। একই input আবার আসলে, function-টি নতুন করে হিসাব না করে জমা রাখা ফলাফলটি ব্যবহার করে। এটি overlapping sub-problem থাকা সমস্যার সময় জটিলতা অনেক কমিয়ে দেয়। ভুল তথ্য এড়াতে cache সঠিকভাবে পরিষ্কার বা ম্যানেজ করা জরুরি।",
+    "videoStepsEn": [
+      "Compute the initial f(4) call.",
+      "Recognize that f(3) requires f(2).",
+      "The second call to f(2) reuses the saved value 1.",
+      "Cache the result to prevent redundant calculations."
+    ],
+    "videoStepsBn": [
+      "প্রাথমিক f(4) call-টি হিসাব করো।",
+      "লক্ষ্য করো যে f(3)-এর জন্য f(2) প্রয়োজন।",
+      "দ্বিতীয়বার f(2) এলে আগে রাখা মান ১ ব্যবহার করা হয়।",
+      "অপ্রয়োজনীয় হিসাব এড়াতে ফলাফলটি cache-এ রাখো।"
+    ],
+    "extraExampleEn": "In Fibonacci, F(3) = F(2) + F(1). If F(2) is already computed and stored, F(3) only needs one addition instead of recalculating F(2).",
+    "extraExampleBn": "Fibonacci-তে, F(৩) = F(২) + F(১)। যদি F(২) আগে থেকেই হিসাব করা ও জমা থাকে, তবে F(৩)-এর জন্য নতুন করে F(২) হিসাব না করে শুধু একটি যোগ করলেই হয়।",
+    "whenEn": "Use this when a recursive algorithm repeatedly solves the same sub-problems.",
+    "whenBn": "যখন একটি recursive algorithm বারবার একই sub-problem সমাধান করে, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "Using a cache that is not cleared between different test cases, leading to incorrect results.",
+    "mistakeBn": "ভিন্ন ভিন্ন test case-এর মাঝে cache পরিষ্কার না করা, যার ফলে ভুল ফলাফল আসে।"
+  },
+  "pattern-priority-queue": {
+    "explanationEn": "A priority queue organizes elements based on their importance rather than their arrival time. Each element is assigned a priority value, and the structure ensures the highest priority item is always at the front. This is achieved by maintaining a heap structure that allows efficient retrieval of the most urgent task.",
+    "explanationBn": "Priority queue সাধারণ সারির মতো নয়, বরং গুরুত্ব অনুযায়ী উপাদান সাজায়। প্রতিটি উপাদানের সাথে একটি priority মান থাকে, যা নিশ্চিত করে যে সবচেয়ে গুরুত্বপূর্ণ কাজটি সবসময় সামনে থাকে। এটি একটি heap structure ব্যবহার করে, যা দ্রুত সবচেয়ে জরুরি কাজটি খুঁজে বের করতে সাহায্য করে।",
+    "videoStepsEn": [
+      "The highest priority value 5 is positioned at the root.",
+      "Remove 5 from the queue, making priority 3 the next available item.",
+      "Remove 3 from the queue, leaving only priority 1 remaining.",
+      "All items are served in the specific priority order of 5, 3, 1."
+    ],
+    "videoStepsBn": [
+      "সবচেয়ে বেশি priority মান ৫ রুট হিসেবে অবস্থান করে।",
+      "৫ সরিয়ে ফেলা হয়; এরপর priority ৩ পরবর্তী উপাদান হিসেবে আসে।",
+      "৩ সরিয়ে ফেলা হয়; শুধুমাত্র priority ১ অবশিষ্ট থাকে।",
+      "সবগুলো উপাদান ৫, ৩, ১ এই priority ক্রমে সম্পন্ন হয়।"
+    ],
+    "extraExampleEn": "Consider tasks with priorities 2, 8, and 4. First, 8 is the largest and is removed. Then, 4 is removed, and finally, 2 is removed. The final order of completion is 8, 4, 2.",
+    "extraExampleBn": "ধরা যাক priority ২, ৮, এবং ৪ আছে। প্রথমে ৮ সবচেয়ে বড় হওয়ায় সেটি বের হয়। এরপর ৪ বের হয় এবং সবশেষে ২ বের হয়। চূড়ান্ত ক্রমটি হলো ৮, ৪, ২।",
+    "whenEn": "Use this when you need to process tasks based on urgency rather than the order they arrived.",
+    "whenBn": "যখন কাজের গুরুত্ব অনুযায়ী কাজ সম্পন্ন করা প্রয়োজন, তখন এটি ব্যবহার করুন।",
+    "mistakeEn": "A common mistake is using a standard queue instead of a heap, which makes finding the maximum element slow. Always use a priority queue structure.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো heap-এর পরিবর্তে সাধারণ queue ব্যবহার করা, যা সর্বোচ্চ মান খুঁজে পেতে দেরি করায়। সবসময় priority queue structure ব্যবহার করুন।"
+  },
+  "pattern-top-k": {
+    "explanationEn": "The Top K pattern efficiently finds the largest or smallest k elements in a large dataset. By maintaining a heap of size k, you only store the most relevant candidates at any given time. As new values arrive, you compare them with the heap's root and update if the new value is more significant.",
+    "explanationBn": "Top K প্যাটার্ন বড় ডেটাসেট থেকে সবচেয়ে বড় বা ছোট kটি উপাদান দ্রুত খুঁজে বের করে। k সাইজের একটি heap বজায় রেখে আপনি সবসময় সবচেয়ে গুরুত্বপূর্ণ candidate-গুলো জমা রাখেন। নতুন মান আসার সাথে সাথে heap-এর root-এর সাথে তুলনা করে মান আপডেট করা হয়।",
+    "videoStepsEn": [
+      "Maintain a min-heap to keep the 3 largest values.",
+      "Discard 2 because it is smaller than the smallest kept value 4.",
+      "The value 9 enters the heap, causing the smallest value 4 to be discarded.",
+      "The final top 3 values remaining in the heap are 6, 7, and 9."
+    ],
+    "videoStepsBn": [
+      "সবচেয়ে বড় ৩টি মান রাখার জন্য একটি min-heap বজায় রাখা হয়।",
+      "২ বাদ দেওয়া হয় কারণ এটি বর্তমানের সবচেয়ে ছোট মান ৪-এর চেয়ে ছোট।",
+      "৯ heap-এ প্রবেশ করে, যার ফলে সবচেয়ে ছোট মান ৪ বাদ পড়ে যায়।",
+      "heap-এ অবশিষ্ট থাকা সেরা ৩টি মান হলো ৬, ৭, এবং ৯।"
+    ],
+    "extraExampleEn": "For input [1, 5, 8, 3] and k=2, first keep 1 and 5. Then 8 arrives, so 1 is removed to keep [5, 8]. Finally, 3 is ignored as it is smaller than 5, leaving [5, 8].",
+    "extraExampleBn": "[১, ৫, ৮, ৩] ইনপুট এবং k=২ হলে, প্রথমে ১ ও ৫ রাখা হয়। এরপর ৮ এলে, ১ বাদ দিয়ে [৫, ৮] রাখা হয়। সবশেষে ৩ বাদ পড়ে কারণ এটি ৫-এর চেয়ে ছোট, ফলে [৫, ৮] অবশিষ্ট থাকে।",
+    "whenEn": "Use this when you need to find the top k elements in a stream of data without sorting the entire list.",
+    "whenBn": "যখন পুরো তালিকা sort না করে ডেটা স্ট্রিম থেকে সেরা kটি উপাদান খুঁজে বের করতে হয়, তখন এটি ব্যবহার করুন।",
+    "mistakeEn": "A common mistake is sorting the entire array first, which is inefficient for large datasets. Use a heap to keep only k elements.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো পুরো array-কে আগে sort করা, যা বড় ডেটাসেটের জন্য অকার্যকর। শুধু kটি উপাদান রাখতে heap ব্যবহার করুন।"
+  },
+  "pattern-heapify": {
+    "explanationEn": "Heapify is the process of organizing an array into a valid heap structure by rearranging elements to satisfy the heap property. It works by comparing a node with its children and swapping if the order is violated. This process is repeated recursively or iteratively until the entire structure is valid.",
+    "explanationBn": "Heapify হলো একটি array-কে heap-এর নিয়ম অনুযায়ী সাজানোর প্রক্রিয়া। এটি একটি node-এর সাথে তার child-দের তুলনা করে এবং নিয়ম না মানলে তাদের অদলবদল করে। পুরো structure-টি সঠিক না হওয়া পর্যন্ত এই প্রক্রিয়া বারবার চালানো হয়।",
+    "videoStepsEn": [
+      "The value 9 at the root violates the min-heap order.",
+      "Swap 9 with its smaller child 4 to restore order.",
+      "Sift down the value 9 further under 4 to maintain the property.",
+      "The minimum value 2 successfully reaches the root position."
+    ],
+    "videoStepsBn": [
+      "রুটে থাকা ৯ মানটি min-heap-এর নিয়ম ভঙ্গ করে।",
+      "নিয়ম ঠিক করতে ৯-কে তার ছোট child ৪-এর সাথে অদলবদল করা হয়।",
+      "নিয়ম বজায় রাখতে ৯-কে ৪-এর নিচে আরও নিচে নামানো হয়।",
+      "সবচেয়ে ছোট মান ২ সফলভাবে রুট অবস্থানে পৌঁছায়।"
+    ],
+    "extraExampleEn": "Given [8, 2, 5], 8 is at the root. Compare 8 with 2; swap them to get [2, 8, 5]. Now the heap property is satisfied as 2 is the minimum.",
+    "extraExampleBn": "[৮, ২, ৫] দেওয়া থাকলে, ৮ রুটে থাকে। ৮-এর সাথে ২ তুলনা করুন; অদলবদল করে [২, ৮, ৫] পান। এখন heap-এর নিয়ম মানা হয়েছে কারণ ২ সবচেয়ে ছোট।",
+    "whenEn": "Use this when you need to convert an unsorted array into a heap to perform efficient sorting or priority operations.",
+    "whenBn": "যখন একটি unsorted array-কে heap-এ রূপান্তর করে দ্রুত sort বা priority অপারেশন করতে হয়, তখন এটি ব্যবহার করুন।",
+    "mistakeEn": "A common mistake is forgetting to sift down after a swap, which leaves the heap in an invalid state. Always ensure the child nodes also satisfy the property.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো অদলবদল করার পর sift down করতে ভুলে যাওয়া, যা heap-কে ভুল অবস্থায় রাখে। সবসময় নিশ্চিত করুন যে child node-গুলোও নিয়ম মানছে।"
+  },
+  "pattern-topological-sort": {
+    "explanationEn": "Topological sort orders tasks in a directed acyclic graph such that every prerequisite is completed before its dependent task. It works by identifying nodes with no incoming edges, removing them, and updating the dependencies of remaining nodes. This continues until all tasks are ordered.",
+    "explanationBn": "Topological sort একটি directed acyclic graph-এর কাজগুলোকে এমনভাবে সাজায় যাতে প্রতিটি prerequisite তার ওপর নির্ভরশীল কাজের আগে সম্পন্ন হয়। এটি এমন node খুঁজে বের করে যার কোনো incoming edge নেই, সেগুলোকে সরিয়ে ফেলে এবং বাকি node-গুলোর dependency আপডেট করে। সব কাজ সাজানো না হওয়া পর্যন্ত এটি চলতে থাকে।",
+    "videoStepsEn": [
+      "Identify that task A has no prerequisites to start.",
+      "Remove A from the graph, making tasks B and C ready.",
+      "Remove B and C as their prerequisites are now satisfied.",
+      "The final sorted order of tasks is A, B, C, D, E, F."
+    ],
+    "videoStepsBn": [
+      "চিহ্নিত করা হয় যে কাজ A শুরু করার কোনো prerequisite নেই।",
+      "গ্রাফ থেকে A সরিয়ে ফেলা হয়, যার ফলে B এবং C কাজ শুরু করার জন্য তৈরি হয়।",
+      "B এবং C সরিয়ে ফেলা হয় কারণ তাদের prerequisite এখন পূরণ হয়েছে।",
+      "কাজগুলোর চূড়ান্ত সাজানো ক্রম হলো A, B, C, D, E, F।"
+    ],
+    "extraExampleEn": "For tasks where X depends on Y, and Y depends on Z, the order must be Z, Y, X. First, Z is processed, then Y is freed, and finally X is completed.",
+    "extraExampleBn": "যেখানে X নির্ভর করে Y-এর ওপর, এবং Y নির্ভর করে Z-এর ওপর, সেখানে ক্রমটি অবশ্যই Z, Y, X হতে হবে। প্রথমে Z সম্পন্ন হয়, তারপর Y মুক্ত হয়, এবং সবশেষে X সম্পন্ন হয়।",
+    "whenEn": "Use this when scheduling tasks that have specific dependencies, such as build systems or course prerequisites.",
+    "whenBn": "যখন নির্দিষ্ট dependency থাকা কাজগুলো সাজাতে হয়, যেমন build system বা কোর্সের prerequisite, তখন এটি ব্যবহার করুন।",
+    "mistakeEn": "A common mistake is attempting this on a graph with cycles, which makes a valid topological order impossible. Always ensure the graph is acyclic.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো cycle থাকা graph-এ এটি করার চেষ্টা করা, যা একটি সঠিক topological order অসম্ভব করে তোলে। সবসময় নিশ্চিত করুন যে graph-টি acyclic।"
+  },
+  "pattern-trie-insert": {
+    "explanationEn": "A Trie is a tree structure where each node represents a character in a sequence. By following edges corresponding to each letter of a word, you can efficiently store and retrieve strings. A boolean flag at the final node marks the completion of a valid word. This structure is ideal for prefix-based lookups and dictionary storage.",
+    "explanationBn": "Trie হলো একটি ট্রি স্ট্রাকচার যেখানে প্রতিটি নোড একটি অক্ষরের প্রতিনিধিত্ব করে। শব্দের প্রতিটি অক্ষরের জন্য এজ অনুসরণ করে আপনি দক্ষতার সাথে স্ট্রিং সংরক্ষণ ও খুঁজে বের করতে পারেন। শেষ নোডে একটি বুলিয়ান ফ্ল্যাগ ব্যবহার করে শব্দের সমাপ্তি চিহ্নিত করা হয়। এটি প্রিফিক্স ভিত্তিক অনুসন্ধান এবং ডিকশনারি সংরক্ষণের জন্য আদর্শ।",
+    "videoStepsEn": [
+      "Create a child node for character c.",
+      "Reuse the existing c node and create a new child node for a.",
+      "Create a child node for t and mark the node as the end of the word cat.",
+      "Reuse the existing ca path and create a new r node for the word car."
+    ],
+    "videoStepsBn": [
+      "c অক্ষরের জন্য একটি চাইল্ড নোড তৈরি করুন।",
+      "বিদ্যমান c নোডটি পুনরায় ব্যবহার করে a অক্ষরের জন্য নতুন চাইল্ড নোড তৈরি করুন।",
+      "t অক্ষরের জন্য চাইল্ড নোড তৈরি করুন এবং নোডটিকে cat শব্দের সমাপ্তি হিসেবে চিহ্নিত করুন।",
+      "বিদ্যমান ca পাথটি ব্যবহার করে car শব্দের জন্য r নোড তৈরি করুন।"
+    ],
+    "extraExampleEn": "Insert the word 'do'. Start at root, create child 'd', then from 'd' create child 'o', and finally mark the 'o' node as the end of the word.",
+    "extraExampleBn": "'do' শব্দটি ইনসার্ট করুন। রুট থেকে শুরু করে 'd' চাইল্ড তৈরি করুন, তারপর 'd' থেকে 'o' চাইল্ড তৈরি করুন এবং সবশেষে 'o' নোডটিকে শব্দের সমাপ্তি হিসেবে চিহ্নিত করুন।",
+    "whenEn": "Use this when you need to store a large set of strings and perform frequent prefix searches.",
+    "whenBn": "যখন আপনার অনেকগুলো স্ট্রিং সংরক্ষণ এবং ঘনঘন প্রিফিক্স সার্চ করার প্রয়োজন হয়, তখন এটি ব্যবহার করুন।",
+    "mistakeEn": "Forgetting to mark the end of a word, which makes it impossible to distinguish between a prefix and a complete word.",
+    "mistakeBn": "শব্দের সমাপ্তি চিহ্নিত করতে ভুলে যাওয়া, যার ফলে প্রিফিক্স এবং সম্পূর্ণ শব্দের মধ্যে পার্থক্য করা অসম্ভব হয়ে পড়ে।"
+  },
+  "pattern-trie-prefix": {
+    "explanationEn": "Prefix searching in a Trie involves traversing the tree based on the characters of the query string. If you can successfully follow the path for all characters in the prefix, the prefix exists in the dataset. Unlike full word search, you do not need to check if the final node is marked as a complete word.",
+    "explanationBn": "Trie-তে প্রিফিক্স সার্চ করার সময় কুয়েরি স্ট্রিংয়ের অক্ষর অনুযায়ী ট্রি ট্রাভার্স করতে হয়। যদি আপনি প্রিফিক্সের সব অক্ষরের জন্য পাথ অনুসরণ করতে পারেন, তবে প্রিফিক্সটি ডেটাসেটে বিদ্যমান। সম্পূর্ণ শব্দ খোঁজার মতো এখানে শেষ নোডটি শব্দের সমাপ্তি কি না তা যাচাই করার প্রয়োজন নেই।",
+    "videoStepsEn": [
+      "Initiate a search for the prefix ca.",
+      "Follow the c edge from the root node.",
+      "Follow the a edge from the c node.",
+      "Confirm that cat and car both share the prefix ca path."
+    ],
+    "videoStepsBn": [
+      "ca প্রিফিক্সটি খোঁজা শুরু করুন।",
+      "রুট নোড থেকে c এজ অনুসরণ করুন।",
+      "c নোড থেকে a এজ অনুসরণ করুন।",
+      "নিশ্চিত করুন যে cat এবং car উভয়ই ca প্রিফিক্স পাথটি শেয়ার করে।"
+    ],
+    "extraExampleEn": "Search for prefix 'do' in a Trie containing 'dog'. Follow root to 'd', then 'd' to 'o'. Since the path exists, 'do' is a valid prefix.",
+    "extraExampleBn": "'dog' থাকা একটি Trie-তে 'do' প্রিফিক্সটি খুঁজুন। রুট থেকে 'd' এবং তারপর 'd' থেকে 'o' অনুসরণ করুন। যেহেতু পাথটি বিদ্যমান, তাই 'do' একটি বৈধ প্রিফিক্স।",
+    "whenEn": "Use this when you need to implement features like autocomplete or search suggestions.",
+    "whenBn": "যখন আপনার অটো-কমপ্লিট বা সার্চ সাজেশনের মতো ফিচার তৈরি করার প্রয়োজন হয়, তখন এটি ব্যবহার করুন।",
+    "mistakeEn": "Checking for a word-end flag when searching for a prefix, which leads to false negatives.",
+    "mistakeBn": "প্রিফিক্স খোঁজার সময় শব্দের সমাপ্তি ফ্ল্যাগ চেক করা, যা ভুল ফলাফল দেয়।"
+  },
+  "pattern-word-break": {
+    "explanationEn": "The Word Break problem determines if a string can be segmented into a sequence of dictionary words. It uses dynamic programming to track whether substrings ending at specific indices can be formed. If a valid split point is found, the remaining suffix is checked recursively or iteratively.",
+    "explanationBn": "Word Break সমস্যাটি নির্ধারণ করে যে একটি স্ট্রিংকে ডিকশনারি শব্দের ক্রমানুসারে ভাগ করা যায় কি না। এটি ডাইনামিক প্রোগ্রামিং ব্যবহার করে ট্র্যাক করে যে নির্দিষ্ট ইনডেক্সে শেষ হওয়া সাবস্ট্রিংগুলো গঠন করা সম্ভব কি না। যদি একটি বৈধ স্প্লিট পয়েন্ট পাওয়া যায়, তবে বাকি অংশটি পুনরায় যাচাই করা হয়।",
+    "videoStepsEn": [
+      "Verify that the dictionary contains the word LEET.",
+      "Verify that the dictionary contains the word CODE.",
+      "Identify a split point after index 3.",
+      "Combine LEET and CODE to confirm they form the target word."
+    ],
+    "videoStepsBn": [
+      "যাচাই করুন যে ডিকশনারিতে LEET শব্দটি আছে।",
+      "যাচাই করুন যে ডিকশনারিতে CODE শব্দটি আছে।",
+      "ইনডেক্স ৩ এর পরে একটি স্প্লিট পয়েন্ট চিহ্নিত করুন।",
+      "LEET এবং CODE যুক্ত করে নিশ্চিত করুন যে তারা টার্গেট শব্দটি গঠন করে।"
+    ],
+    "extraExampleEn": "Check 'catdog' with dictionary {'cat', 'dog'}. Split at index 3. Since 'cat' is in the dictionary and 'dog' is in the dictionary, the string can be broken.",
+    "extraExampleBn": "{'cat', 'dog'} ডিকশনারি দিয়ে 'catdog' চেক করুন। ইনডেক্স ৩ এ ভাগ করুন। যেহেতু 'cat' এবং 'dog' উভয়ই ডিকশনারিতে আছে, তাই স্ট্রিংটি ভাঙা সম্ভব।",
+    "whenEn": "Use this when validating if a concatenated string is composed of valid dictionary words.",
+    "whenBn": "যখন যাচাই করতে হয় যে একটি কনক্যাটেনেটেড স্ট্রিং বৈধ ডিকশনারি শব্দ দিয়ে গঠিত কি না, তখন এটি ব্যবহার করুন।",
+    "mistakeEn": "Overlapping dictionary words that lead to incorrect splits; always ensure the full string is covered.",
+    "mistakeBn": "ডিকশনারি শব্দের ওভারল্যাপ যা ভুল স্প্লিট তৈরি করে; সবসময় নিশ্চিত করুন যে পুরো স্ট্রিংটি কভার করা হয়েছে।"
+  },
+  "pattern-dp-1d": {
+    "explanationEn": "1D Dynamic Programming solves complex problems by breaking them into smaller, overlapping subproblems stored in a linear array. Each element in the array represents the solution to a subproblem, which is built upon the results of previous elements. This approach avoids redundant calculations by reusing stored values.",
+    "explanationBn": "1D ডাইনামিক প্রোগ্রামিং জটিল সমস্যাগুলোকে ছোট ছোট সাব-প্রবলেমে ভেঙে লিনিয়ার অ্যারেতে সংরক্ষণ করে সমাধান করে। অ্যারের প্রতিটি উপাদান একটি সাব-প্রবলেমের সমাধান নির্দেশ করে, যা পূর্ববর্তী উপাদানের ফলাফলের ওপর ভিত্তি করে তৈরি হয়। এই পদ্ধতি সংরক্ষিত মান পুনরায় ব্যবহার করে অপ্রয়োজনীয় গণনা এড়ায়।",
+    "videoStepsEn": [
+      "Calculate dp[2] as the sum of dp[1] and dp[0], resulting in 2.",
+      "Calculate dp[3] as the sum of dp[2] and dp[1], resulting in 3.",
+      "Calculate dp[4] as the sum of dp[3] and dp[2], resulting in 5.",
+      "Calculate dp[5] as the sum of dp[4] and dp[3], resulting in 8."
+    ],
+    "videoStepsBn": [
+      "dp[2] কে dp[1] এবং dp[0] এর যোগফল হিসেবে গণনা করুন, যা ২ হয়।",
+      "dp[3] কে dp[2] এবং dp[1] এর যোগফল হিসেবে গণনা করুন, যা ৩ হয়।",
+      "dp[4] কে dp[3] এবং dp[2] এর যোগফল হিসেবে গণনা করুন, যা ৫ হয়।",
+      "dp[5] কে dp[4] এবং dp[3] এর যোগফল হিসেবে গণনা করুন, যা ৮ হয়।"
+    ],
+    "extraExampleEn": "Solve for 3 steps where dp[0]=1, dp[1]=1. dp[2]=dp[1]+dp[0]=2. dp[3]=dp[2]+dp[1]=3. The result for 3 steps is 3.",
+    "extraExampleBn": "৩ ধাপের জন্য সমাধান করুন যেখানে dp[0]=১, dp[1]=১। dp[2]=dp[1]+dp[0]=২। dp[3]=dp[2]+dp[1]=৩। ৩ ধাপের জন্য ফলাফল হলো ৩।",
+    "whenEn": "Use this when the current state depends only on a fixed number of previous states.",
+    "whenBn": "যখন বর্তমান অবস্থা শুধুমাত্র নির্দিষ্ট সংখ্যক পূর্ববর্তী অবস্থার ওপর নির্ভর করে, তখন এটি ব্যবহার করুন।",
+    "mistakeEn": "Incorrectly defining the base cases, which causes all subsequent calculations in the DP table to be wrong.",
+    "mistakeBn": "বেস কেস ভুলভাবে সংজ্ঞায়িত করা, যার ফলে ডিপি টেবিলের পরবর্তী সব গণনা ভুল হয়।"
+  },
+  "pattern-dp-2d": {
+    "explanationEn": "2D Dynamic Programming solves problems by breaking them into overlapping subproblems stored in a grid. Each cell (i, j) represents the solution to a state defined by two variables, typically row and column indices. By calculating values iteratively based on previously computed neighbors, you avoid redundant work. This approach works when the current state depends only on adjacent cells like top or left.",
+    "explanationBn": "2D Dynamic Programming একটি গ্রিডে ছোট ছোট উপসমস্যার সমাধান জমা রেখে বড় সমস্যার সমাধান করে। প্রতিটি সেল (i, j) দুটি ভেরিয়েবল বা row ও column দ্বারা নির্ধারিত অবস্থার সমাধান নির্দেশ করে। আগে থেকে হিসাব করা সেলের মানের ওপর ভিত্তি করে পরের মানগুলো বের করলে বারবার একই কাজ করতে হয় না। যখন বর্তমান অবস্থা তার পাশের সেলগুলোর ওপর নির্ভর করে, তখন এই পদ্ধতি কার্যকর।",
+    "videoStepsEn": [
+      "Calculate cell (1,1) by adding top 1 and left 1 to get 2.",
+      "Calculate cell (1,2) by adding 1 and 2 to get 3.",
+      "Calculate cell (2,1) by adding 2 and 1 to get 3.",
+      "Calculate the last cell by adding 3 and 3 to get 6."
+    ],
+    "videoStepsBn": [
+      "উপরের ১ এবং বামের ১ যোগ করে cell (1,1)-এর মান ২ বের করা হলো।",
+      "১ এবং ২ যোগ করে cell (1,2)-এর মান ৩ বের করা হলো।",
+      "২ এবং ১ যোগ করে cell (2,1)-এর মান ৩ বের করা হলো।",
+      "৩ এবং ৩ যোগ করে শেষ সেলের মান ৬ বের করা হলো।"
+    ],
+    "extraExampleEn": "Consider a 2x2 grid where you move from (0,0) to (1,1). At (0,1) and (1,0) the path count is 1. Adding these at (1,1) gives 1 + 1 = 2 total paths.",
+    "extraExampleBn": "একটি ২x২ গ্রিড বিবেচনা করো যেখানে (০,০) থেকে (১,১)-এ যেতে হবে। (০,১) এবং (১,০) সেলে আসার পথ ১টি করে। (১,১) সেলে এদের যোগফল ১ + ১ = ২ টি মোট পথ পাওয়া যায়।",
+    "whenEn": "Use this when you need to find the number of ways to reach a target in a grid or matrix.",
+    "whenBn": "যখন গ্রিড বা ম্যাট্রিক্সে কোনো গন্তব্যে পৌঁছানোর মোট উপায় বের করতে হয়, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "A common mistake is forgetting to initialize the base cases like the first row or column; always fill these first.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো প্রথম row বা column-এর মতো বেস কেসগুলো ইনিশিয়ালাইজ করতে ভুলে যাওয়া; সবসময় এগুলো আগে পূরণ করো।"
+  },
+  "pattern-knapsack": {
+    "explanationEn": "In 0/1 knapsack, each item may be chosen at most once. For each item and capacity, compare the best value from skipping it with the value from taking it plus the best result for the remaining capacity. Store those smaller answers in a DP table; the final state gives the best value within the limit.",
+    "explanationBn": "0/1 knapsack-এ প্রতিটি জিনিস সর্বোচ্চ একবার নেওয়া যায়। প্রতিটি জিনিস ও capacity-তে না নেওয়ার সেরা মানের সঙ্গে নেওয়া এবং বাকি capacity-র সেরা মান তুলনা করো। ছোট ফলগুলো DP table-এ রাখলে শেষে সীমার মধ্যে সর্বোচ্চ value পাওয়া যায়।",
+    "videoStepsEn": [
+      "Evaluate item A with weight 2 and value 3.",
+      "Evaluate item B with weight 1 and value 4.",
+      "For capacity 3, decide to take both A and B.",
+      "Calculate the maximum value as 3 plus 4 equals 7."
+    ],
+    "videoStepsBn": [
+      "ওজন ২ এবং মান ৩ বিশিষ্ট item A মূল্যায়ন করা হলো।",
+      "ওজন ১ এবং মান ৪ বিশিষ্ট item B মূল্যায়ন করা হলো।",
+      "ধারণক্ষমতা ৩-এর জন্য A এবং B উভয়ই নেওয়ার সিদ্ধান্ত নেওয়া হলো।",
+      "সর্বোচ্চ মান ৩ যোগ ৪ সমান ৭ হিসেবে হিসাব করা হলো।"
+    ],
+    "extraExampleEn": "Capacity is 2. Item X has weight 2 and value 5; item Y has weight 1 and value 2. Since each item can be used once, choosing X gives value 5, choosing Y gives 2, and choosing both exceeds capacity. The optimum is X with value 5.",
+    "extraExampleBn": "Capacity ২। X-এর weight ২, value ৫; Y-এর weight ১, value ২। প্রতিটি একবার নেওয়া যায়, তাই X নিলে ৫, Y নিলে ২, আর দুটো নিলে capacity ছাড়ায়। সেরা পছন্দ X, value ৫।",
+    "whenEn": "Use this when you have a limited budget or capacity and want to maximize total value.",
+    "whenBn": "যখন তোমার বাজেট বা ধারণক্ষমতা সীমিত এবং তুমি মোট মান সর্বোচ্চ করতে চাও, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "Beginners often confuse the item index with the capacity index; ensure your loops iterate correctly over both.",
+    "mistakeBn": "নতুনরা প্রায়ই item-এর ইনডেক্স এবং ধারণক্ষমতার ইনডেক্স গুলিয়ে ফেলে; নিশ্চিত করো যে তোমার লুপ দুটিই সঠিকভাবে চলছে।"
+  },
+  "pattern-tree-dp": {
+    "explanationEn": "Tree DP solves problems on hierarchical structures by processing nodes from the leaves up to the root. You compute the result for a parent node by aggregating the pre-calculated results of its children. This works because the tree structure naturally defines subproblems. You must ensure a post-order traversal to guarantee children are processed before parents.",
+    "explanationBn": "Tree DP হায়ারার্কিকাল স্ট্রাকচারে leaf থেকে root পর্যন্ত নোডগুলো প্রসেস করে সমস্যার সমাধান করে। প্রতিটি parent নোডের ফলাফল তার child নোডগুলোর আগে থেকে হিসাব করা ফলাফলের সমষ্টি থেকে বের করা হয়। ট্রির গঠন প্রাকৃতিকভাবেই ছোট ছোট উপসমস্যা তৈরি করে বলে এটি কাজ করে। parent-এর আগে child-এর কাজ শেষ করার জন্য post-order ট্রাভার্সাল নিশ্চিত করতে হবে।",
+    "videoStepsEn": [
+      "Identify that leaf subtrees each have a size of 1.",
+      "Calculate the left subtree size as 3.",
+      "Calculate the right subtree size as 2.",
+      "Compute root size as 1 plus 3 plus 2 equals 6."
+    ],
+    "videoStepsBn": [
+      "চিহ্নিত করা হলো যে প্রতিটি leaf সাবট্রির সাইজ ১।",
+      "বাম সাবট্রির সাইজ ৩ হিসেবে হিসাব করা হলো।",
+      "ডান সাবট্রির সাইজ ২ হিসেবে হিসাব করা হলো।",
+      "root-এর সাইজ ১ যোগ ৩ যোগ ২ সমান ৬ হিসেবে হিসাব করা হলো।"
+    ],
+    "extraExampleEn": "A tree with root 1, left child 2, and right child 3. If each node has value 1, the total sum is 1+1+1 = 3.",
+    "extraExampleBn": "একটি ট্রি যার root ১, বাম child ২, এবং ডান child ৩। যদি প্রতিটি নোডের মান ১ হয়, তবে মোট যোগফল ১+১+১ = ৩।",
+    "whenEn": "Use this when you need to calculate properties like subtree size or path sums in a tree.",
+    "whenBn": "যখন তোমাকে ট্রির সাবট্রি সাইজ বা পাথ সামের মতো বৈশিষ্ট্য হিসাব করতে হয়, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "A common mistake is trying to process the root before its children; always use recursion or post-order traversal.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো child-এর আগে root প্রসেস করার চেষ্টা করা; সবসময় রিকার্সন বা post-order ট্রাভার্সাল ব্যবহার করো।"
+  },
+  "pattern-activity-selection": {
+    "explanationEn": "Activity Selection is a greedy strategy to maximize the number of non-overlapping tasks. You sort all activities by their finish times and always pick the next activity that starts after the current one ends. This works because picking the earliest finishing task leaves the maximum possible time for remaining activities. It requires the input to be sorted by end time.",
+    "explanationBn": "Activity Selection হলো সংঘর্ষহীন কাজের সংখ্যা সর্বোচ্চ করার একটি greedy কৌশল। সব কাজকে তাদের শেষ হওয়ার সময় অনুযায়ী সাজিয়ে, বর্তমান কাজটি শেষ হওয়ার পর যে কাজটি শুরু হয় সেটি বেছে নিতে হয়। সবচেয়ে আগে শেষ হওয়া কাজটি বেছে নিলে বাকি কাজের জন্য সবচেয়ে বেশি সময় পাওয়া যায়, তাই এই পদ্ধতি কাজ করে। ইনপুটকে শেষ হওয়ার সময় অনুযায়ী সাজানো থাকতে হবে।",
+    "videoStepsEn": [
+      "Choose the earliest finish activity A.",
+      "Reject activity B because it overlaps with A.",
+      "Choose activity C because it starts after A ends.",
+      "Choose activity D because A, C, and D fit together."
+    ],
+    "videoStepsBn": [
+      "সবচেয়ে আগে শেষ হওয়া activity A বেছে নেওয়া হলো।",
+      "activity B বাতিল করা হলো কারণ এটি A-এর সাথে ওভারল্যাপ করে।",
+      "activity C বেছে নেওয়া হলো কারণ এটি A শেষ হওয়ার পর শুরু হয়।",
+      "activity D বেছে নেওয়া হলো কারণ A, C এবং D একসাথে ফিট করে।"
+    ],
+    "extraExampleEn": "Activities: X(1-2), Y(2-3), Z(1-4). Sort by end time: X(1-2), Y(2-3), Z(1-4). Pick X, then pick Y. Total 2 activities.",
+    "extraExampleBn": "কাজগুলো: X(১-২), Y(২-৩), Z(১-৪)। শেষ হওয়ার সময় অনুযায়ী সাজালে: X(১-২), Y(২-৩), Z(১-৪)। X নাও, তারপর Y নাও। মোট ২টি কাজ।",
+    "whenEn": "Use this when you have multiple tasks with start and end times and want to fit the most tasks.",
+    "whenBn": "যখন তোমার কাছে শুরু ও শেষ সময়সহ অনেকগুলো কাজ থাকে এবং তুমি সবচেয়ে বেশি কাজ সম্পন্ন করতে চাও, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "A common mistake is sorting by start time instead of finish time; always sort by finish time to ensure optimality.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো শেষ হওয়ার সময়ের পরিবর্তে শুরুর সময় অনুযায়ী সাজানো; সঠিক ফলাফলের জন্য সবসময় শেষ হওয়ার সময় অনুযায়ী সাজাও।"
+  },
+  "pattern-interval-scheduling": {
+    "explanationEn": "Interval scheduling aims to maximize the number of tasks completed by selecting intervals that do not overlap. By sorting intervals based on their finish times, we ensure that we leave as much room as possible for subsequent tasks. This greedy strategy works because picking the earliest finishing task leaves the maximum remaining time for others. It requires the input intervals to be sorted by their end times first.",
+    "explanationBn": "ইন্টারভ্যাল শিডিউলিংয়ের লক্ষ্য হলো এমনভাবে কাজ বেছে নেওয়া যাতে কোনোটি ওভারল্যাপ না করে এবং সর্বোচ্চ সংখ্যক কাজ সম্পন্ন হয়। কাজগুলো শেষ হওয়ার সময়ের ভিত্তিতে সাজালে পরবর্তী কাজের জন্য সবচেয়ে বেশি সময় পাওয়া যায়। এই গ্রিডি পদ্ধতিটি কার্যকর কারণ আগে শেষ হওয়া কাজ বেছে নিলে বাকি কাজের জন্য বেশি সময় থাকে। এর জন্য ইনপুট ইন্টারভ্যালগুলোকে আগে শেষ হওয়ার সময় অনুযায়ী সাজাতে হয়।",
+    "videoStepsEn": [
+      "Sort the intervals [1, 3], [2, 5], [3, 4], [4, 7] by their end times.",
+      "Take the first interval [1, 3] and skip [2, 5] because it overlaps.",
+      "Include [3, 4] because it starts exactly when [1, 3] ends.",
+      "Add [4, 7] to the schedule to complete the set of three compatible intervals."
+    ],
+    "videoStepsBn": [
+      "ইন্টারভ্যাল [১, ৩], [২, ৫], [৩, ৪], [৪, ৭]-কে তাদের শেষ হওয়ার সময় অনুযায়ী সাজাও।",
+      "প্রথম ইন্টারভ্যাল [১, ৩] নাও এবং [২, ৫] বাদ দাও কারণ এটি ওভারল্যাপ করে।",
+      "[৩, ৪] অন্তর্ভুক্ত করো কারণ এটি [১, ৩] শেষ হওয়ার ঠিক পরেই শুরু হয়।",
+      "তিনটি সামঞ্জস্যপূর্ণ ইন্টারভ্যালের সেট সম্পন্ন করতে [৪, ৭] শিডিউলে যোগ করো।"
+    ],
+    "extraExampleEn": "Consider intervals [1, 2], [2, 3], and [1, 4]. Sorting by end time gives [1, 2], [2, 3], then [1, 4]. We pick [1, 2], then [2, 3] because it starts at 2, and we skip [1, 4] as it overlaps with both. The result is two compatible intervals.",
+    "extraExampleBn": "ধরা যাক ইন্টারভ্যালগুলো হলো [১, ২], [২, ৩] এবং [১, ৪]। শেষ হওয়ার সময় অনুযায়ী সাজালে পাই [১, ২], [২, ৩] এবং [১, ৪]। আমরা [১, ২] এবং [২, ৩] বেছে নিই কারণ [২, ৩] দুইয়ে শুরু হয়, আর [১, ৪] বাদ দিই কারণ এটি দুটির সাথেই ওভারল্যাপ করে। ফলাফল হলো দুটি সামঞ্জস্যপূর্ণ ইন্টারভ্যাল।",
+    "whenEn": "Use this when you need to fit the maximum number of non-overlapping tasks into a fixed timeline.",
+    "whenBn": "যখন একটি নির্দিষ্ট সময়ের মধ্যে সর্বোচ্চ সংখ্যক কাজ সম্পন্ন করতে হয়, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "A common mistake is sorting by start time instead of end time, which can lead to picking a very long task that blocks many shorter ones.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো শেষ হওয়ার সময়ের বদলে শুরুর সময় অনুযায়ী সাজানো, যা একটি দীর্ঘ কাজ বেছে নেওয়ার ফলে অনেক ছোট কাজকে আটকে দিতে পারে।"
+  },
+  "pattern-huffman": {
+    "explanationEn": "Huffman coding is a compression technique that assigns shorter binary codes to more frequent symbols. By repeatedly merging the two nodes with the lowest weights, we build a tree where frequent characters are closer to the root. This ensures the total length of the encoded message is minimized. The process continues until only one root node remains.",
+    "explanationBn": "হাফম্যান কোডিং হলো একটি কমপ্রেশন পদ্ধতি যা বেশি ঘন ঘন আসা চিহ্নগুলোকে ছোট বাইনারি কোড দেয়। সবচেয়ে কম ওয়েট বা ওজনযুক্ত দুটি নোড বারবার মিলিয়ে আমরা একটি ট্রি তৈরি করি, যেখানে ঘন ঘন আসা চিহ্নগুলো রুটের কাছাকাছি থাকে। এটি এনকোড করা বার্তার মোট দৈর্ঘ্য কমিয়ে আনে। এই প্রক্রিয়াটি ততক্ষণ চলে যতক্ষণ না একটি মাত্র রুট নোড অবশিষ্ট থাকে।",
+    "videoStepsEn": [
+      "Combine the two smallest values 2 and 2 to create a new node.",
+      "The new node has a weight of 4 representing the combined frequency.",
+      "Combine the next smallest values 3 and 4 to get a total weight of 7.",
+      "Repeat this merging process until only one single root node remains."
+    ],
+    "videoStepsBn": [
+      "সবচেয়ে ছোট দুটি মান ২ এবং ২ মিলিয়ে একটি নতুন নোড তৈরি করো।",
+      "নতুন নোডটির ওজন ৪ যা তাদের সম্মিলিত ফ্রিকোয়েন্সি নির্দেশ করে।",
+      "পরবর্তী ছোট মান ৩ এবং ৪ মিলিয়ে মোট ওজন ৭ পাও।",
+      "এই মার্জ করার প্রক্রিয়াটি ততক্ষণ পুনরাবৃত্তি করো যতক্ষণ না একটি মাত্র রুট নোড অবশিষ্ট থাকে।"
+    ],
+    "extraExampleEn": "For frequencies 1, 1 and 2, merge the two 1s into a node of weight 2, then merge it with the original 2 to make the root weight 4. The original symbol of frequency 2 can get a one-bit code, while the two rarer symbols get two-bit codes.",
+    "extraExampleBn": "frequency ১, ১ ও ২ হলে প্রথমে দুটি ১ মিলে weight ২-এর node হয়; তারপর আগের ২-এর সঙ্গে মিলে root weight ৪ হয়। frequency ২-এর চিহ্নটি এক-bit code এবং বিরল দুটি চিহ্ন দুই-bit code পেতে পারে।",
+    "whenEn": "Use this when you need to minimize the total number of bits required to represent a set of weighted symbols.",
+    "whenBn": "যখন ওয়েটেড চিহ্নগুলোকে প্রকাশ করার জন্য মোট বিটের সংখ্যা কমাতে হয়, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "A common mistake is forgetting to re-sort the list of weights after each merge, which can lead to incorrect tree construction.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো প্রতিবার মার্জ করার পর ওয়েটের তালিকাটি পুনরায় সাজাতে ভুলে যাওয়া, যা ভুল ট্রি তৈরির কারণ হতে পারে।"
+  },
+  "pattern-bit-operations": {
+    "explanationEn": "Bitwise operations manipulate individual bits of numbers directly, which is highly efficient for low-level data processing. AND, OR, and XOR compare bits at the same position to produce a new value based on specific logic rules. These operations are fundamental for tasks like masking, toggling flags, or checking specific bit states. They work by applying the operation to every bit pair independently.",
+    "explanationBn": "বিটওয়াইজ অপারেশন সরাসরি সংখ্যার বিটগুলোকে পরিবর্তন করে, যা ডেটা প্রসেসিংয়ের জন্য অত্যন্ত কার্যকর। AND, OR এবং XOR একই অবস্থানে থাকা বিটগুলোকে তুলনা করে নির্দিষ্ট লজিক অনুযায়ী নতুন মান তৈরি করে। মাস্কিং, ফ্ল্যাগ টগল করা বা নির্দিষ্ট বিট স্টেট চেক করার মতো কাজের জন্য এগুলো অপরিহার্য। এগুলো প্রতিটি বিট জোড়ার ওপর আলাদাভাবে কাজ করে।",
+    "videoStepsEn": [
+      "Compare the binary numbers 0101 and 0011 one bit at a time.",
+      "The AND operation returns 1 only if both bits are 1, resulting in 0001.",
+      "The OR operation returns 1 if at least one of the bits is 1, resulting in 0111.",
+      "The XOR operation returns 1 only if the bits are different, resulting in 0110."
+    ],
+    "videoStepsBn": [
+      "বাইনারি সংখ্যা 0101 এবং 0011-কে একটি একটি করে বিট তুলনা করো।",
+      "AND অপারেশন কেবল তখনই ১ দেয় যদি উভয় বিট ১ হয়, যার ফলে 0001 পাওয়া যায়।",
+      "OR অপারেশন ১ দেয় যদি অন্তত একটি বিট ১ হয়, যার ফলে 0111 পাওয়া যায়।",
+      "XOR অপারেশন ১ দেয় যদি বিটগুলো ভিন্ন হয়, যার ফলে 0110 পাওয়া যায়।"
+    ],
+    "extraExampleEn": "Take 6 (0110) and 3 (0011). AND results in 0010 (2), OR results in 0111 (7), and XOR results in 0101 (5). Each bit position is calculated independently.",
+    "extraExampleBn": "৬ (0110) এবং ৩ (0011) নাও। AND করলে হয় 0010 (২), OR করলে হয় 0111 (৭), এবং XOR করলে হয় 0101 (৫)। প্রতিটি বিট পজিশন আলাদাভাবে গণনা করা হয়।",
+    "whenEn": "Use these operations when you need to perform fast, low-level manipulation of binary data or flags.",
+    "whenBn": "যখন বাইনারি ডেটা বা ফ্ল্যাগ নিয়ে দ্রুত এবং লো-লেভেল কাজ করার প্রয়োজন হয়, তখন এগুলো ব্যবহার করো।",
+    "mistakeEn": "A common mistake is confusing the bitwise AND (&) with the logical AND (&&), which works on boolean values rather than individual bits.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো বিটওয়াইজ AND (&) এবং লজিক্যাল AND (&&)-এর মধ্যে গুলিয়ে ফেলা, যা বিটের বদলে বুলিয়ান মানের ওপর কাজ করে।"
+  },
+  "pattern-set-bits": {
+    "explanationEn": "Counting set bits, or the population count, involves determining how many 1s exist in the binary representation of a number. A common efficient approach is to repeatedly clear the least significant set bit using the expression n & (n - 1). This method is faster than checking every bit because it only iterates as many times as there are 1s in the number. It works by turning the rightmost 1 into a 0 in each step.",
+    "explanationBn": "সেট বিট গোনা বা পপুলেশন কাউন্ট হলো কোনো সংখ্যার বাইনারি রূপে কয়টি ১ আছে তা বের করা। একটি কার্যকর উপায় হলো n & (n - 1) এক্সপ্রেশন ব্যবহার করে বারবার সবচেয়ে ডানদিকের ১-টিকে মুছে ফেলা। এই পদ্ধতিটি প্রতিটি বিট চেক করার চেয়ে দ্রুত কারণ এটি কেবল ১-এর সংখ্যার সমান বার লুপ চালায়। এটি প্রতি ধাপে ডানদিকের ১-টিকে ০-তে পরিণত করে কাজ করে।",
+    "videoStepsEn": [
+      "The number 13 is represented in binary as 1101.",
+      "Count the first set bit by identifying the rightmost 1.",
+      "Count the second set bit after clearing the previous one.",
+      "Continue until all three 1 bits are counted to get the total."
+    ],
+    "videoStepsBn": [
+      "১৩ সংখ্যাটিকে বাইনারিতে 1101 হিসেবে প্রকাশ করা হয়।",
+      "সবচেয়ে ডানদিকের ১-টিকে চিহ্নিত করে প্রথম সেট বিটটি গণনা করো।",
+      "আগের ১-টিকে মুছে ফেলার পর দ্বিতীয় সেট বিটটি গণনা করো।",
+      "মোট তিনটি ১ বিট গণনা না হওয়া পর্যন্ত এই প্রক্রিয়া চালিয়ে যাও।"
+    ],
+    "extraExampleEn": "For the number 7 (0111), the first step clears the last bit to get 0110. The second step clears the next bit to get 0100. The third step clears the final bit to get 0000, totaling three set bits.",
+    "extraExampleBn": "৭ (0111) সংখ্যার জন্য, প্রথম ধাপে শেষ বিটটি মুছে 0110 পাওয়া যায়। দ্বিতীয় ধাপে পরের বিটটি মুছে 0100 পাওয়া যায়। তৃতীয় ধাপে শেষ বিটটি মুছে 0000 পাওয়া যায়, অর্থাৎ মোট তিনটি সেট বিট আছে।",
+    "whenEn": "Use this when you need to calculate the Hamming weight of a number for error detection or data analysis.",
+    "whenBn": "যখন এরর ডিটেকশন বা ডেটা অ্যানালাইসিসের জন্য কোনো সংখ্যার হ্যামিং ওয়েট বের করার প্রয়োজন হয়, তখন এটি ব্যবহার করো।",
+    "mistakeEn": "A common mistake is using a loop that checks every single bit position (e.g., 32 times for an integer), which is inefficient for sparse numbers.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো প্রতিটি বিট পজিশন চেক করার জন্য লুপ চালানো (যেমন ইন্টিজারের জন্য ৩২ বার), যা কম ১ থাকা সংখ্যার ক্ষেত্রে অকার্যকর।"
+  },
+  "pattern-xor": {
+    "explanationEn": "XOR is a bitwise operation where identical bits cancel out to zero. When you XOR a number with itself, the result is always zero. This property allows you to find a unique element in a collection where every other element appears in pairs. It works because the order of XOR operations does not change the final result.",
+    "explanationBn": "XOR একটি বিটওয়াইজ অপারেশন যেখানে একই বিটগুলো কাটাকাটি হয়ে শূন্য হয়। কোনো সংখ্যাকে সেই সংখ্যা দিয়েই XOR করলে ফলাফল সবসময় শূন্য হয়। এই বৈশিষ্ট্যের কারণে আপনি এমন একটি সেটে বিজোড়বার থাকা সংখ্যাটি খুঁজে পেতে পারেন যেখানে বাকি সব সংখ্যা জোড়ায় জোড়ায় থাকে। XOR অপারেশনের ক্রম ফলাফল পরিবর্তন করে না বলে এটি কাজ করে।",
+    "videoStepsEn": [
+      "The bits 1 XOR 1 cancel out to 0.",
+      "Different bits result in 1.",
+      "Calculating 5 XOR 3 results in 6.",
+      "Any number x XORed with itself equals 0."
+    ],
+    "videoStepsBn": [
+      "১ XOR ১ কাটাকাটি হয়ে ০ হয়।",
+      "ভিন্ন বিটগুলো ১ প্রদান করে।",
+      "৫ XOR ৩ হিসাব করলে ৬ পাওয়া যায়।",
+      "যেকোনো সংখ্যা x কে x দিয়ে XOR করলে ০ হয়।"
+    ],
+    "extraExampleEn": "Consider the array [2, 7, 2]. First, 2 XOR 7 equals 5. Then, 5 XOR 2 equals 7. The final result is 7, which is the unpaired value.",
+    "extraExampleBn": "[২, ৭, ২] অ্যারেটি বিবেচনা করুন। প্রথমে ২ XOR ৭ সমান ৫। এরপর ৫ XOR ২ সমান ৭। চূড়ান্ত ফলাফল ৭, যা বিজোড়বার থাকা মান।",
+    "whenEn": "Use this when you need to find a single unique element in an array where all other elements appear exactly twice.",
+    "whenBn": "যখন একটি অ্যারেতে সব সংখ্যা জোড়ায় থাকে কিন্তু একটি সংখ্যা একা থাকে, তখন এটি ব্যবহার করুন।",
+    "mistakeEn": "A common mistake is forgetting that XORing with 0 leaves the number unchanged; always initialize your result variable to 0.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো ভুলে যাওয়া যে ০ দিয়ে XOR করলে সংখ্যার কোনো পরিবর্তন হয় না; তাই সবসময় আপনার রেজাল্ট ভেরিয়েবলটি ০ দিয়ে শুরু করুন।"
+  },
+  "pattern-meet-middle": {
+    "explanationEn": "Meet-in-the-middle reduces the complexity of brute force by splitting a large problem into two smaller halves. You generate all possible outcomes for each half independently and store them. Then, you combine these results to find the final solution. This is significantly faster than checking every possible combination at once.",
+    "explanationBn": "Meet-in-the-middle একটি বড় সমস্যাকে দুই ভাগে ভেঙে ব্রুট ফোর্সের জটিলতা কমায়। আপনি প্রতিটি ভাগের সব সম্ভাব্য ফলাফল আলাদাভাবে তৈরি করে সংরক্ষণ করেন। এরপর, চূড়ান্ত সমাধান পেতে এই ফলাফলগুলো একত্রিত করেন। এটি সব কম্বিনেশন একসাথে চেক করার চেয়ে অনেক দ্রুত।",
+    "videoStepsEn": [
+      "Calculate sums for the left half: 0, 1, 3, 4.",
+      "Calculate sums for the right half: 0, 5, 7, 12.",
+      "Add 4 from the left and 7 from the right to get 11.",
+      "Combine the two small searches to find the target."
+    ],
+    "videoStepsBn": [
+      "বাম ভাগের যোগফলগুলো হিসাব করুন: ০, ১, ৩, ৪।",
+      "ডান ভাগের যোগফলগুলো হিসাব করুন: ০, ৫, ৭, ১২।",
+      "বাম ভাগের ৪ এবং ডান ভাগের ৭ যোগ করে ১১ পান।",
+      "টার্গেট খুঁজে পেতে দুটি ছোট সার্চ একত্রিত করুন।"
+    ],
+    "extraExampleEn": "For the set [2, 4], split into [2] and [4]. Left sums are {0, 2}, right sums are {0, 4}. Combining them gives possible sums {0, 2, 4, 6}.",
+    "extraExampleBn": "[২, ৪] সেটের জন্য, [২] এবং [৪]-এ ভাগ করুন। বাম দিকের যোগফল {০, ২}, ডান দিকের যোগফল {০, ৪}। এগুলো একত্রিত করলে সম্ভাব্য যোগফল {০, ২, ৪, ৬} পাওয়া যায়।",
+    "whenEn": "Use this when the input size is too large for O(2^n) but small enough for O(2^(n/2)).",
+    "whenBn": "যখন ইনপুট সাইজ O(2^n)-এর জন্য অনেক বড় কিন্তু O(2^(n/2))-এর জন্য যথেষ্ট ছোট, তখন এটি ব্যবহার করুন।",
+    "mistakeEn": "A common mistake is failing to sort one of the halves, which prevents efficient searching; always sort one side to use binary search.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো যেকোনো এক ভাগকে সর্ট না করা, যা দক্ষ সার্চিং বাধাগ্রস্ত করে; বাইনারি সার্চ ব্যবহারের জন্য সবসময় এক পাশ সর্ট করুন।"
+  },
+  "pattern-sweep-line": {
+    "explanationEn": "Sweep-line algorithms process events by moving a virtual line across a coordinate space. You sort all start and end points as discrete events. As the line moves, you maintain a state that updates based on the events encountered. This transforms a complex 2D problem into a simple 1D linear scan.",
+    "explanationBn": "সুইপ-লাইন অ্যালগরিদম একটি ভার্চুয়াল লাইনকে কোঅর্ডিনেট স্পেসের ওপর দিয়ে চালিয়ে ইভেন্টগুলো প্রসেস করে। আপনি সব শুরু ও শেষের পয়েন্টকে আলাদা ইভেন্ট হিসেবে সাজান। লাইনটি সরার সাথে সাথে আপনি ইভেন্টের ওপর ভিত্তি করে স্টেট আপডেট করেন। এটি একটি জটিল 2D সমস্যাকে সহজ 1D লিনিয়ার স্ক্যানে রূপান্তর করে।",
+    "videoStepsEn": [
+      "At time 1, there is one active interval.",
+      "At time 2, two intervals overlap.",
+      "At time 4, one interval ends and another starts.",
+      "Process all events in chronological time order."
+    ],
+    "videoStepsBn": [
+      "সময় ১-এ, একটি ইন্টারভাল সক্রিয় থাকে।",
+      "সময় ২-এ, দুটি ইন্টারভাল ওভারল্যাপ করে।",
+      "সময় ৪-এ, একটি ইন্টারভাল শেষ হয় এবং অন্যটি শুরু হয়।",
+      "সব ইভেন্ট সময়ের ক্রমানুসারে প্রসেস করুন।"
+    ],
+    "extraExampleEn": "Given [1, 2] and [3, 4], events are (1, start), (2, end), (3, start), (4, end). Processing these shows no overlap because the first ends before the second starts.",
+    "extraExampleBn": "[১, ২] এবং [৩, ৪] দেওয়া থাকলে, ইভেন্টগুলো হলো (১, শুরু), (২, শেষ), (৩, শুরু), (৪, শেষ)। এগুলো প্রসেস করলে দেখা যায় কোনো ওভারল্যাপ নেই কারণ প্রথমটি দ্বিতীয়টি শুরুর আগেই শেষ হয়।",
+    "whenEn": "Use this when you need to calculate overlaps or active counts over a range of time or coordinates.",
+    "whenBn": "যখন আপনাকে সময় বা কোঅর্ডিনেটের রেঞ্জে ওভারল্যাপ বা সক্রিয় কাউন্ট হিসাব করতে হয়, তখন এটি ব্যবহার করুন।",
+    "mistakeEn": "Events at the same coordinate need a stated boundary rule. For half-open intervals [start, end), process an ending event before a starting event at that coordinate so touching intervals do not count as overlapping.",
+    "mistakeBn": "একই সময়ে start ও end হলে সীমার নিয়ম ঠিক করতে হয়। [start, end) ধরনের interval-এ একই সময়ে আগে end, তারপর start ধরলে শুধু ছুঁয়ে থাকা interval-কে overlap ধরা হবে না।"
+  },
+  "pattern-segment-tree": {
+    "explanationEn": "A segment tree is a tree structure where each node represents an interval of an array. The root covers the entire array, while children cover halves. This allows you to perform range queries and point updates in logarithmic time. It is highly efficient for problems involving repeated range calculations.",
+    "explanationBn": "সেগমেন্ট ট্রি হলো এমন একটি ট্রি স্ট্রাকচার যেখানে প্রতিটি নোড একটি অ্যারের ইন্টারভাল নির্দেশ করে। রুট পুরো অ্যারে কভার করে, আর চাইল্ড নোডগুলো অর্ধেক অংশ কভার করে। এটি আপনাকে লগারিদমিক সময়ে রেঞ্জ কোয়েরি এবং পয়েন্ট আপডেট করতে দেয়। বারবার রেঞ্জ ক্যালকুলেশন করতে হয় এমন সমস্যার জন্য এটি অত্যন্ত কার্যকর।",
+    "videoStepsEn": [
+      "The leaves store the individual array values.",
+      "The parent nodes store the sum of their children's ranges.",
+      "Query the sum 3+5 by accessing two specific ranges.",
+      "Update a leaf and recompute values for all ancestors."
+    ],
+    "videoStepsBn": [
+      "লিফ নোডগুলো অ্যারের মানগুলো সংরক্ষণ করে।",
+      "প্যারেন্ট নোডগুলো তাদের চাইল্ডের রেঞ্জের যোগফল রাখে।",
+      "দুটি নির্দিষ্ট রেঞ্জ অ্যাক্সেস করে ৩+৫ এর যোগফল কোয়েরি করুন।",
+      "একটি লিফ আপডেট করুন এবং সব অ্যানসেস্টরের মান পুনরায় হিসাব করুন।"
+    ],
+    "extraExampleEn": "For array [1, 2], the root stores 3. Left child is 1, right child is 2. Updating index 0 to 5 changes the root to 7.",
+    "extraExampleBn": "[১, ২] অ্যারের জন্য, রুট ৩ সংরক্ষণ করে। বাম চাইল্ড ১, ডান চাইল্ড ২। ইনডেক্স ০-কে ৫ দিয়ে আপডেট করলে রুট ৭ হয়ে যায়।",
+    "whenEn": "Use this when you have an array that requires frequent range sum queries and individual element updates.",
+    "whenBn": "যখন আপনার এমন একটি অ্যারে থাকে যেখানে ঘনঘন রেঞ্জ সাম কোয়েরি এবং এলিমেন্ট আপডেট প্রয়োজন, তখন এটি ব্যবহার করুন।",
+    "mistakeEn": "A common mistake is using 0-based indexing incorrectly during tree traversal; ensure your child index calculations (2*i and 2*i+1) match your root index.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো ট্রি ট্রাভার্সালের সময় ভুলভাবে ০-ভিত্তিক ইনডেক্সিং ব্যবহার করা; নিশ্চিত করুন আপনার চাইল্ড ইনডেক্স ক্যালকুলেশন (২*i এবং ২*i+১) রুট ইনডেক্সের সাথে সামঞ্জস্যপূর্ণ।"
+  },
+  "pattern-fenwick": {
+    "explanationEn": "A Fenwick Tree, or Binary Indexed Tree, uses an array to store partial sums of a sequence. By using bitwise operations on indices, it allows us to update a single element and calculate prefix sums in logarithmic time. This structure works because each index stores the sum of a specific range determined by its least significant bit. It is an efficient alternative to a Segment Tree when only point updates and prefix queries are required.",
+    "explanationBn": "Fenwick Tree বা Binary Indexed Tree একটি অ্যারে ব্যবহার করে সিকোয়েন্সের আংশিক যোগফল জমা রাখে। ইনডেক্সের ওপর বিটওয়াইজ অপারেশন ব্যবহার করে এটি খুব দ্রুত কোনো মান আপডেট এবং প্রিফিক্স যোগফল বের করতে পারে। এই কাঠামোটি কাজ করে কারণ প্রতিটি ইনডেক্স তার least significant bit দ্বারা নির্ধারিত একটি নির্দিষ্ট রেঞ্জের যোগফল ধরে রাখে। যখন শুধু পয়েন্ট আপডেট এবং প্রিফিক্স কুয়েরি প্রয়োজন হয়, তখন এটি Segment Tree-এর একটি কার্যকর বিকল্প।",
+    "videoStepsEn": [
+      "Initialize tree[1] with the value 2.",
+      "Update tree[2] to store the sum of the first two elements.",
+      "Update tree[4] to store the sum of all four elements.",
+      "Calculate prefix(3) by adding the values stored in tree[2] and tree[3]."
+    ],
+    "videoStepsBn": [
+      "tree[1]-এ ২ মানটি সেট করো।",
+      "প্রথম দুটি উপাদানের যোগফল tree[2]-এ আপডেট করো।",
+      "সবগুলো চারটি উপাদানের যোগফল tree[4]-এ আপডেট করো।",
+      "tree[2] এবং tree[3]-এর মান যোগ করে prefix(3) বের করো।"
+    ],
+    "extraExampleEn": "Consider an array [4, 2, 1]. First, tree[1] stores 4, tree[2] stores 4+2=6, and tree[4] is not needed. To find prefix(2), we simply access tree[2], which returns 6. The result is 6.",
+    "extraExampleBn": "ধরা যাক একটি অ্যারে [৪, ২, ১]। প্রথমে, tree[1]-এ ৪ জমা হয়, tree[2]-এ ৪+২=৬ জমা হয়, এবং tree[4]-এর প্রয়োজন নেই। prefix(2) বের করতে আমরা সরাসরি tree[2] অ্যাক্সেস করি, যা ৬ দেয়। ফলাফল হলো ৬।",
+    "whenEn": "Use this when you need to perform frequent point updates and prefix sum queries on a static-sized array.",
+    "whenBn": "এটি তখন ব্যবহার করো যখন তোমাকে একটি নির্দিষ্ট সাইজের অ্যারেতে ঘনঘন পয়েন্ট আপডেট এবং প্রিফিক্স সাম কুয়েরি করতে হয়।",
+    "mistakeEn": "A common mistake is using 0-based indexing; always use 1-based indexing to ensure the bitwise logic for parent and child nodes works correctly.",
+    "mistakeBn": "একটি সাধারণ ভুল হলো ০-ভিত্তিক ইনডেক্সিং ব্যবহার করা; সবসময় ১-ভিত্তিক ইনডেক্সিং ব্যবহার করো যাতে প্যারেন্ট ও চাইল্ড নোডের বিটওয়াইজ লজিক সঠিকভাবে কাজ করে।"
+  }
+}

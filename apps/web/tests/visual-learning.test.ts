@@ -5,6 +5,7 @@ import { TOPICS } from '../src/lib/visual/topics';
 import { CP_TOPICS, VISUAL_TOPICS } from '../src/lib/cp/library';
 import guides from '../src/lib/visual/dsa-guides.json';
 import patternGuides from '../src/lib/visual/dsa-pattern-guides.json';
+import deepLessons from '../src/lib/visual/dsa-deep-lessons.json';
 import { readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -45,6 +46,21 @@ test('every DSA guide has a unique video and a plain-language bilingual example'
     assert.ok(statSync(video).size > 50_000, id);
     assert.ok(statSync(poster).size > 1_000, id);
     assert.equal(readFileSync(video).toString('ascii', 4, 8), 'ftyp', id);
+  }
+});
+test('every video lesson has a full bilingual explanation, replay steps and a distinct second example', () => {
+  const allGuides = { ...guides, ...patternGuides };
+  assert.deepEqual(Object.keys(deepLessons).sort(), Object.keys(allGuides).sort());
+  for (const [id, lesson] of Object.entries(deepLessons)) {
+    assert.ok(lesson.explanationEn.length > 150, id);
+    assert.match(lesson.explanationBn, /[\u0980-\u09ff]/, id);
+    assert.equal(lesson.videoStepsEn.length, 4, id);
+    assert.equal(lesson.videoStepsBn.length, 4, id);
+    assert.ok(lesson.extraExampleEn.length > 70, id);
+    assert.notEqual(lesson.extraExampleEn, allGuides[id as keyof typeof allGuides].example, id);
+    for (const field of [lesson.extraExampleBn, lesson.whenBn, lesson.mistakeBn]) {
+      assert.match(field, /[\u0980-\u09ff]/, id);
+    }
   }
 });
 test('bubble sort handles duplicates, negatives, empty input and immutable earlier frames', () => {

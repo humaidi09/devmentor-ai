@@ -22,6 +22,8 @@ test("Bangla questions and follow-ups keep the lesson context", () => {
   const followUp = learningReply("আরেকটা উদাহরণ দাও", "bn", "binary-search");
   assert.equal(followUp?.modulePath, answer?.modulePath);
   assert.match(followUp?.content ?? "", /উদাহরণ/);
+  assert.notEqual(followUp?.content, answer?.content);
+  assert.match(followUp?.content ?? "", /ইনডেক্স|index/);
   assert.equal(learningReply("hello", "en")?.provider, "curated");
 });
 
