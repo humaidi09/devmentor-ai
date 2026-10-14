@@ -8,6 +8,7 @@ import { aiProvider, realAiAvailable } from "@/lib/ai/server";
 import { groundedReply } from "@/lib/ai/controller";
 import { classify, retrievalIntent } from "@/lib/safety/classifier";
 import { resourceDto } from "@/lib/resources/grounding";
+import { learningReply } from "@/lib/chat/learning";
 export async function GET() {
   return json({
     provider: !DEMO_MODE && realAiAvailable() ? "gemini" : "mock",
@@ -19,10 +20,18 @@ export async function POST(req: NextRequest) {
     if (Number(req.headers.get("content-length")) > 12000)
       throw new ApiError(413, "Message too long.");
     const b = object(await requestJson(req));
-    exact(b, ["message", "lang", "useAi", "clarified"]);
+    exact(b, ["message", "lang", "useAi", "clarified", "contextTopicId"]);
     const message = text(b.message, 2000),
       clarified = b.clarified === undefined ? false : bool(b.clarified);
+    const contextTopicId =
+      b.contextTopicId === undefined ? undefined : text(b.contextTopicId, 80);
     if (DEMO_MODE || req.cookies.get("close-ai-mode")?.value === "demo") {
+      const lesson = learningReply(
+        message,
+        b.lang === "bn" ? "bn" : "en",
+        contextTopicId,
+      );
+      if (lesson) return json(lesson);
       const reply = buildDemoReply(message, b.lang === "bn" ? "bn" : "en");
       return json({
         ...reply,
@@ -62,6 +71,8 @@ export async function POST(req: NextRequest) {
           ? "bn"
           : "en"
         : choice(b.lang, ["en", "bn"]);
+    const lesson = learningReply(message, lang, contextTopicId);
+    if (lesson) return json(lesson);
     const provider = aiProvider(b.useAi === undefined ? false : bool(b.useAi));
     if (
       provider.name === "gemini" &&

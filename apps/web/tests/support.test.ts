@@ -22,6 +22,15 @@ test('unknown needs offer uncertainty and source browsing without invented sourc
 test('urgent needs retain a small external-help fallback', () => {
   const reply = buildDemoReply('I want to kill myself', 'en');
   assert.ok(reply.suggestedActions!.some(a => a.kind === 'human'));
+  assert.match(reply.content, /immediate danger/i);
+});
+test('demo routes CP questions to the library and explains unsupported scope honestly', () => {
+  const cp = buildDemoReply('How do I find Codeforces problems?', 'en');
+  const unknown = buildDemoReply('What is the weather today?', 'en');
+  assert.equal(cp.modulePath, '/cp');
+  assert.match(cp.content, /CP Library/);
+  assert.notEqual(cp.content, unknown.content);
+  assert.match(unknown.content, /no sourced answer/);
 });
 test('Bangla requests find appropriate sample resources and localized actions', () => {
   const reply = buildDemoReply('টিউশন ফি নিয়ে চিন্তিত', 'bn');

@@ -50,12 +50,33 @@ export function buildDemoReply(message: string, lang: Lang): ChatMessage {
   const uncertain = sources.length === 0;
   const actions: SuggestedAction[] = [];
   let content: string;
+  let modulePath: string | undefined;
 
   if (uncertain) {
-    content =
-      lang === "bn"
-        ? "আমি নিশ্চিত নই কোন নির্দিষ্ট যাচাইকৃত রিসোর্স এটার সাথে মিলছে, আর আমি কিছু বানিয়ে বলব না। আরেকটু বিস্তারিত লিখুন বা উৎসগুলো নিজে দেখুন।"
-        : "I'm not sure which verified resource matches this, and I won't invent one. Add a little more detail or browse the sources yourself.";
+    if (safety.urgent) {
+      content = lang === "bn"
+        ? "তাৎক্ষণিক বিপদে এই chat-এর জন্য অপেক্ষা করবেন না। কাছের বিশ্বাসযোগ্য মানুষ বা স্থানীয় জরুরি সেবার সহায়তা নিন।"
+        : "If you are in immediate danger, don't wait for this chat. Contact someone you trust nearby or your local emergency service.";
+    } else if (safety.kind === "cp") {
+      modulePath = "/cp";
+      content = lang === "bn"
+        ? "CP Library-তে topic, difficulty ও platform বেছে বাস্তব সমস্যার লিংক খুঁজতে পারো। যে algorithm বুঝতে চাও, নাম লিখলে তার পাঠও দেখাব।"
+        : "Use the CP Library to filter real problem links by topic, difficulty and platform. Name an algorithm and I can explain its lesson too.";
+    } else if (safety.kind === "developer") {
+      modulePath = "/learn";
+      content = lang === "bn"
+        ? "Developer Path-এ শেখার ধাপগুলো দেখো। নির্দিষ্ট DSA topic-এর নাম লিখলে তার সহজ উদাহরণও দেখাব।"
+        : "Open Developer Path for learning milestones. Name a DSA topic for a simple worked example.";
+    } else if (safety.kind === "study") {
+      modulePath = "/study";
+      content = lang === "bn"
+        ? "Study-তে নিজের পড়ার কাজ ও সময়সূচি সাজাতে পারো। এখানে তোমার ব্যক্তিগত তথ্য ছাড়া কোনো পরিকল্পনা বদলাই না।"
+        : "Use Study to organize your own tasks and deadlines. This chat will not change your schedule.";
+    } else {
+      content = lang === "bn"
+        ? "Demo-তে এই প্রশ্নের নির্ভরযোগ্য উত্তর নেই। Binary Search, Two Sum বা অন্য DSA topic জিজ্ঞেস করো; সহায়তার জন্য বিভাগ বলো, অথবা রিসোর্স দেখো।"
+        : "This demo has no sourced answer to that question. Ask about Binary Search, Two Sum or another DSA topic, name a support need, or browse resources.";
+    }
     actions.push({ label: lang === "bn" ? "সব রিসোর্স দেখুন" : "Browse all resources", kind: "continue" });
   } else {
     content =
@@ -82,5 +103,6 @@ export function buildDemoReply(message: string, lang: Lang): ChatMessage {
     uncertain,
     suggestedActions: actions,
     humanSupportAvailable: safety.urgent || safety.professional || safety.kind === "human",
+    modulePath,
   };
 }

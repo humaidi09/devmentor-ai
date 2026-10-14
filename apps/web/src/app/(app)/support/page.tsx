@@ -13,6 +13,7 @@ import { ResourceCard } from "@/components/resource-card";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/input";
 import { buildDemoReply } from "@/lib/support-engine";
+import { learningReply } from "@/lib/chat/learning";
 import { useLanguage, type Lang } from "@/lib/i18n";
 import type { ChatMessage, SuggestedAction } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -78,6 +79,14 @@ function ChatInner() {
     const msg = text.trim();
     if (!msg || loading) return;
     const activeLang = langRef.current;
+    const previousAssistant = [...messages]
+      .reverse()
+      .find((m) => m.role === "assistant");
+    const contextTopicId = previousAssistant?.modulePath?.startsWith(
+      "/learn/visual-lab/",
+    )
+      ? previousAssistant.modulePath.split("/").at(-1)
+      : undefined;
     setMessages((m) => [
       ...m,
       { id: `u_${Date.now()}`, role: "user", content: msg },
@@ -88,11 +97,14 @@ function ChatInner() {
     try {
       if (!navigator.onLine) {
         if (!demo) throw new Error("offline");
+        const offlineReply = learningReply(msg, activeLang, contextTopicId) ?? {
+          ...buildDemoReply(msg, activeLang),
+          provider: "mock" as const,
+        };
         setMessages((m) => [
           ...m,
           {
-            ...buildDemoReply(msg, activeLang),
-            provider: "mock",
+            ...offlineReply,
             state: "offline",
           },
         ]);
@@ -107,6 +119,7 @@ function ChatInner() {
           lang: activeLang,
           useAi,
           clarified: messages.some((m) => m.state === "clarification"),
+          contextTopicId,
         }),
       });
       if (!resp.ok) throw new Error("Chat unavailable");
@@ -144,11 +157,17 @@ function ChatInner() {
 
   const starters = bn
     ? [
+        "বাইনারি সার্চ বুঝিয়ে দাও",
+        "টু সাম কীভাবে কাজ করে?",
+        "BFS এর ধাপ দেখাও",
         "টিউশন ফি নিয়ে চিন্তিত",
         "একটা কোর্সে সাহায্য দরকার",
         "ইন্টার্নশিপ খুঁজছি",
       ]
     : [
+        "Explain binary search",
+        "How does Two Sum work?",
+        "Show the steps of BFS",
         "I'm worried about tuition fees",
         "I need help with a course",
         "I'm looking for an internship",
@@ -158,8 +177,8 @@ function ChatInner() {
     <div className="flex h-[calc(100dvh-10rem)] min-h-[440px] flex-col">
       <p className="mb-2 text-xs text-muted-foreground">
         {bn
-          ? "কথোপকথন সংরক্ষিত হয় না। Demo ও mock-এ বাইরের AI ব্যবহার হয় না।"
-          : "Conversations are not saved. Demo and mock mode use no external AI."}
+          ? "কথোপকথন সংরক্ষিত হয় না। Demo-তে DSA উত্তর লেখা পাঠ থেকে আসে; বাইরের AI ব্যবহার হয় না।"
+          : "Conversations are not saved. Demo DSA answers come from authored lessons; no external AI is used."}
       </p>
       {!demo && provider === "gemini" && (
         <label className="mb-2 flex items-center gap-2 text-sm">
@@ -177,8 +196,8 @@ function ChatInner() {
         title={t("support")}
         subtitle={
           bn
-            ? "আপনার বাধাটা বলুন। যা মিলবে তার উৎস দেখানো হবে।"
-            : "Describe your barrier. We'll show the source for anything we find."
+            ? "DSA ধারণা জিজ্ঞেস করুন বা আপনার বাধাটা বলুন। পাঠ ও রিসোর্সের উৎস দেখানো হবে।"
+            : "Ask about a DSA concept or describe a barrier. We'll link the lesson or source."
         }
       >
         <Link
@@ -205,8 +224,8 @@ function ChatInner() {
               />
               <p className="mb-4 text-sm text-muted-foreground">
                 {bn
-                  ? "যেকোনো কিছু জিজ্ঞেস করুন। যেমন:"
-                  : "Ask me anything. For example:"}
+                  ? "DSA শেখা বা সহায়তা নিয়ে জিজ্ঞেস করুন। যেমন:"
+                  : "Ask about a DSA topic or student support. For example:"}
               </p>
               <div className="mx-auto flex max-w-md flex-wrap justify-center gap-2">
                 {starters.map((s) => (
@@ -300,11 +319,15 @@ function ChatInner() {
               )}
               {m.provider && (
                 <p className="text-xs text-muted-foreground">
-                  {m.provider === "mock"
+                  {m.provider === "curated"
                     ? bn
-                      ? "Mock উত্তর"
-                      : "Mock response"
-                    : "Gemini · validated selection"}
+                      ? "লেখা পাঠ থেকে উত্তর"
+                      : "From authored lesson"
+                    : m.provider === "mock"
+                      ? bn
+                        ? "Mock উত্তর"
+                        : "Mock response"
+                      : "Gemini · validated selection"}
                   {m.state === "offline" ? " · Offline" : ""}
                 </p>
               )}

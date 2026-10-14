@@ -67,7 +67,7 @@ export interface ChatMessage {
   sources?: SupportResource[];
   uncertain?: boolean;
   suggestedActions?: SuggestedAction[];
-  provider?: "mock" | "gemini";
+  provider?: "mock" | "gemini" | "curated";
   state?: "success" | "clarification" | "no_resource" | "error" | "offline";
   humanSupportAvailable?: boolean;
   modulePath?: string;

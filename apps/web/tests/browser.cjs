@@ -82,6 +82,13 @@ assert.ok(
     await page
       .getByText("Here are some verified resources", { exact: false })
       .waitFor();
+    await page.getByLabel("Message", { exact: true }).fill("Explain binary search");
+    await page.getByRole("button", { name: "Send", exact: true }).click();
+    await page.getByText("In a sorted list, compare the middle", { exact: false }).waitFor();
+    await page.locator('a[href="/learn/visual-lab/binary-search"]').waitFor();
+    await page.getByLabel("Message", { exact: true }).fill("Show an example");
+    await page.getByRole("button", { name: "Send", exact: true }).click();
+    await page.getByText("[1, 3, 5, 7, 9], target 7", { exact: false }).last().waitFor();
     await page.route("**/api/chat", (r) =>
       r.fulfill({
         status: 503,

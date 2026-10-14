@@ -15,7 +15,7 @@ npm ci
 npm run dev
 ```
 
-No credentials are needed. `NEXT_PUBLIC_DEMO_MODE=true` (the default) explicitly selects fictional/local demo data. In an account-enabled deployment `/demo` also provides a separate guest demo. Existing demo preferences/saves are never imported into a real account.
+No credentials are needed. `NEXT_PUBLIC_DEMO_MODE=true` (the default) selects fictional support resources and local data. Demo chat answers DSA questions from the 77 authored topic guides, including short follow-ups, and links to their lessons; it does not call an external AI provider. In an account-enabled deployment `/demo` also provides a separate guest demo. Existing demo preferences/saves are never imported into a real account.
 
 ## Account setup
 
