@@ -132,7 +132,8 @@ assert.ok(
     await page.getByRole("link", { name: "Watch animation" }).click();
     await page.waitForURL("**/learn/visual-lab/backtracking?from=cp&topic=backtracking");
     assert.equal(await page.locator("video source").getAttribute("src"), "/videos/dsa/backtracking.mp4");
-    await page.getByRole("heading", { name: "A tiny example" }).waitFor();
+    await page.getByRole("heading", { name: "Example 1" }).waitFor();
+    await page.getByRole("heading", { name: "Another worked example" }).waitFor();
     await page.getByRole("img", { name: /Diagram: start/ }).waitFor();
     await page.getByRole("button", { name: "Next step" }).click();
     await page.getByText("A → C violates the rule", { exact: false }).waitFor();
