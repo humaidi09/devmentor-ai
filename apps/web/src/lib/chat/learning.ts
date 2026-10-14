@@ -100,8 +100,8 @@ export function learningReply(
   ) {
     return reply(
       lang === "bn"
-        ? "হ্যালো! Binary Search, Two Sum, BFS বা অন্য কোনো DSA topic জানতে চাইতে পারো। আমি সহজ ধারণা, উদাহরণ ও সেই topic-এর অ্যানিমেশন দেখাতে পারি।"
-        : "Hello! Ask me about Binary Search, Two Sum, BFS or another DSA topic. I can give a simple explanation, an example and its animation.",
+        ? "হ্যালো! Binary Search, Two Sum, BFS বা অন্য কোনো DSA topic জানতে চাইতে পারো। আমি সহজ ধারণা, একাধিক উদাহরণ ও সব ধাপ বুঝিয়ে দিতে পারি।"
+        : "Hello! Ask me about Binary Search, Two Sum, BFS or another DSA topic. I can explain the idea, multiple examples and every step.",
     );
   }
   const directId = topicIn(message);
@@ -120,7 +120,7 @@ export function learningReply(
   const videoSteps = lang === "bn" ? deep?.videoStepsBn : deep?.videoStepsEn;
   if (isSteps) {
     return reply(
-      `${title}\n${lang === "bn" ? "ভিডিওর ধাপগুলো:" : "Steps from the video:"}\n${(videoSteps ?? lesson.visual).map((step, index) => `${index + 1}. ${step}`).join("\n")}\n${concept}`,
+      `${title}\n${lang === "bn" ? "উদাহরণটি ধাপে ধাপে:" : "The example, step by step:"}\n${(videoSteps ?? lesson.visual).map((step, index) => `${index + 1}. ${step}`).join("\n")}\n${concept}`,
       id,
     );
   }

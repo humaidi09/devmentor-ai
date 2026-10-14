@@ -51,10 +51,6 @@ export const strings: Dict = {
     en: "Ask, research, visualize and practice in one learning workspace.",
     bn: "একটি শেখার জায়গায় প্রশ্ন, গবেষণা, চিত্র আর অনুশীলন।",
   },
-  demoNotice: {
-    en: "Demo mode — sample data, no account needed.",
-    bn: "ডেমো মোড — নমুনা তথ্য, কোনো অ্যাকাউন্ট লাগবে না।",
-  },
   academicStudy: { en: "Academic Study", bn: "একাডেমিক স্টাডি" },
   developerPath: { en: "Developer Path", bn: "ডেভেলপার পাথ" },
   cpCoach: { en: "CP Coach", bn: "CP কোচ" },

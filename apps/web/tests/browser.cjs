@@ -105,6 +105,10 @@ assert.ok(
     console.log("PASS saved resources, chat, API error fallback");
 
     await go("/learn/visual-lab/bubble-sort");
+    assert.equal(await page.locator("video").count(), 0);
+    assert.equal(await page.getByText("Demo mode — sample data, no account needed.").count(), 0);
+    assert.equal(await page.getByText("DEMO", { exact: true }).count(), 0);
+    await page.getByRole("heading", { name: "Every step, from start to finish" }).waitFor();
     await page
       .getByLabel("Numbers (comma-separated)", { exact: true })
       .fill("3, 1, 2");
@@ -124,35 +128,28 @@ assert.ok(
       .getByRole("button", { name: "Apply example", exact: true })
       .click();
     await page.locator("#viz-error").waitFor();
-    await page
-      .getByRole("button", { name: "Show steps as text", exact: true })
-      .click();
     assert.equal(await page.locator("#text-steps li").count(), 9);
     await go("/cp/topics/backtracking");
-    await page.getByRole("link", { name: "Watch animation" }).click();
+    await page.getByRole("link", { name: "Read all steps" }).click();
     await page.waitForURL("**/learn/visual-lab/backtracking?from=cp&topic=backtracking");
-    assert.equal(await page.locator("video source").getAttribute("src"), "/videos/dsa/backtracking.mp4");
+    assert.equal(await page.locator("video").count(), 0);
+    await page.getByRole("heading", { name: "A worked case, step by step" }).waitFor();
     await page.getByRole("heading", { name: "Example 1" }).waitFor();
     await page.getByRole("heading", { name: "Another worked example" }).waitFor();
-    await page.getByRole("img", { name: /Diagram: start/ }).waitFor();
+    assert.equal(await page.locator("#text-steps li").count(), 3);
     await page.getByRole("button", { name: "Next step" }).click();
     await page.getByText("A → C violates the rule", { exact: false }).waitFor();
-    await page.getByRole("button", { name: "Show steps as text" }).click();
-    assert.equal(await page.locator("#text-steps li").count(), 3);
     await page.getByRole("button", { name: "বাংলা", exact: true }).first().click();
     await page.getByText("A → C নিয়ম ভাঙে", { exact: false }).first().waitFor();
     await page.getByRole("button", { name: "EN", exact: true }).first().click();
-    await page.getByRole("button", { name: "Reset" }).click();
-    await page.getByRole("button", { name: "Play", exact: true }).click();
-    await page.getByText("A → C violates the rule", { exact: false }).first().waitFor({ timeout: 5000 });
-    await page.getByRole("button", { name: "Pause", exact: true }).click();
     await go("/learn/visual-lab");
     await page.locator("details").filter({ hasText: "KMP Pattern Matching" }).locator("summary").click();
     await page.getByRole("link", { name: /KMP Pattern Matching/ }).click();
     await page.waitForURL("**/learn/visual-lab/pattern-kmp");
-    assert.equal(await page.locator("video source").getAttribute("src"), "/videos/dsa/pattern-kmp.mp4");
-    await page.getByText("Find ABAC in ABABAC", { exact: false }).waitFor();
-    console.log("PASS CP topic animation link, controls and bilingual narration");
+    assert.equal(await page.locator("video").count(), 0);
+    await page.getByRole("heading", { name: "Every step, from start to finish" }).waitFor();
+    await page.getByText("Find ABAC in ABABAC", { exact: false }).first().waitFor();
+    console.log("PASS CP topic text lessons, complete steps and bilingual explanations");
     // Keyboard navigation and visible focus, with reduced-motion preference.
     await go("/");
     assert.equal(

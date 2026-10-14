@@ -9,7 +9,7 @@ import deepLessons from '../src/lib/visual/dsa-deep-lessons.json';
 import { readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
-test('every CP topic has a distinct playable visual lesson with bilingual explanations', () => {
+test('every CP topic has a complete sequence of bilingual written steps', () => {
   assert.equal(TOPICS.length, 79);
   assert.equal(new Set(TOPICS.map(t => t.id)).size, TOPICS.length);
   for (const topic of CP_TOPICS) {
@@ -27,12 +27,12 @@ test('every CP topic has a distinct playable visual lesson with bilingual explan
     }
   }
 });
-test('every DSA guide has a unique video and a plain-language bilingual example', () => {
+test('every DSA guide has a plain-language bilingual example and archived source assets', () => {
   assert.equal(Object.keys(guides).length, 25);
   assert.equal(Object.keys(patternGuides).length, 52);
   assert.equal(new Set(Object.values(patternGuides).map(guide => guide.parent)).size, 16);
   for (const topic of CP_TOPICS) {
-    assert.ok(VISUAL_TOPICS[topic] && VISUAL_TOPICS[topic]! in guides, `${topic} is missing its video`);
+    assert.ok(VISUAL_TOPICS[topic] && VISUAL_TOPICS[topic]! in guides, `${topic} is missing its lesson`);
   }
   for (const [id, guide] of Object.entries({ ...guides, ...patternGuides })) {
     assert.ok(TOPICS.some(topic => topic.id === id), id);
@@ -48,7 +48,7 @@ test('every DSA guide has a unique video and a plain-language bilingual example'
     assert.equal(readFileSync(video).toString('ascii', 4, 8), 'ftyp', id);
   }
 });
-test('every video lesson has a full bilingual explanation, replay steps and a distinct second example', () => {
+test('every DSA lesson has a full bilingual explanation, all worked steps and a distinct second example', () => {
   const allGuides = { ...guides, ...patternGuides };
   assert.deepEqual(Object.keys(deepLessons).sort(), Object.keys(allGuides).sort());
   for (const [id, lesson] of Object.entries(deepLessons)) {

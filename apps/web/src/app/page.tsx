@@ -20,13 +20,11 @@ import { BrandMark } from "@/components/brand";
 import { LanguageToggle } from "@/components/language-toggle";
 import { Card } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
-import { useAccount } from "@/lib/account";
 import { APP_NAME } from "@/lib/config";
 import { useLanguage } from "@/lib/i18n";
 
 export default function LandingPage() {
-  const { demo } = useAccount();
-  const { t, lang } = useLanguage();
+  const { lang } = useLanguage();
   const bn = lang === "bn";
 
   const features = [
@@ -236,11 +234,6 @@ export default function LandingPage() {
                 {bn ? "পরের ধাপ বেছে নিন" : "Choose your next move"}
               </h2>
             </div>
-            {demo && (
-              <span className="rounded-full border border-border bg-card/70 px-3 py-1 text-xs font-medium text-muted-foreground">
-                {bn ? "কাল্পনিক ডেমো তথ্য" : "Fictional demo content"}
-              </span>
-            )}
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {paths.map((path) => {
@@ -298,7 +291,7 @@ export default function LandingPage() {
           </nav>
         </div>
         <div className="mt-8 flex flex-wrap justify-between gap-3 border-t border-border/70 pt-5 text-xs leading-relaxed text-muted-foreground">
-          <span>{demo ? t("demoNotice") : bn ? "পছন্দের তথ্য আপনার অ্যাকাউন্টে সংরক্ষিত থাকে।" : "Your chosen information is saved to your account."}</span>
+          <span>{bn ? "নিজের গতিতে শিখুন ও অনুশীলন করুন।" : "Learn and practice at your own pace."}</span>
           <span>{bn ? "জরুরি, চিকিৎসা বা আইনি সহায়তার বিকল্প নয়।" : "Not for emergency, medical or legal advice."}</span>
         </div>
       </footer>

@@ -2,11 +2,11 @@
 
 Next.js 15 / React 19, strict TypeScript, Node.js 22 in CI. The original Phase 2 design and bilingual demo remain intact; Phases 3–5 add Supabase Auth/RLS, grounded optional Gemini chat, in-app reminders, optional Codeforces public data and transparent learning progress.
 
-## DSA visual lessons
+## DSA text lessons
 
-Visual Lab has 25 main DSA lessons, including the 23 CP categories plus advanced patterns and range queries, and 52 separate pattern lessons from the 16 branches of the reference map. Each of these 77 topics has its own original 64-second portrait MP4, a Bengali/English detailed explanation, four clickable video actions, two worked examples, guidance on when to use the method and a common mistake, plus a separate interactive step player. The MP4s are silent, contain bilingual on-screen explanations, and show a topic-specific worked example changing over time: values swap, pointers move, stacks grow and shrink, tables fill, and graph searches advance. They can be paused/replayed and have written equivalents beside the player. The four supplied reference clips informed the worked-example approach; none of their footage, audio or watermarks is included.
+Visual Lab has 25 main DSA lessons, including the 23 CP categories plus advanced patterns and range queries, and 52 separate pattern lessons from the 16 branches of the reference map. Each of these 77 topics now opens as a text-first lesson with a Bengali/English explanation, four worked-example steps, two examples, guidance on when to use the method and a common mistake. The complete topic trace is visible at once, and readers can select a step to remember their place. Bubble Sort and Binary Search still accept custom numbers and regenerate the written trace. DSA video players and automatic animations are no longer shown.
 
-The committed assets live in `public/videos/dsa`. To regenerate them, install Python Pillow and FFmpeg with `libx264`, ensure Noto Sans Bengali is installed, then run `npm run videos:build` after `npm ci`. `scripts/dsa_storyboards.py` supplies the worked data states; the renderer writes one MP4 and poster per topic. Regeneration is an authoring step, not part of the Next.js build.
+Previously rendered videos remain in `public/videos/dsa` as source assets for the authored examples; the lesson UI does not load them. To regenerate those assets, install Python Pillow and FFmpeg with `libx264`, ensure Noto Sans Bengali is installed, then run `npm run videos:build` after `npm ci`. Regeneration is an authoring step, not part of the Next.js build.
 
 ## Demo development
 

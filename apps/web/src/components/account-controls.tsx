@@ -26,11 +26,7 @@ export function AccountControls() {
   }
   return (
     <div className="flex flex-wrap items-center gap-3 text-xs">
-      {demo ? (
-        <span>DEMO</span>
-      ) : (
-        <span>{bn ? "নিজের অ্যাকাউন্ট" : "Your account"}</span>
-      )}
+      {!demo && <span>{bn ? "নিজের অ্যাকাউন্ট" : "Your account"}</span>}
       {!DEMO_MODE &&
         (userId && !demo ? (
           <button
