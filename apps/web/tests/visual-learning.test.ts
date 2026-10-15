@@ -6,6 +6,7 @@ import { CP_TOPICS, VISUAL_TOPICS } from '../src/lib/cp/library';
 import guides from '../src/lib/visual/dsa-guides.json';
 import patternGuides from '../src/lib/visual/dsa-pattern-guides.json';
 import deepLessons from '../src/lib/visual/dsa-deep-lessons.json';
+import expandedLessons from '../src/lib/visual/dsa-expanded-lessons.json';
 import { readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -61,6 +62,20 @@ test('every DSA lesson has a full bilingual explanation, all worked steps and a 
     for (const field of [lesson.extraExampleBn, lesson.whenBn, lesson.mistakeBn]) {
       assert.match(field, /[\u0980-\u09ff]/, id);
     }
+  }
+});
+test('all 77 DSA topics have an expanded bilingual explanation with method, reasoning, cost and edge case', () => {
+  const allGuides = { ...guides, ...patternGuides };
+  assert.deepEqual(Object.keys(expandedLessons).sort(), Object.keys(allGuides).sort());
+  for (const [id, lesson] of Object.entries(expandedLessons)) {
+    for (const field of ['intuition', 'method', 'why', 'complexity', 'edgeCase'] as const) {
+      const english = lesson[`${field}En`];
+      const bangla = lesson[`${field}Bn`];
+      assert.ok(english.length > 80, `${id}: ${field}En`);
+      assert.ok(bangla.length > 80, `${id}: ${field}Bn`);
+      assert.match(bangla, /[\u0980-\u09ff]/, `${id}: ${field}Bn`);
+    }
+    assert.match(lesson.complexityEn, /O\([^)]+\)/, id);
   }
 });
 test('bubble sort handles duplicates, negatives, empty input and immutable earlier frames', () => {

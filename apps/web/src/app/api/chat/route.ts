@@ -9,7 +9,7 @@ import { GeminiProvider } from "@/lib/ai/gemini";
 import { groundedReply } from "@/lib/ai/controller";
 import { classify, retrievalIntent } from "@/lib/safety/classifier";
 import { resourceDto } from "@/lib/resources/grounding";
-import { learningReply } from "@/lib/chat/learning";
+import { expandedLearningReply } from "@/lib/chat/learning-server";
 export async function GET() {
   return json({
     provider: !DEMO_MODE && realAiAvailable() ? "gemini" : "mock",
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     const contextTopicId =
       b.contextTopicId === undefined ? undefined : text(b.contextTopicId, 80);
     if (DEMO_MODE || req.cookies.get("close-ai-mode")?.value === "demo") {
-      const lesson = learningReply(
+      const lesson = expandedLearningReply(
         message,
         b.lang === "bn" ? "bn" : "en",
         contextTopicId,
@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
           ? "bn"
           : "en"
         : choice(b.lang, ["en", "bn"]);
-    const lesson = learningReply(message, lang, contextTopicId);
+    const lesson = expandedLearningReply(message, lang, contextTopicId);
     const provider = aiProvider(b.useAi === undefined ? false : bool(b.useAi));
     if (lesson && provider instanceof GeminiProvider && lesson.modulePath) {
       if (!dbResult(await db.rpc("consume_close_ai_budget", { service_name: "ai" })))

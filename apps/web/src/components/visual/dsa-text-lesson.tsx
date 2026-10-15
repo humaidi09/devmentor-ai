@@ -4,19 +4,15 @@ import { BookOpen, Lightbulb, ListChecks, TriangleAlert } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { useLanguage } from "@/lib/i18n";
-import guides from "@/lib/visual/dsa-guides.json";
-import patternGuides from "@/lib/visual/dsa-pattern-guides.json";
-import deepLessons from "@/lib/visual/dsa-deep-lessons.json";
 
-type Guide = {
+export type Guide = {
   concept: string;
   conceptBn: string;
   example: string;
   exampleBn: string;
   patterns: string[];
 };
-type PatternGuide = Omit<Guide, "patterns"> & { parent: string };
-type DeepLesson = {
+export type DeepLesson = {
   explanationEn: string;
   explanationBn: string;
   videoStepsEn: string[];
@@ -28,14 +24,20 @@ type DeepLesson = {
   mistakeEn: string;
   mistakeBn: string;
 };
+export type ExpandedLesson = {
+  intuitionEn: string;
+  intuitionBn: string;
+  methodEn: string;
+  methodBn: string;
+  whyEn: string;
+  whyBn: string;
+  complexityEn: string;
+  complexityBn: string;
+  edgeCaseEn: string;
+  edgeCaseBn: string;
+};
 
-export function DsaTextLesson({ topicId }: { topicId: string }) {
-  const pattern = (patternGuides as Record<string, PatternGuide>)[topicId];
-  const guide = (guides as Record<string, Guide>)[topicId] ?? (pattern ? {
-    ...pattern,
-    patterns: (guides as Record<string, Guide>)[pattern.parent].patterns,
-  } : undefined);
-  const deep = (deepLessons as Record<string, DeepLesson>)[topicId];
+export function DsaTextLesson({ guide, deep, expanded }: { guide?: Guide; deep?: DeepLesson; expanded?: ExpandedLesson }) {
   const { lang } = useLanguage();
   const bn = lang === "bn";
   if (!guide) return null;
@@ -50,6 +52,24 @@ export function DsaTextLesson({ topicId }: { topicId: string }) {
         <p className="mt-3 text-sm leading-relaxed">{bn ? guide.conceptBn : guide.concept}</p>
         {deep && <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{bn ? deep.explanationBn : deep.explanationEn}</p>}
       </Card>
+      {expanded && (
+        <>
+          <div className="grid gap-3 md:grid-cols-2">
+            <Card className="p-4 sm:p-5">
+              <h3 className="font-bold">{bn ? "সহজভাবে ভাবো" : "Picture the idea"}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{bn ? expanded.intuitionBn : expanded.intuitionEn}</p>
+            </Card>
+            <Card className="p-4 sm:p-5">
+              <h3 className="font-bold">{bn ? "কীভাবে করবে" : "How to do it"}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{bn ? expanded.methodBn : expanded.methodEn}</p>
+            </Card>
+          </div>
+          <Card className="p-4 sm:p-5">
+            <h3 className="font-bold">{bn ? "কেন পদ্ধতিটি কাজ করে" : "Why it works"}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{bn ? expanded.whyBn : expanded.whyEn}</p>
+          </Card>
+        </>
+      )}
       {deep && (
         <>
           <Card className="p-4 sm:p-6">
@@ -76,6 +96,16 @@ export function DsaTextLesson({ topicId }: { topicId: string }) {
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{bn ? deep.extraExampleBn : deep.extraExampleEn}</p>
             </Card>
           </div>
+          {expanded && <div className="grid gap-3 md:grid-cols-2">
+            <Card className="p-4 sm:p-5">
+              <h3 className="font-bold">{bn ? "সময় ও জায়গার খরচ" : "Time and space cost"}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{bn ? expanded.complexityBn : expanded.complexityEn}</p>
+            </Card>
+            <Card className="p-4 sm:p-5">
+              <h3 className="font-bold">{bn ? "বিশেষ ক্ষেত্রে কী হবে" : "An edge case to check"}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{bn ? expanded.edgeCaseBn : expanded.edgeCaseEn}</p>
+            </Card>
+          </div>}
           <div className="grid gap-3 md:grid-cols-2">
             <Card className="border-primary/20 bg-primary/5 p-4 sm:p-5">
               <h3 className="font-bold">{bn ? "কখন ব্যবহার করবে" : "When to use it"}</h3>

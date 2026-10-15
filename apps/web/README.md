@@ -4,7 +4,7 @@ Next.js 15 / React 19, strict TypeScript, Node.js 22 in CI. The original Phase 2
 
 ## DSA text lessons
 
-Visual Lab has 25 main DSA lessons, including the 23 CP categories plus advanced patterns and range queries, and 52 separate pattern lessons from the 16 branches of the reference map. Each of these 77 topics now opens as a text-first lesson with a Bengali/English explanation, four worked-example steps, two examples, guidance on when to use the method and a common mistake. The complete topic trace is visible at once, and readers can select a step to remember their place. Bubble Sort and Binary Search still accept custom numbers and regenerate the written trace. DSA video players and automatic animations are no longer shown.
+Visual Lab has 25 main DSA lessons, including the 23 CP categories plus advanced patterns and range queries, and 52 separate pattern lessons from the 16 branches of the reference map. Each of these 77 topics opens as a text-first lesson with a Bengali/English explanation, intuition, method, reasoning, four worked-example steps, two examples, time and space costs, an edge case, guidance on when to use the method and a common mistake. The complete topic trace is visible at once, and readers can select a step to remember their place. The topic page selects its lesson data on the server so visiting one lesson does not send all 77 expanded lessons to the browser. Bubble Sort and Binary Search still accept custom numbers and regenerate the written trace. DSA video players and automatic animations are no longer shown.
 
 Previously rendered videos remain in `public/videos/dsa` as source assets for the authored examples; the lesson UI does not load them. To regenerate those assets, install Python Pillow and FFmpeg with `libx264`, ensure Noto Sans Bengali is installed, then run `npm run videos:build` after `npm ci`. Regeneration is an authoring step, not part of the Next.js build.
 
@@ -15,7 +15,7 @@ npm ci
 npm run dev
 ```
 
-No credentials are needed. `NEXT_PUBLIC_DEMO_MODE=true` (the default) selects fictional support resources and local data. Demo chat answers DSA questions from the 77 authored topic guides, including short follow-ups, and links to their lessons; it does not call an external AI provider. In account mode, a signed-in user can explicitly opt into Gemini for a DSA question when `AI_PROVIDER=gemini` and a server-only AI key are configured. Gemini receives the question and relevant authored lesson; failures fall back to the authored explanation. This requires the hosted account database, Auth and budget migration. In an account-enabled deployment `/demo` also provides a separate guest demo. Existing demo preferences/saves are never imported into a real account.
+No credentials are needed. `NEXT_PUBLIC_DEMO_MODE=true` (the default) selects fictional support resources and local data. Demo chat answers DSA questions from the 77 authored topic guides and expanded explanations, including short follow-ups, and links to their lessons; it does not call an external AI provider. In account mode, a signed-in user can explicitly opt into Gemini for a DSA question when `AI_PROVIDER=gemini` and a server-only AI key are configured. Gemini receives the question and relevant authored lesson; failures fall back to the authored explanation. This requires the hosted account database, Auth and budget migration. In an account-enabled deployment `/demo` also provides a separate guest demo. Existing demo preferences/saves are never imported into a real account.
 
 ## Account setup
 

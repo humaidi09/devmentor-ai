@@ -10,7 +10,6 @@ import { useLanguage } from "@/lib/i18n";
 import { TOPICS } from "@/lib/visual/topics";
 import dsaGuides from "@/lib/visual/dsa-guides.json";
 import patternGuides from "@/lib/visual/dsa-pattern-guides.json";
-import deepLessons from "@/lib/visual/dsa-deep-lessons.json";
 
 const CATEGORIES = ["DSA", "Algorithms", "DBMS"] as const;
 
@@ -78,7 +77,7 @@ export default function VisualLabPage() {
             <summary className="cursor-pointer list-none font-semibold text-foreground marker:hidden">{localize(parent?.title ?? parentId, lang)} <span className="ml-2 text-xs font-normal text-muted-foreground">{entries.length} {bn ? "টি পাঠ" : "lessons"}</span><span className="float-right text-primary group-open:rotate-90" aria-hidden>›</span></summary>
             <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {entries.map(([id, guide]) => <Link key={id} href={`/learn/visual-lab/${id}`} className="studio-card rounded-xl border border-border bg-background p-4 focus-visible:ring-2 focus-visible:ring-ring">
-                <span className="flex items-center gap-2 text-xs font-semibold text-primary"><ListOrdered className="h-4 w-4" aria-hidden />{bn ? `মোট ${deepLessons[id as keyof typeof deepLessons].videoStepsBn.length}টি উদাহরণ ধাপ` : `${deepLessons[id as keyof typeof deepLessons].videoStepsEn.length} example steps`}</span>
+                <span className="flex items-center gap-2 text-xs font-semibold text-primary"><ListOrdered className="h-4 w-4" aria-hidden />{bn ? `মোট ${guide.visual.length}টি উদাহরণ ধাপ` : `${guide.visual.length} example steps`}</span>
                 <span className="mt-2 block font-bold">{guide.title}</span>
                 <span className="mt-1 block text-sm text-muted-foreground">{bn ? guide.conceptBn : guide.concept}</span>
               </Link>)}

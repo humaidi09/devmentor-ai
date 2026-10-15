@@ -134,12 +134,16 @@ assert.ok(
     await page.waitForURL("**/learn/visual-lab/backtracking?from=cp&topic=backtracking");
     assert.equal(await page.locator("video").count(), 0);
     await page.getByRole("heading", { name: "A worked case, step by step" }).waitFor();
+    await page.getByRole("heading", { name: "Picture the idea" }).waitFor();
+    await page.getByRole("heading", { name: "Why it works" }).waitFor();
+    await page.getByRole("heading", { name: "Time and space cost" }).waitFor();
     await page.getByRole("heading", { name: "Example 1" }).waitFor();
     await page.getByRole("heading", { name: "Another worked example" }).waitFor();
     assert.equal(await page.locator("#text-steps li").count(), 3);
     await page.getByRole("button", { name: "Next step" }).click();
     await page.getByText("A → C violates the rule", { exact: false }).waitFor();
     await page.getByRole("button", { name: "বাংলা", exact: true }).first().click();
+    await page.getByRole("heading", { name: "কেন পদ্ধতিটি কাজ করে" }).waitFor();
     await page.getByText("A → C নিয়ম ভাঙে", { exact: false }).first().waitFor();
     await page.getByRole("button", { name: "EN", exact: true }).first().click();
     await go("/learn/visual-lab");

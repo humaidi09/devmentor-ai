@@ -21,6 +21,18 @@ type DeepLesson = {
   extraExampleEn: string;
   extraExampleBn: string;
 };
+export type ExpandedLesson = {
+  intuitionEn: string;
+  intuitionBn: string;
+  methodEn: string;
+  methodBn: string;
+  whyEn: string;
+  whyBn: string;
+  complexityEn: string;
+  complexityBn: string;
+  edgeCaseEn: string;
+  edgeCaseBn: string;
+};
 
 const aliases: Record<string, string[]> = {
   array: ["arrays", "অ্যারে"],
@@ -89,6 +101,7 @@ export function learningReply(
   message: string,
   lang: Lang,
   contextTopicId?: string,
+  expandedLessons?: Record<string, ExpandedLesson>,
 ): ChatMessage | null {
   const safety = classify(message);
   if (safety.urgent || safety.professional || safety.kind === "human") return null;
@@ -110,6 +123,7 @@ export function learningReply(
   if (!id) return null;
   const lesson = lessons[id];
   const deep = (deepLessons as Record<string, DeepLesson>)[id];
+  const expanded = expandedLessons?.[id];
   const isSteps = /\bsteps?\b|ধাপ/i.test(message);
   const isExample = /\bexample\b|উদাহরণ/i.test(message);
   const title = lesson.title.replace(/\b\w/g, (letter) => letter.toUpperCase());
@@ -120,7 +134,7 @@ export function learningReply(
   const videoSteps = lang === "bn" ? deep?.videoStepsBn : deep?.videoStepsEn;
   if (isSteps) {
     return reply(
-      `${title}\n${lang === "bn" ? "উদাহরণটি ধাপে ধাপে:" : "The example, step by step:"}\n${(videoSteps ?? lesson.visual).map((step, index) => `${index + 1}. ${step}`).join("\n")}\n${concept}`,
+      `${title}\n${concept}\n${lang === "bn" ? expanded?.methodBn ?? "" : expanded?.methodEn ?? ""}\n${lang === "bn" ? "উদাহরণটি ধাপে ধাপে:" : "The example, step by step:"}\n${(videoSteps ?? lesson.visual).map((step, index) => `${index + 1}. ${step}`).join("\n")}`,
       id,
     );
   }
@@ -134,7 +148,18 @@ export function learningReply(
     );
   }
   return reply(
-    `${title}\n${concept}\n${explanation ?? ""}\n${lang === "bn" ? "উদাহরণ ১:" : "Example 1:"} ${example}\n${lang === "bn" ? "উদাহরণ ২:" : "Example 2:"} ${extraExample ?? example}`,
+    [
+      title,
+      concept,
+      explanation,
+      expanded && `${lang === "bn" ? "সহজভাবে ভাবো:" : "Picture the idea:"} ${lang === "bn" ? expanded.intuitionBn : expanded.intuitionEn}`,
+      expanded && `${lang === "bn" ? "কীভাবে করবে:" : "How to do it:"} ${lang === "bn" ? expanded.methodBn : expanded.methodEn}`,
+      expanded && `${lang === "bn" ? "কেন কাজ করে:" : "Why it works:"} ${lang === "bn" ? expanded.whyBn : expanded.whyEn}`,
+      `${lang === "bn" ? "উদাহরণ ১:" : "Example 1:"} ${example}`,
+      `${lang === "bn" ? "উদাহরণ ২:" : "Example 2:"} ${extraExample ?? example}`,
+      expanded && `${lang === "bn" ? "সময় ও জায়গা:" : "Time and space:"} ${lang === "bn" ? expanded.complexityBn : expanded.complexityEn}`,
+      expanded && `${lang === "bn" ? "বিশেষ ক্ষেত্র:" : "Edge case:"} ${lang === "bn" ? expanded.edgeCaseBn : expanded.edgeCaseEn}`,
+    ].filter(Boolean).join("\n\n"),
     id,
   );
 }

@@ -1,0 +1,63 @@
+"use client";
+
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { useEffect, useState } from "react";
+
+import { PageHeader } from "@/components/page-header";
+import { StepPlayer } from "@/components/visual/step-player";
+import { DsaTextLesson, type DeepLesson, type ExpandedLesson, type Guide } from "@/components/visual/dsa-text-lesson";
+import { TextStepLesson } from "@/components/visual/text-step-lesson";
+import { buttonVariants } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { localize } from "@/lib/content-bn";
+import { useLanguage } from "@/lib/i18n";
+import { CP_TOPICS, type CPTopic } from "@/lib/cp/library";
+import type { VizTopic } from "@/lib/visual/types";
+
+export function TopicPageClient({ topic, patternConcept, guide, deep, expanded }: {
+  topic?: VizTopic;
+  patternConcept?: { concept: string; conceptBn: string };
+  guide?: Guide;
+  deep?: DeepLesson;
+  expanded?: ExpandedLesson;
+}) {
+  const { lang } = useLanguage();
+  const bn = lang === "bn";
+  const [returnTopic, setReturnTopic] = useState("");
+  useEffect(() => {
+    const search = new URLSearchParams(window.location.search);
+    const value = search.get("topic") ?? "";
+    if (search.get("from") === "cp" && CP_TOPICS.includes(value as CPTopic)) setReturnTopic(value);
+  }, []);
+
+  if (!topic) {
+    return (
+      <Card className="mx-auto max-w-md p-8 text-center">
+        <p className="text-sm text-muted-foreground">{bn ? "এই টপিকটি এখনো নেই।" : "This topic isn't available yet."}</p>
+        <Link href="/learn/visual-lab" className={`${buttonVariants({ variant: "secondary", size: "sm" })} mt-3`}>
+          {bn ? "ভিজ্যুয়াল ল্যাব" : "Visual Lab"}
+        </Link>
+      </Card>
+    );
+  }
+
+  return (
+    <div>
+      <Link href="/learn/visual-lab" className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+        <ArrowLeft className="h-4 w-4" aria-hidden />
+        {bn ? "ভিজ্যুয়াল ল্যাব" : "Visual Lab"}
+      </Link>
+      <PageHeader title={localize(topic.title, lang)} subtitle={patternConcept ? (bn ? patternConcept.conceptBn : patternConcept.concept) : localize(topic.summary, lang)} />
+      {topic.category === "DBMS" ? (
+        <StepPlayer key={topic.id} topic={topic} />
+      ) : (
+        <>
+          <DsaTextLesson guide={guide} deep={deep} expanded={expanded} />
+          <TextStepLesson key={topic.id} topic={topic} />
+        </>
+      )}
+      {returnTopic && <Link href={`/cp/topics/${returnTopic}`} className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-primary underline"><ArrowLeft className="h-4 w-4" aria-hidden />{bn ? "সমস্যায় ফিরুন" : "Return to practice"}</Link>}
+    </div>
+  );
+}
